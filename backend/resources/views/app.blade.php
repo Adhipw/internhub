@@ -55,8 +55,6 @@
                 'recaptchaSiteKey' => config('services.recaptcha.site_key'),
             ]);
         </script>
-        <script src="https://www.google.com/recaptcha/api.js?render=explicit" async defer></script>
-        
         @vite(['resources/js/app.ts', 'resources/css/app.css'], 'build')
 
     </head>

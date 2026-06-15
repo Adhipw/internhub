@@ -18,6 +18,9 @@ const renderCaptcha = () => {
     try {
         const grecaptcha = (window as any).grecaptcha;
         if (grecaptcha && grecaptcha.render && container.value) {
+            if (container.value.dataset.rendered === 'true') {
+                return;
+            }
             if (!siteKey) {
                 errorMessage.value = 'reCAPTCHA site key is missing.';
                 logger.error('reCAPTCHA site key is missing! Check your .env (VITE_RECAPTCHA_SITE_KEY)');
@@ -73,6 +76,9 @@ const loadRecaptcha = () => {
 };
 
 onMounted(() => {
+    container.value?.addEventListener('recaptcha-token', ((event: CustomEvent<string>) => {
+        emit('update:modelValue', event.detail || '');
+    }) as EventListener);
     loadRecaptcha();
 });
 
@@ -86,7 +92,7 @@ onUnmounted(() => {
 
 <template>
     <div class="flex flex-col items-center justify-center my-4 min-h-[78px]">
-        <div ref="container"></div>
+        <div ref="container" class="internhub-recaptcha" :data-sitekey="siteKey"></div>
         <p v-if="errorMessage" class="mt-2 text-center text-xs font-bold text-red-500">
             {{ errorMessage }}
         </p>

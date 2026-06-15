@@ -54,7 +54,53 @@
             window.__APP_CONFIG__ = @json([
                 'recaptchaSiteKey' => config('services.recaptcha.site_key'),
             ]);
+
+            window.__internhubRenderAllRecaptcha = function () {
+                if (!window.grecaptcha || !window.grecaptcha.render) {
+                    return;
+                }
+
+                document.querySelectorAll('.internhub-recaptcha').forEach(function (element) {
+                    if (element.dataset.rendered === 'true') {
+                        return;
+                    }
+
+                    var siteKey = element.dataset.sitekey || window.__APP_CONFIG__?.recaptchaSiteKey;
+
+                    if (!siteKey) {
+                        return;
+                    }
+
+                    try {
+                        window.grecaptcha.render(element, {
+                            sitekey: siteKey,
+                            callback: function (token) {
+                                element.dispatchEvent(new CustomEvent('recaptcha-token', {
+                                    bubbles: true,
+                                    detail: token,
+                                }));
+                            },
+                            'expired-callback': function () {
+                                element.dispatchEvent(new CustomEvent('recaptcha-token', {
+                                    bubbles: true,
+                                    detail: '',
+                                }));
+                            },
+                        });
+                        element.dataset.rendered = 'true';
+                    } catch (error) {
+                        console.error('Failed to render reCAPTCHA fallback:', error);
+                    }
+                });
+            };
+
+            window.addEventListener('load', function () {
+                window.__internhubRenderAllRecaptcha();
+                setTimeout(window.__internhubRenderAllRecaptcha, 1000);
+                setTimeout(window.__internhubRenderAllRecaptcha, 3000);
+            });
         </script>
+        <script src="https://www.google.com/recaptcha/api.js?onload=__internhubRenderAllRecaptcha&render=explicit" async defer></script>
         @vite(['resources/js/app.ts', 'resources/css/app.css'], 'build')
 
     </head>

@@ -50,6 +50,11 @@
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
         <link rel="apple-touch-icon" href="/brand/logo-mark.svg">
         
+        <script>
+            window.__APP_CONFIG__ = @json([
+                'recaptchaSiteKey' => config('services.recaptcha.site_key'),
+            ]);
+        </script>
         <script src="https://www.google.com/recaptcha/api.js?render=explicit" async defer></script>
         
         @vite(['resources/js/app.ts', 'resources/css/app.css'], 'build')

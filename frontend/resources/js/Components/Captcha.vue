@@ -11,7 +11,7 @@ const emit = defineEmits(['update:modelValue']);
 const container = ref<HTMLElement | null>(null);
 const widgetId = ref<number | null>(null);
 
-const siteKey = import.meta.env.VITE_RECAPTCHA_SITE_KEY;
+const siteKey = import.meta.env.VITE_RECAPTCHA_SITE_KEY || (window as any).__APP_CONFIG__?.recaptchaSiteKey;
 
 const renderCaptcha = () => {
     try {

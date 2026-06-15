@@ -20,7 +20,7 @@ return new class extends Migration
             DB::statement("
                 CREATE TRIGGER internships_search_vector_update BEFORE INSERT OR UPDATE
                 ON internships FOR EACH ROW EXECUTE FUNCTION
-                tsvector_update_trigger(search_vector, 'pg_catalog.indonesian', title, description);
+                tsvector_update_trigger(search_vector, 'pg_catalog.simple', title, description);
             ");
 
             // Populate existing records.

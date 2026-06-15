@@ -23,8 +23,8 @@ class SearchService
                         ->orWhere('description', 'like', "%{$dto->search}%");
                 });
             } else {
-                $query->whereRaw("search_vector @@ plainto_tsquery('indonesian', ?)", [$dto->search])
-                    ->orderByRaw("ts_rank(search_vector, plainto_tsquery('indonesian', ?)) DESC", [$dto->search]);
+                $query->whereRaw("search_vector @@ plainto_tsquery('simple', ?)", [$dto->search])
+                    ->orderByRaw("ts_rank(search_vector, plainto_tsquery('simple', ?)) DESC", [$dto->search]);
             }
         } else {
             $query->latest();

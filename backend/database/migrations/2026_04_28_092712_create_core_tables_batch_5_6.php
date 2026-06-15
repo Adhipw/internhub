@@ -42,7 +42,7 @@ return new class extends Migration
 
             // PostgreSQL Full-Text Search Vector
             if (config('database.default') === 'pgsql') {
-                $table->rawIndex("(to_tsvector('indonesian', title || ' ' || description))", 'internships_search_index');
+                $table->rawIndex("(to_tsvector('simple', title || ' ' || description))", 'internships_search_index');
             }
         });
 

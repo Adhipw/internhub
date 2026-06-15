@@ -10,9 +10,11 @@ COPY frontend ./frontend
 RUN cd frontend && npm run build
 
 
-FROM php:8.3-apache-bookworm AS app
+FROM php:8.4-apache-bookworm AS app
 
 WORKDIR /var/www/html
+
+ENV COMPOSER_ALLOW_SUPERUSER=1
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
@@ -70,7 +72,6 @@ RUN composer install --no-dev --no-interaction --prefer-dist --optimize-autoload
 ENV APP_ENV=production
 ENV APP_DEBUG=false
 ENV LOG_CHANNEL=stderr
-ENV COMPOSER_ALLOW_SUPERUSER=1
 ENV PORT=8080
 
 EXPOSE 8080

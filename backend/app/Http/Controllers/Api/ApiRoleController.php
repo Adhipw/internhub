@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Enums\Permission as PermissionEnum;
+use App\Enums\UserRole;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
+use Spatie\Permission\PermissionRegistrar;
 
 class ApiRoleController extends ApiBaseController
 {
@@ -15,6 +18,8 @@ class ApiRoleController extends ApiBaseController
      */
     public function index(): JsonResponse
     {
+        $this->ensureDefaultRolesAndPermissions();
+
         $roles = Role::with('permissions')->get();
 
         return $this->sendResponse($roles, 'Roles retrieved successfully');
@@ -25,6 +30,8 @@ class ApiRoleController extends ApiBaseController
      */
     public function permissions(): JsonResponse
     {
+        $this->ensureDefaultRolesAndPermissions();
+
         $permissions = Permission::all();
 
         return $this->sendResponse($permissions, 'Permissions retrieved successfully');
@@ -44,7 +51,10 @@ class ApiRoleController extends ApiBaseController
             return $this->sendError('Validation Error', $validator->errors());
         }
 
-        $role = Role::create(['name' => $request->name]);
+        $role = Role::create([
+            'name' => $request->name,
+            'guard_name' => 'web',
+        ]);
 
         if ($request->has('permissions')) {
             $role->syncPermissions($request->permissions);
@@ -89,5 +99,24 @@ class ApiRoleController extends ApiBaseController
         $role->delete();
 
         return $this->sendResponse(null, 'Role deleted successfully');
+    }
+
+    private function ensureDefaultRolesAndPermissions(): void
+    {
+        app()[PermissionRegistrar::class]->forgetCachedPermissions();
+
+        foreach (PermissionEnum::cases() as $permission) {
+            Permission::firstOrCreate([
+                'name' => $permission->value,
+                'guard_name' => 'web',
+            ]);
+        }
+
+        foreach (UserRole::cases() as $role) {
+            Role::firstOrCreate([
+                'name' => $role->value,
+                'guard_name' => 'web',
+            ]);
+        }
     }
 }

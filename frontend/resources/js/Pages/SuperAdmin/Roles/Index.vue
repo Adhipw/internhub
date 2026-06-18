@@ -19,9 +19,15 @@ import { useLangStore } from '@/Stores/lang';
 const toast = useToastStore();
 const langStore = useLangStore();
 const t = (key: string) => langStore.t(key);
-const roles = ref<any[]>([]);
-const permissions = ref<any[]>([]);
-const loading = ref(true);
+
+const props = defineProps<{
+    roles?: any[];
+    permissions?: any[];
+}>();
+
+const roles = ref<any[]>(props.roles || []);
+const permissions = ref<any[]>(props.permissions || []);
+const loading = ref(false);
 const selectedRole = ref<number | null>(null);
 
 const newRole = reactive({
@@ -51,6 +57,12 @@ const fetchData = async () => {
         toast.error('Gagal mengambil data role dan izin.');
     } finally {
         loading.value = false;
+    }
+};
+
+const hydrateInitialData = () => {
+    if (roles.value.length > 0 && !selectedRole.value) {
+        selectRole(roles.value[0]);
     }
 };
 
@@ -103,7 +115,13 @@ const deleteRole = async (id: number) => {
     }
 };
 
-onMounted(fetchData);
+onMounted(() => {
+    hydrateInitialData();
+
+    if (roles.value.length === 0 && permissions.value.length === 0) {
+        fetchData();
+    }
+});
 
 const togglePermission = (name: string) => {
     const idx = permissionForm.permissions.indexOf(name);

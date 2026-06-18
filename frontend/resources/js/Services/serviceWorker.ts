@@ -12,7 +12,6 @@ export function setupServiceWorker(toastStore: ToastStore) {
     }
 
     let registration: ServiceWorkerRegistration | null = null;
-    let refreshing = false;
     let updateToastId: number | null = null;
 
     const clearUpdateToast = () => {
@@ -22,25 +21,14 @@ export function setupServiceWorker(toastStore: ToastStore) {
         }
     };
 
-    const reloadWhenReady = () => {
-        if (refreshing) return;
-        refreshing = true;
-        clearUpdateToast();
-        window.location.reload();
-    };
-
     const applyUpdate = async () => {
+        clearUpdateToast();
+
         if (registration?.waiting) {
             registration.waiting.postMessage({ type: 'SKIP_WAITING' });
-            window.setTimeout(() => {
-                if (!refreshing) {
-                    window.location.reload();
-                }
-            }, 5000);
-            return;
         }
 
-        reloadWhenReady();
+        window.location.reload();
     };
 
     const resetServiceWorker = async () => {
@@ -106,8 +94,6 @@ export function setupServiceWorker(toastStore: ToastStore) {
 
         await registration.update();
     };
-
-    navigator.serviceWorker.addEventListener('controllerchange', reloadWhenReady);
 
     window.addEventListener('focus', () => {
         registration?.update().catch(() => {});

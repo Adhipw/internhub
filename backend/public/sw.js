@@ -46,7 +46,6 @@ self.addEventListener('activate', (event) => {
       const staleCacheNames = cacheNames.filter((cacheName) => cacheName !== CACHE_NAME);
 
       await Promise.all(staleCacheNames.map((cacheName) => caches.delete(cacheName)));
-      await self.clients.claim();
     })
   );
 });

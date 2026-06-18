@@ -42,7 +42,6 @@ interface Toast {
 
 const unreadCount = ref(0);
 const activeToasts = ref<Toast[]>([]);
-let pollingInterval: number | null = null;
 
 const triggerToast = (title: string, message: string) => {
     const id = Date.now();
@@ -66,11 +65,6 @@ onMounted(() => {
     fetchNotifications(true); // First load
     window.addEventListener('click', closeNotifications);
     
-    // Background polling every 10 seconds for real-time notification sync
-    pollingInterval = setInterval(() => {
-        fetchNotifications(false);
-    }, 10000);
-
     // Active WebSocket connection for real-time instant notification sync
     if (window.Echo && authStore.user) {
         // Listen to custom ApplicationStatusChanged events
@@ -91,9 +85,6 @@ onMounted(() => {
 
 onUnmounted(() => {
     window.removeEventListener('click', closeNotifications);
-    if (pollingInterval) {
-        clearInterval(pollingInterval as number);
-    }
 
     // Cleanup WebSocket listeners on unmount to prevent memory leaks
     if (window.Echo && authStore.user) {

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Link } from '@inertiajs/vue3';
 import DashboardLayout from '@/Layouts/DashboardLayout.vue';
-import { ref, onMounted, computed, onUnmounted } from 'vue';
+import { ref, computed } from 'vue';
 import { 
     Users, ShieldCheck, Database, Globe, 
     Settings, Activity, AlertCircle, ArrowUpRight,
@@ -61,18 +61,6 @@ const fetchData = async () => {
     }
 };
 
-let refreshInterval: any = null;
-
-onMounted(() => {
-    // Auto refresh every 30 seconds
-    refreshInterval = setInterval(() => {
-        fetchData();
-    }, 30000);
-});
-
-onUnmounted(() => {
-    if (refreshInterval) clearInterval(refreshInterval);
-});
 </script>
 
 <template>

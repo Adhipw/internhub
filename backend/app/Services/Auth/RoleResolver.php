@@ -28,6 +28,20 @@ class RoleResolver
     }
 
     /**
+     * Resolve the dashboard path with the highest privileged role first.
+     */
+    public function dashboardPath(User $user): string
+    {
+        return match (true) {
+            $user->hasRole(UserRole::SUPER_ADMIN->value) => '/super-admin/dashboard',
+            $user->hasRole(UserRole::ADMIN->value) => '/admin/dashboard',
+            $user->hasRole(UserRole::HR->value) => '/hr/dashboard',
+            $user->hasRole(UserRole::MENTOR->value) => '/mentor/dashboard',
+            default => '/dashboard',
+        };
+    }
+
+    /**
      * Resolve user role within a specific company.
      * (Placeholder for Batch 5/6 where CompanyUser model exists)
      */

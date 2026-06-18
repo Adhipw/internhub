@@ -3,30 +3,19 @@
 namespace App\Http\Controllers;
 
 use App\Models\Internship;
+use App\Services\Auth\RoleResolver;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
 class DashboardController extends Controller
 {
-    public function index()
+    public function index(RoleResolver $roleResolver)
     {
         $user = Auth::user();
 
-        // Redirect based on role
-        if ($user->hasRole('hr')) {
-            return redirect('/hr/dashboard');
-        }
-
-        if ($user->hasRole('mentor')) {
-            return redirect('/mentor/dashboard');
-        }
-
-        if ($user->hasRole('admin')) {
-            return redirect('/admin/dashboard');
-        }
-
-        if ($user->hasRole('super_admin')) {
-            return redirect('/super-admin/dashboard');
+        $dashboardPath = $roleResolver->dashboardPath($user);
+        if ($dashboardPath !== '/dashboard') {
+            return redirect($dashboardPath);
         }
 
         return Inertia::render('Dashboard', [

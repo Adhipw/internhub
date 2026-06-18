@@ -46,6 +46,10 @@ export const useLangStore = defineStore('lang', {
         },
 
         async setLocale(locale: 'id' | 'en') {
+            if (this.locale === locale) {
+                return;
+            }
+
             this.locale = locale;
             localStorage.setItem('locale', locale);
 
@@ -54,7 +58,7 @@ export const useLangStore = defineStore('lang', {
 
             inertiaRouter.post(`/language/${locale}`, {}, {
                 preserveScroll: true,
-                preserveState: false,
+                preserveState: true,
                 replace: true,
             });
         },

@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Laravel\Sanctum\TransientToken;
 use Symfony\Component\HttpFoundation\Response;
 
 class CheckBanned
@@ -16,12 +17,19 @@ class CheckBanned
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (Auth::check() && Auth::user()->banned_at) {
-            $user = Auth::user();
+        $user = $request->user() ?: Auth::user();
+
+        if ($user && $user->banned_at) {
             $message = 'Akun Anda telah diblokir. Alasan: '.$user->banned_reason;
 
             if ($request->expectsJson()) {
-                Auth::logout();
+                $token = method_exists($user, 'currentAccessToken')
+                    ? $user->currentAccessToken()
+                    : null;
+
+                if ($token && ! $token instanceof TransientToken) {
+                    $token->delete();
+                }
 
                 return response()->json([
                     'success' => false,

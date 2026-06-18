@@ -4,10 +4,28 @@ import type { useToastStore } from '@/Stores/toast';
 type ToastStore = ReturnType<typeof useToastStore>;
 
 const SW_SCRIPT = '/sw.js';
-const UPDATE_INTERVAL = 30 * 60 * 1000;
+const serviceWorkerEnabled = import.meta.env.VITE_ENABLE_SERVICE_WORKER === 'true';
+
+const unregisterExistingServiceWorkers = async () => {
+    const registrations = await navigator.serviceWorker.getRegistrations();
+    await Promise.all(registrations.map((item) => item.unregister()));
+
+    if ('caches' in window) {
+        const cacheNames = await caches.keys();
+        await Promise.all(cacheNames.map((cacheName) => caches.delete(cacheName)));
+    }
+};
 
 export function setupServiceWorker(toastStore: ToastStore) {
     if (!import.meta.env.PROD || typeof window === 'undefined' || !('serviceWorker' in navigator)) {
+        return;
+    }
+
+    if (!serviceWorkerEnabled) {
+        unregisterExistingServiceWorkers().catch((error) => {
+            logger.error('Failed to unregister legacy service workers:', error);
+        });
+
         return;
     }
 
@@ -33,14 +51,7 @@ export function setupServiceWorker(toastStore: ToastStore) {
 
     const resetServiceWorker = async () => {
         clearUpdateToast();
-
-        const registrations = await navigator.serviceWorker.getRegistrations();
-        await Promise.all(registrations.map((item) => item.unregister()));
-
-        if ('caches' in window) {
-            const cacheNames = await caches.keys();
-            await Promise.all(cacheNames.map((cacheName) => caches.delete(cacheName)));
-        }
+        await unregisterExistingServiceWorkers();
 
         window.location.reload();
     };
@@ -94,24 +105,6 @@ export function setupServiceWorker(toastStore: ToastStore) {
 
         await registration.update();
     };
-
-    window.addEventListener('focus', () => {
-        registration?.update().catch(() => {});
-    });
-
-    window.addEventListener('online', () => {
-        registration?.update().catch(() => {});
-    });
-
-    document.addEventListener('visibilitychange', () => {
-        if (!document.hidden) {
-            registration?.update().catch(() => {});
-        }
-    });
-
-    window.setInterval(() => {
-        registration?.update().catch(() => {});
-    }, UPDATE_INTERVAL);
 
     register().catch((error) => {
         logger.error('PWA Service Worker Registration Failed:', error);

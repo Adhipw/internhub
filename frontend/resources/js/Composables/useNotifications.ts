@@ -1,6 +1,6 @@
 import logger from '@/Lib/logger';
 import { ref } from 'vue';
-import api from '@/Services/api';
+import axios from 'axios';
 import echo from '@/echo';
 import { useAuthStore } from '@/Stores/auth';
 
@@ -18,6 +18,12 @@ export interface NotificationData {
 const notifications = ref<NotificationData[]>([]);
 const unreadCount = ref(0);
 const latestToast = ref<{ message: string; type: 'success' | 'error' } | null>(null);
+const webJson = axios.create({
+    headers: {
+        Accept: 'application/json',
+        'X-Requested-With': 'XMLHttpRequest',
+    },
+});
 
 export function useNotifications() {
     const authStore = useAuthStore();
@@ -25,10 +31,9 @@ export function useNotifications() {
 
     const fetchNotifications = async () => {
         try {
-            const response = await api.get('/notifications');
-            const data = response.data?.data || response.data;
-            notifications.value = data.data || data || [];
-            unreadCount.value = data.unreadCount || 0;
+            const response = await webJson.get('/notifications');
+            notifications.value = response.data.notifications || [];
+            unreadCount.value = response.data.unreadCount || 0;
         } catch (error) {
             logger.error('Failed to fetch notifications', error);
         }
@@ -36,7 +41,7 @@ export function useNotifications() {
 
     const markAsRead = async (id: string) => {
         try {
-            await api.post(`/notifications/${id}/read`);
+            await webJson.post(`/notifications/${id}/read`);
             const index = notifications.value.findIndex(n => n.id === id);
             if (index !== -1 && !notifications.value[index].read_at) {
                 notifications.value[index].read_at = new Date().toISOString();

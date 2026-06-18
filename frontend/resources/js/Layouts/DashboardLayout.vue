@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import logger from '@/Lib/logger';
+import axios from 'axios';
 import { Link, router as inertiaRouter, usePage } from '@inertiajs/vue3';
 import { ref, computed, onMounted, onUnmounted } from 'vue';
 import { 
@@ -13,8 +14,6 @@ import { useAuthStore } from '@/Stores/auth';
 import { useLangStore } from '@/Stores/lang';
 import { useTheme } from '@/Composables/useTheme';
 import AppLogo from '@/Components/AppLogo.vue';
-
-import api from '@/Services/api';
 
 const authStore = useAuthStore();
 const langStore = useLangStore();
@@ -42,6 +41,7 @@ interface Toast {
 
 const unreadCount = ref(0);
 const activeToasts = ref<Toast[]>([]);
+const toastTimers = new Set<ReturnType<typeof window.setTimeout>>();
 
 const triggerToast = (title: string, message: string) => {
     const id = Date.now();
@@ -55,9 +55,11 @@ const triggerToast = (title: string, message: string) => {
         // Ignore audio errors if blocked by browser autoplay policy
     }
     // Auto-remove after 6 seconds
-    setTimeout(() => {
+    const timer = setTimeout(() => {
         activeToasts.value = activeToasts.value.filter(t => t.id !== id);
+        toastTimers.delete(timer);
     }, 6000);
+    toastTimers.add(timer);
 };
 
 onMounted(() => {
@@ -85,6 +87,8 @@ onMounted(() => {
 
 onUnmounted(() => {
     window.removeEventListener('click', closeNotifications);
+    toastTimers.forEach((timer) => window.clearTimeout(timer));
+    toastTimers.clear();
 
     // Cleanup WebSocket listeners on unmount to prevent memory leaks
     if (window.Echo && authStore.user) {
@@ -135,11 +139,22 @@ interface SystemNotification {
 }
 
 const isNotificationsOpen = ref(false);
-const notifications = ref<SystemNotification[]>([]);
+const initialNotifications = computed(() => {
+    const value = page.props.notifications;
+    return Array.isArray(value) ? value as SystemNotification[] : [];
+});
+const notifications = ref<SystemNotification[]>(initialNotifications.value);
+unreadCount.value = initialNotifications.value.filter(note => !note.read_at).length;
+const webJson = axios.create({
+    headers: {
+        Accept: 'application/json',
+        'X-Requested-With': 'XMLHttpRequest',
+    },
+});
 
 const fetchNotifications = async (isFirstLoad = false) => {
     try {
-        const response = await api.get('/notifications');
+        const response = await webJson.get('/notifications');
         const newNotifications: SystemNotification[] = response.data.notifications || [];
         const newUnreadCount: number = response.data.unreadCount || 0;
 
@@ -160,14 +175,12 @@ const fetchNotifications = async (isFirstLoad = false) => {
         unreadCount.value = newUnreadCount;
     } catch (error) {
         logger.error('Failed to fetch notifications:', error);
-        notifications.value = [];
-        unreadCount.value = 0;
     }
 };
 
 const markAsRead = async (id: number) => {
     try {
-        await api.post(`/notifications/${id}/read`);
+        await webJson.post(`/notifications/${id}/read`);
         // Fast optimistic local UI update
         notifications.value = notifications.value.map(n => n.id === id ? { ...n, read_at: new Date().toISOString() } : n);
         if (unreadCount.value > 0) {
@@ -181,7 +194,7 @@ const markAsRead = async (id: number) => {
 
 const markAllAsRead = async () => {
     try {
-        await api.post('/notifications/read-all');
+        await webJson.post('/notifications/read-all');
         // Fast optimistic local UI update
         notifications.value = notifications.value.map(n => ({ ...n, read_at: new Date().toISOString() }));
         unreadCount.value = 0;
@@ -460,8 +473,7 @@ const navigation = computed(() => {
                 <div 
                     v-for="toast in activeToasts" 
                     :key="toast.id"
-                    class="bg-white dark:bg-neutral-900 border border-slate-100 dark:border-neutral-800 shadow-[0_20px_50px_rgba(8,_112,_184,_0.08)] dark:shadow-2xl rounded-3xl p-5 flex items-start gap-4 pointer-events-auto cursor-pointer border-l-4 border-l-primary-600 hover:scale-[1.02] active:scale-[0.98] transition-all duration-300"
-                    @click="inertiaRouter.visit('/notifications')"
+                    class="bg-white dark:bg-neutral-900 border border-slate-100 dark:border-neutral-800 shadow-[0_20px_50px_rgba(8,_112,_184,_0.08)] dark:shadow-2xl rounded-3xl p-5 flex items-start gap-4 pointer-events-auto border-l-4 border-l-primary-600 transition-all duration-300"
                 >
                     <div class="w-10 h-10 rounded-2xl bg-primary-50 dark:bg-primary-950/40 flex items-center justify-center shrink-0">
                         <Bell class="w-5 h-5 text-primary-600 animate-bounce" />

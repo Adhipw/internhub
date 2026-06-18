@@ -13,26 +13,18 @@ async function loginAsStudent(page: Page) {
     await expect(page.getByRole('heading', { name: /halo|hello/i })).toBeVisible();
 }
 
-async function ensureServiceWorkerControlsPage(page: Page) {
+async function ensureNoLegacyServiceWorkerControlsPage(page: Page) {
     const hasServiceWorker = await page.evaluate(() => 'serviceWorker' in navigator);
     expect(hasServiceWorker).toBe(true);
 
-    await page.evaluate(async () => {
-        await navigator.serviceWorker.ready;
-    });
-
-    if (!await page.evaluate(() => Boolean(navigator.serviceWorker.controller))) {
-        await page.reload({ waitUntil: 'networkidle' });
-    }
-
     await expect.poll(
         () => page.evaluate(() => Boolean(navigator.serviceWorker.controller)),
-        { message: 'service worker should control the page' },
-    ).toBe(true);
+        { message: 'legacy service worker should not control the page' },
+    ).toBe(false);
 }
 
 test.describe('authenticated landing dashboard navigation', () => {
-    test('logged-in student can return from landing page to dashboard after refresh and with service worker active', async ({ page }) => {
+    test('logged-in student can return from landing page to dashboard after refresh without legacy service worker redirects', async ({ page }) => {
         await loginAsStudent(page);
 
         await page.goto('/');
@@ -49,7 +41,7 @@ test.describe('authenticated landing dashboard navigation', () => {
         await expect(page).not.toHaveURL(/\/login/);
         await expect(page.getByRole('heading', { name: /halo|hello/i })).toBeVisible();
 
-        await ensureServiceWorkerControlsPage(page);
+        await ensureNoLegacyServiceWorkerControlsPage(page);
 
         await page.goto('/');
         await expect(page.getByRole('link', { name: /dashboard/i }).first()).toBeVisible();

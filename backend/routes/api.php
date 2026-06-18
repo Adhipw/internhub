@@ -40,6 +40,7 @@ use App\Http\Controllers\Api\ApiSuperAdminDashboardController;
 use App\Http\Controllers\Api\ApiSuperAdminSettingController;
 use App\Http\Controllers\Api\ApiSuperAdminUserController;
 use App\Http\Controllers\Api\ApiUserDashboardController;
+use App\Http\Middleware\CheckBanned;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -71,7 +72,7 @@ Route::prefix('v1')->group(function () {
 });
 
 // Protected Routes
-Route::middleware('auth:sanctum')->prefix('v1')->group(function () {
+Route::middleware(['auth:sanctum', CheckBanned::class])->prefix('v1')->group(function () {
     Route::get('/me', [ApiAuthController::class, 'me']);
     Route::post('/logout', [ApiAuthController::class, 'logout']);
 
@@ -107,8 +108,10 @@ Route::middleware('auth:sanctum')->prefix('v1')->group(function () {
     Route::post('/attendance/correction', [ApiAttendanceController::class, 'requestCorrection']);
 
     // Candidate dashboard. Keep the old /dashboard/user path as a compatibility alias.
-    Route::get('/candidate/dashboard', [ApiUserDashboardController::class, 'index']);
-    Route::get('/dashboard/user', [ApiUserDashboardController::class, 'index']);
+    Route::middleware('verified')->group(function () {
+        Route::get('/candidate/dashboard', [ApiUserDashboardController::class, 'index']);
+        Route::get('/dashboard/user', [ApiUserDashboardController::class, 'index']);
+    });
 
     // AI Assistant Routes
     Route::prefix('ai')->group(function () {

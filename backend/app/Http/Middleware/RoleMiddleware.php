@@ -15,11 +15,19 @@ class RoleMiddleware
      */
     public function handle(Request $request, Closure $next, ...$roles): Response
     {
-        if (! auth()->check()) {
+        $user = $request->user();
+
+        if (! $user) {
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Unauthenticated.',
+                    'request_id' => $request->header('X-Request-ID'),
+                ], 401);
+            }
+
             return redirect()->route('login');
         }
-
-        $user = auth()->user();
 
         $allowedRoles = collect($roles)
             ->flatMap(fn (string $role) => explode('|', $role))
@@ -32,6 +40,14 @@ class RoleMiddleware
             if ($user->hasRole($role)) {
                 return $next($request);
             }
+        }
+
+        if ($request->expectsJson()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Anda tidak memiliki akses ke resource ini.',
+                'request_id' => $request->header('X-Request-ID'),
+            ], 403);
         }
 
         abort(403, 'Anda tidak memiliki akses ke halaman ini.');

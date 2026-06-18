@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, onUnmounted } from 'vue';
 import { useAuthStore } from '@/Stores/auth';
 import { Bell, X } from 'lucide-vue-next';
 
@@ -12,6 +12,8 @@ interface Notification {
 
 const authStore = useAuthStore();
 const notifications = ref<Notification[]>([]);
+const timeoutIds = new Set<ReturnType<typeof window.setTimeout>>();
+let channelName: string | null = null;
 
 const addNotification = (notif: Omit<Notification, 'id'>) => {
     const id = Math.random().toString(36).substring(7);
@@ -19,9 +21,11 @@ const addNotification = (notif: Omit<Notification, 'id'>) => {
     notifications.value.push(newNotif);
     
     // Auto remove after 10 seconds
-    setTimeout(() => {
+    const timeoutId = setTimeout(() => {
         removeNotification(id);
+        timeoutIds.delete(timeoutId);
     }, 10000);
+    timeoutIds.add(timeoutId);
 };
 
 const removeNotification = (id: string) => {
@@ -32,6 +36,7 @@ onMounted(() => {
     if (authStore.user) {
         // Listen to Private Channel
         const channel = `user.${authStore.user.id}`;
+        channelName = channel;
         
         // Use global window.Echo if available
         if ((window as any).Echo) {
@@ -44,6 +49,15 @@ onMounted(() => {
                     });
                 });
         }
+    }
+});
+
+onUnmounted(() => {
+    timeoutIds.forEach((timeoutId) => window.clearTimeout(timeoutId));
+    timeoutIds.clear();
+
+    if (channelName && (window as any).Echo) {
+        (window as any).Echo.leave(channelName);
     }
 });
 </script>

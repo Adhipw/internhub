@@ -1,5 +1,26 @@
 import axios, { AxiosResponse } from 'axios';
+import { router as inertiaRouter } from '@inertiajs/vue3';
 import { useToastStore } from '@/Stores/toast';
+
+let authRedirectInProgress = false;
+
+const redirectToLogin = () => {
+    if (authRedirectInProgress || window.location.pathname === '/login') {
+        return;
+    }
+
+    authRedirectInProgress = true;
+    const redirect = `${window.location.pathname}${window.location.search}`;
+
+    inertiaRouter.visit(`/login?redirect=${encodeURIComponent(redirect)}`, {
+        replace: true,
+        preserveScroll: false,
+        preserveState: false,
+        onFinish: () => {
+            authRedirectInProgress = false;
+        },
+    });
+};
 
 const api = axios.create({
     baseURL: '/api/v1',
@@ -20,11 +41,8 @@ api.interceptors.response.use(
             const status = error.response.status;
             const message = error.response.data?.message || 'Terjadi kesalahan pada server.';
 
-            if (status === 401) {
-                // Avoid infinite redirect if already on login
-                if (window.location.pathname !== '/login') {
-                    window.location.href = '/login';
-                }
+            if (status === 401 || status === 419) {
+                redirectToLogin();
             } else if (status === 422) {
                 // Validation errors are usually handled by forms, but we can show a general toast
                 toastStore.error('Mohon periksa kembali input Anda.');

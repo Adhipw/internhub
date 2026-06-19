@@ -389,9 +389,13 @@ Route::middleware('auth')->group(function () {
 Route::post('/webhooks/integration/{provider}', [WebhookController::class, 'handle'])
     ->name('webhooks.integration');
 
-// Web fallback: do not serve a SPA shell for unknown paths.
-// Every real page must be registered explicitly above.
+// Web fallback for Laravel + Vue/Inertia monolith deployments.
+// Keep this as the final route so browser refreshes on client-side paths load the app shell.
 Route::fallback(function (Request $request) {
+    if ($request->isMethod('GET') && ! $request->is('api/*', 'storage/*', 'build/*')) {
+        return Inertia::render('Welcome');
+    }
+
     return Inertia::render('Error', [
         'status' => 404,
         'request_id' => $request->header('X-Request-ID'),

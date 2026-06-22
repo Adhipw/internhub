@@ -12,6 +12,7 @@ import Card from '@/Components/Card.vue';
 import Skeleton from '@/Components/Skeleton.vue';
 import { formatDate } from '@/Lib/utils';
 import { useAuthStore } from '@/Stores/auth';
+import { useLangStore } from '@/Stores/lang';
 import { router as inertiaRouter } from '@inertiajs/vue3';
 import echo from '@/echo';
 import { onMounted, onUnmounted, ref } from 'vue';

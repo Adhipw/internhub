@@ -99,7 +99,7 @@ onUnmounted(() => {
 
 const t = (key: string) => langStore.t(key);
 const user = computed(() => authStore.user || {});
-const currentPath = computed(() => new URL(page.url, window.location.origin).pathname);
+const currentPath = computed(() => new window.URL(page.url, window.location.origin).pathname);
 
 const isSidebarOpen = ref(true);
 const searchQuery = ref('');
@@ -276,10 +276,19 @@ const navigation = computed(() => {
 
 <template>
     <div class="min-h-screen bg-neutral-50 dark:bg-neutral-950 flex transition-colors duration-500 font-sans">
+        <!-- Mobile Sidebar Overlay -->
+        <div 
+            v-if="isSidebarOpen"
+            class="fixed inset-0 bg-neutral-900/60 backdrop-blur-sm z-40 lg:hidden transition-opacity"
+            @click="isSidebarOpen = false"
+        ></div>
+
         <!-- Modern Sidebar -->
         <aside 
-            class="sidebar hidden lg:flex flex-col fixed inset-y-0 left-0 z-50 bg-white dark:bg-neutral-900 border-r border-neutral-100 dark:border-neutral-800 transition-all duration-500"
-            :class="[isSidebarOpen ? 'w-80' : 'w-24']"
+            class="sidebar flex flex-col fixed inset-y-0 left-0 z-50 bg-white dark:bg-neutral-900 border-r border-neutral-100 dark:border-neutral-800 transition-all duration-500"
+            :class="[
+                isSidebarOpen ? 'w-80 translate-x-0' : 'w-80 -translate-x-full lg:w-24 lg:translate-x-0'
+            ]"
         >
             <!-- Sidebar Header -->
             <div class="h-24 flex items-center px-8 shrink-0 overflow-hidden">
@@ -349,7 +358,7 @@ const navigation = computed(() => {
             <header class="main-header h-24 flex items-center justify-between px-8 bg-white/80 dark:bg-neutral-950/80 backdrop-blur-md sticky top-0 z-40 border-b border-neutral-100 dark:border-neutral-800">
                 <div class="flex items-center gap-6">
                     <button 
-                        class="hidden lg:flex w-10 h-10 items-center justify-center text-neutral-400 hover:text-neutral-900 dark:hover:text-white transition-colors"
+                        class="flex w-10 h-10 items-center justify-center text-neutral-400 hover:text-neutral-900 dark:hover:text-white transition-colors"
                         @click="toggleSidebar"
                     >
                         <Menu v-if="!isSidebarOpen" class="w-6 h-6" />

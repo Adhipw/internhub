@@ -70,7 +70,7 @@ class MasterDataSeeder extends Seeder
             'Jakarta Selatan', 'Jakarta Pusat', 'Jakarta Barat', 'Jakarta Utara', 'Jakarta Timur',
             'Bandung', 'Bekasi', 'Depok', 'Tangerang', 'Bogor',
             'Semarang', 'Surakarta', 'Surabaya', 'Malang',
-            'Yogyakarta', 'Denpasar', 'Medan', 'Palembang', 'Makassar', 'Balikpapan'
+            'Yogyakarta', 'Denpasar', 'Medan', 'Palembang', 'Makassar', 'Balikpapan',
         ];
 
         foreach ($cities as $city) {

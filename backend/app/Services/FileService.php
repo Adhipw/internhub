@@ -21,7 +21,7 @@ class FileService
             throw new \Exception('Tipe file berbahaya terdeteksi dan diblokir.');
         }
 
-        $secureHash = hash('sha256', $prefix . Str::uuid() . microtime());
+        $secureHash = hash('sha256', $prefix.Str::uuid().microtime());
         $filename = "{$prefix}{$secureHash}.{$extension}";
 
         return $file->storeAs("private/{$folder}", $filename);
@@ -39,7 +39,7 @@ class FileService
             throw new \Exception('Tipe file berbahaya terdeteksi dan diblokir.');
         }
 
-        $secureHash = hash('sha256', $prefix . Str::uuid() . microtime());
+        $secureHash = hash('sha256', $prefix.Str::uuid().microtime());
         $filename = "{$prefix}{$secureHash}.{$extension}";
         $path = $file->storeAs($folder, $filename, 'public');
 

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import logger from '@/Lib/logger';
 import { Link, router as inertiaRouter } from '@inertiajs/vue3';
-import { ref, reactive, onMounted } from 'vue';
+import { ref, reactive, onMounted, computed } from 'vue';
 import api from '@/Services/api';
 import DashboardLayout from '@/Layouts/DashboardLayout.vue';
 import Card from '@/Components/Card.vue';
@@ -18,9 +18,14 @@ import {
 import type { Application } from '@/Types/application';
 import type { User } from '@/Types/user';
 
-const application = ref<Application | null>(null);
-const mentors = ref<{ id: number, user_id: number, user: User }[]>([]);
-const loading = ref(true);
+const props = defineProps<{
+    application?: Application;
+    mentors?: { id: number, user_id: number, user: User }[];
+}>();
+
+const application = computed(() => props.application || null);
+const mentors = computed(() => props.mentors || []);
+const loading = ref(false);
 
 const showStatusModal = ref(false);
 const showInterviewModal = ref(false);
@@ -60,7 +65,7 @@ const interviewForm = reactive({
 });
 
 const mentorForm = reactive({
-  mentor_user_id: '' as string | number,
+  mentor_user_id: application.value?.interviewer_id || '' as string | number,
   processing: false,
   errors: {} as any,
 });
@@ -73,31 +78,10 @@ const rejectionReasons = [
   { id: 'OTHER', label: 'Alasan lainnya' },
 ];
 
-const fetchData = async () => {
-    loading.value = true;
-    try {
-        const id = window.location.pathname.split('/').filter(Boolean).pop();
-        const response = await api.get(`/hr/applications/${id}`);
-        const data = response.data.data;
-        application.value = data.application;
-        mentors.value = data.mentors || [];
-        if (application.value) {
-            mentorForm.mentor_user_id = application.value.interviewer_id || '';
-            // Auto-trigger AI summary generation to wow the HR user immediately
-            if (application.value.user?.detail) {
-                generateAiSummary();
-            }
-        }
-    } catch (error) {
-        logger.error('Failed to fetch HR application details:', error);
-        inertiaRouter.visit('/hr/applications');
-    } finally {
-        loading.value = false;
-    }
-};
-
 onMounted(() => {
-    fetchData();
+    if (application.value && application.value.user?.detail) {
+        generateAiSummary();
+    }
 });
 
 const updateStatus = (status: string) => {
@@ -113,7 +97,7 @@ const submitStatus = async () => {
     await api.post(`/hr/applications/${application.value.id}/status`, statusForm);
     showStatusModal.value = false;
     statusForm.notes = '';
-    fetchData();
+    inertiaRouter.reload({ only: ['application'] });
   } catch (error) {
     alert('Gagal memperbarui status.');
   } finally {
@@ -127,7 +111,7 @@ const submitInterview = async () => {
   try {
     await api.post(`/hr/applications/${application.value.id}/schedule-interview`, interviewForm);
     showInterviewModal.value = false;
-    fetchData();
+    inertiaRouter.reload({ only: ['application'] });
   } catch (error) {
     alert('Gagal menjadwalkan interview.');
   } finally {
@@ -144,7 +128,7 @@ const submitMentor = async () => {
         mentor_user_id: mentorForm.mentor_user_id
     });
     showMentorModal.value = false;
-    fetchData();
+    inertiaRouter.reload({ only: ['application'] });
   } catch (error: any) {
     if (error.response?.data?.errors) {
         mentorForm.errors = error.response.data.errors;
@@ -165,7 +149,7 @@ const verifyDocument = async (id: number, status: string) => {
 
     try {
         await api.post(`/onboarding-documents/${id}/verify`, { status, notes });
-        fetchData();
+        inertiaRouter.reload({ only: ['application'] });
     } catch (error) {
         alert('Gagal memverifikasi dokumen.');
     }

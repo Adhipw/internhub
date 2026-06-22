@@ -8,10 +8,12 @@ use App\Http\Middleware\HandleInertiaRequests;
 use App\Http\Middleware\RequestIdMiddleware;
 use App\Http\Middleware\RoleMiddleware;
 use App\Http\Middleware\SetLocale;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 
 return Application::configure(basePath: dirname(__DIR__))
@@ -61,8 +63,8 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->render(function (Throwable $e, $request) {
             // Let Laravel handle these natively for proper API responses
-            if ($e instanceof \Illuminate\Validation\ValidationException || 
-                $e instanceof \Illuminate\Auth\AuthenticationException) {
+            if ($e instanceof ValidationException ||
+                $e instanceof AuthenticationException) {
                 return null;
             }
 

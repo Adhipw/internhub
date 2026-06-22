@@ -20,26 +20,9 @@ import {
 } from 'lucide-vue-next';
 import { formatDate } from '@/Lib/utils';
 
-const attendances = ref<{data: any[], links: any[]}>({ data: [], links: [] });
-const loading = ref(true);
-
-const fetchAttendances = async () => {
-    loading.value = true;
-    try {
-        const response = await api.get('/mentor/attendance');
-        if (response.data?.data?.attendances) {
-            attendances.value = response.data.data.attendances;
-        }
-    } catch (error) {
-        logger.error('Failed to fetch attendances:', error);
-    } finally {
-        loading.value = false;
-    }
-};
-
-onMounted(() => {
-    fetchAttendances();
-});
+const props = defineProps<{
+    attendances: { data: any[], links: any[] };
+}>();
 
 const getStatusClass = (status: string) => {
   switch (status) {

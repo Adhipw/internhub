@@ -32,34 +32,37 @@ const user = computed(() => authStore.user || {});
 const t = (key: string) => langStore.t(key);
 const __ = (key: string) => langStore.__(key);
 
-const data = ref<SuperAdminDashboardProps>({ ...props });
 const loading = ref(false);
 const error = ref<any>(null);
 
-const stats = computed(() => data.value.stats || {});
-const systemHealth = computed(() => data.value.system_health || { status: 'healthy', uptime: '99.9%', latency: '45ms' });
+const stats = computed(() => props.stats || {});
+const systemHealth = computed(() => props.system_health || { status: 'healthy', uptime: '99.9%', latency: '45ms' });
 const globalStats = computed(() => [
     { label: t('super_admin.dashboard.total_users') || 'Total Users', value: stats.value.total_users || 0, icon: Users, color: 'text-indigo-600', bg: 'bg-indigo-500/10' },
     { label: t('super_admin.dashboard.total_admins') || 'Administrators', value: stats.value.total_admins || 0, icon: ShieldCheck, color: 'text-emerald-600', bg: 'bg-emerald-500/10' },
     { label: t('super_admin.dashboard.total_super_admins') || 'Root Access', value: stats.value.total_super_admins || 0, icon: Lock, color: 'text-rose-600', bg: 'bg-rose-500/10' },
     { label: t('super_admin.dashboard.active_sessions') || 'Live Sessions', value: stats.value.active_sessions || 0, icon: Globe, color: 'text-blue-600', bg: 'bg-blue-500/10' },
 ]);
-const recentSecurityEvents = computed(() => data.value.security_events || []);
+const recentSecurityEvents = computed(() => props.security_events || []);
 
-const fetchData = async () => {
+import { router as inertiaRouter } from '@inertiajs/vue3';
+
+const fetchData = () => {
     loading.value = true;
     error.value = null;
 
-    try {
-        const response = await api.get('/super-admin/dashboard');
-        data.value = response.data?.data || response.data || data.value;
-    } catch (err) {
-        error.value = err;
-        logger.error('Failed to refresh super admin dashboard:', err);
-    } finally {
-        loading.value = false;
-    }
+    inertiaRouter.reload({
+        only: ['stats', 'system_health', 'audit_logs', 'security_events', 'system_info'],
+        onFinish: () => {
+            loading.value = false;
+        },
+        onError: (err) => {
+            error.value = err;
+            logger.error('Failed to refresh super admin dashboard:', err);
+        }
+    });
 };
+
 
 </script>
 
@@ -229,15 +232,15 @@ const fetchData = async () => {
                         </div>
                         
                         <div class="bg-slate-900 rounded-[3rem] p-8 space-y-6 max-h-[300px] overflow-y-auto custom-scrollbar border border-white/5 shadow-inner">
-                            <template v-if="data?.audit_logs">
-                                <div v-for="log in data.audit_logs" :key="log.id" class="flex gap-4">
+                            <template v-if="props?.audit_logs">
+                                <div v-for="log in props.audit_logs" :key="log.id" class="flex gap-4">
                                     <div class="text-[10px] font-mono text-indigo-500 shrink-0">{{ new Date(log.created_at).toLocaleTimeString() }}</div>
                                     <div class="text-[10px] font-mono text-slate-400 break-all leading-relaxed">
                                         <span class="text-emerald-500">[{{ log.user?.name || 'System' }}]</span> {{ log.action }} : {{ log.description }}
                                     </div>
                                 </div>
                             </template>
-                            <div v-if="!data?.audit_logs || data.audit_logs.length === 0" class="text-center py-10 text-slate-500 text-xs italic font-mono">
+                            <div v-if="!props?.audit_logs || props.audit_logs.length === 0" class="text-center py-10 text-slate-500 text-xs italic font-mono">
                                 No activity recorded.
                             </div>
                         </div>
@@ -251,8 +254,8 @@ const fetchData = async () => {
                         </h3>
                         
                         <div class="space-y-4">
-                            <template v-if="data?.system_info">
-                                <div v-for="(value, key) in data.system_info" :key="key" class="flex items-center justify-between">
+                            <template v-if="props?.system_info">
+                                <div v-for="(value, key) in props.system_info" :key="key" class="flex items-center justify-between">
                                     <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">{{ String(key).replace(/_/g, ' ') }}</span>
                                     <span class="text-xs font-bold text-slate-700 dark:text-slate-300">{{ value }}</span>
                                 </div>

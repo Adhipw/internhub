@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Internship;
 use App\Services\AI\AiService;
 use App\Services\AI\DTOs\AiMessage;
 use App\Services\AI\Enums\AiRole;
-use App\Models\Internship;
 use Illuminate\Http\Request;
 
 class AiPublicController extends Controller
@@ -37,26 +37,26 @@ class AiPublicController extends Controller
         $internshipsJson = json_encode($internshipsList, JSON_PRETTY_PRINT);
 
         // 2. Prepare structured system prompt for Gemini
-        $systemPrompt = "You are InterHub's AI Internship Matcher. Below is the list of active internships in our database:\n" .
-            $internshipsJson . "\n\n" .
-            "Analyze the student's input (major, interests, skills) and recommend the top 3 matching internships.\n" .
-            "For each match, calculate a 'match_score' (integer between 0 and 100) and write an encouraging, brief 'explanation' (1-2 sentences in Indonesian) why it's a great match.\n\n" .
-            "You MUST respond in raw JSON format matching this exact schema:\n" .
-            "{\n" .
-            "  \"matches\": [\n" .
-            "    {\n" .
-            "      \"id\": 1,\n" .
-            "      \"title\": \"Vacancy Title\",\n" .
-            "      \"slug\": \"slug-url\",\n" .
-            "      \"company\": \"Company Name\",\n" .
-            "      \"location\": \"Location\",\n" .
-            "      \"type\": \"Type\",\n" .
-            "      \"match_score\": 90,\n" .
-            "      \"explanation\": \"...\"\n" .
-            "    }\n" .
-            "  ]\n" .
-            "}\n\n" .
-            "If no suitable matches are found, return {\"matches\": []}. Do not include markdown formatting (like ```json). Respond only with raw JSON.";
+        $systemPrompt = "You are InterHub's AI Internship Matcher. Below is the list of active internships in our database:\n".
+            $internshipsJson."\n\n".
+            "Analyze the student's input (major, interests, skills) and recommend the top 3 matching internships.\n".
+            "For each match, calculate a 'match_score' (integer between 0 and 100) and write an encouraging, brief 'explanation' (1-2 sentences in Indonesian) why it's a great match.\n\n".
+            "You MUST respond in raw JSON format matching this exact schema:\n".
+            "{\n".
+            "  \"matches\": [\n".
+            "    {\n".
+            "      \"id\": 1,\n".
+            "      \"title\": \"Vacancy Title\",\n".
+            "      \"slug\": \"slug-url\",\n".
+            "      \"company\": \"Company Name\",\n".
+            "      \"location\": \"Location\",\n".
+            "      \"type\": \"Type\",\n".
+            "      \"match_score\": 90,\n".
+            "      \"explanation\": \"...\"\n".
+            "    }\n".
+            "  ]\n".
+            "}\n\n".
+            'If no suitable matches are found, return {"matches": []}. Do not include markdown formatting (like ```json). Respond only with raw JSON.';
 
         $messages = [
             new AiMessage(AiRole::SYSTEM, $systemPrompt),
@@ -88,14 +88,14 @@ class AiPublicController extends Controller
             // High-fidelity fallback to local keyword matching engine if Gemini is unavailable
             $promptLower = strtolower($request->prompt);
             $localMatches = [];
-            
+
             foreach ($internships as $item) {
                 $titleLower = strtolower($item->title);
-                $reqsLower = strtolower(implode(' ', (array)($item->requirements ?? [])));
-                
+                $reqsLower = strtolower(implode(' ', (array) ($item->requirements ?? [])));
+
                 $score = 0;
                 $matchingKeywords = [];
-                
+
                 // Keyword mapping rules for student majors/skills
                 $keywords = [
                     'frontend' => ['frontend', 'react', 'vue', 'tailwind', 'css', 'html', 'js', 'javascript'],
@@ -103,7 +103,7 @@ class AiPublicController extends Controller
                     'ui' => ['ui', 'ux', 'design', 'figma', 'product design', 'visual', 'prototype'],
                     'marketing' => ['marketing', 'sales', 'social media', 'content', 'copywriter'],
                 ];
-                
+
                 foreach ($keywords as $key => $syns) {
                     foreach ($syns as $syn) {
                         if (str_contains($promptLower, $syn) && (str_contains($titleLower, $syn) || str_contains($reqsLower, $syn))) {
@@ -112,7 +112,7 @@ class AiPublicController extends Controller
                         }
                     }
                 }
-                
+
                 if ($score > 0 || str_contains($titleLower, substr($promptLower, 0, 5))) {
                     $finalScore = min(95, 75 + $score);
                     $localMatches[] = [
@@ -123,17 +123,17 @@ class AiPublicController extends Controller
                         'location' => $item->location,
                         'type' => $item->type,
                         'match_score' => $finalScore,
-                        'explanation' => "Keahlian Anda dalam " . (empty($matchingKeywords) ? 'Teknologi' : implode(', ', array_unique(array_slice($matchingKeywords, 0, 3)))) . " sangat cocok dengan kualifikasi yang dicari oleh " . ($item->company->name ?? 'perusahaan') . " untuk posisi " . $item->title . ".",
+                        'explanation' => 'Keahlian Anda dalam '.(empty($matchingKeywords) ? 'Teknologi' : implode(', ', array_unique(array_slice($matchingKeywords, 0, 3)))).' sangat cocok dengan kualifikasi yang dicari oleh '.($item->company->name ?? 'perusahaan').' untuk posisi '.$item->title.'.',
                     ];
                 }
             }
-            
+
             // Sort by match score descending
-            usort($localMatches, function($a, $b) {
+            usort($localMatches, function ($a, $b) {
                 return $b['match_score'] <=> $a['match_score'];
             });
             $localMatches = array_slice($localMatches, 0, 3);
-            
+
             // If no keyword matches found, return top active internships as popular options
             if (empty($localMatches) && count($internships) > 0) {
                 foreach ($internships->take(2) as $item) {
@@ -145,11 +145,11 @@ class AiPublicController extends Controller
                         'location' => $item->location,
                         'type' => $item->type,
                         'match_score' => 85,
-                        'explanation' => "Posisi " . $item->title . " di " . ($item->company->name ?? 'perusahaan') . " adalah lowongan magang populer yang sangat cocok untuk mengasah keterampilan praktis Anda.",
+                        'explanation' => 'Posisi '.$item->title.' di '.($item->company->name ?? 'perusahaan').' adalah lowongan magang populer yang sangat cocok untuk mengasah keterampilan praktis Anda.',
                     ];
                 }
             }
-            
+
             return response()->json([
                 'matches' => $localMatches,
                 'message' => 'Matched using high-fidelity local keyword engine (Gemini quota exhausted).',

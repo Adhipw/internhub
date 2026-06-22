@@ -12,10 +12,11 @@ import {
   CheckCircle,
   Loader2
 } from 'lucide-vue-next';
-import { ref, onMounted, reactive } from 'vue';
+import { ref, computed, onMounted, reactive, watch } from 'vue';
 import api from '@/Services/api';
 import { useToastStore } from '@/Stores/toast';
 import { useLangStore } from '@/Stores/lang';
+import { router as inertiaRouter } from '@inertiajs/vue3';
 const toast = useToastStore();
 const langStore = useLangStore();
 const t = (key: string) => langStore.t(key);
@@ -25,8 +26,8 @@ const props = defineProps<{
     permissions?: any[];
 }>();
 
-const roles = ref<any[]>(props.roles || []);
-const permissions = ref<any[]>(props.permissions || []);
+const roles = computed(() => props.roles || []);
+const permissions = computed(() => props.permissions || []);
 const loading = ref(false);
 const selectedRole = ref<number | null>(null);
 
@@ -34,93 +35,77 @@ const newRole = reactive({
     name: '',
     processing: false
 });
-
 const permissionForm = reactive({
     permissions: [] as string[],
     processing: false
 });
-
-const fetchData = async () => {
-    loading.value = true;
-    try {
-        const [rolesRes, permissionsRes] = await Promise.all([
-            api.get('/super-admin/roles-data'),
-            api.get('/super-admin/permissions-data')
-        ]);
-        roles.value = rolesRes.data.data;
-        permissions.value = permissionsRes.data.data;
-        if (roles.value.length > 0 && !selectedRole.value) {
-            selectRole(roles.value[0]);
-        }
-    } catch (error) {
-        logger.error('Failed to fetch roles data:', error);
-        toast.error('Gagal mengambil data role dan izin.');
-    } finally {
-        loading.value = false;
-    }
-};
-
-const hydrateInitialData = () => {
-    if (roles.value.length > 0 && !selectedRole.value) {
-        selectRole(roles.value[0]);
-    }
-};
-
 const selectRole = (role: any) => {
     selectedRole.value = role.id;
     permissionForm.permissions = role.permissions.map((p: any) => p.name);
 };
 
-const createRole = async () => {
+const createRole = () => {
     if (!newRole.name) return;
     newRole.processing = true;
-    try {
-        await api.post('/super-admin/roles-data', { name: newRole.name });
-        newRole.name = '';
-        toast.success('Role berhasil dibuat');
-        await fetchData();
-    } catch (e: any) {
-        toast.error(e.response?.data?.message || 'Gagal membuat role');
-    } finally {
-        newRole.processing = false;
-    }
+    
+    inertiaRouter.post('/super-admin/roles', { name: newRole.name }, {
+        preserveScroll: true,
+        preserveState: true,
+        onSuccess: () => {
+            newRole.name = '';
+            toast.success('Role berhasil dibuat');
+        },
+        onError: (errors: any) => {
+            toast.error(errors.name || 'Gagal membuat role');
+        },
+        onFinish: () => {
+            newRole.processing = false;
+        }
+    });
 };
 
-const syncPermissions = async () => {
+const syncPermissions = () => {
     if (!selectedRole.value) return;
     permissionForm.processing = true;
-    try {
-        await api.put(`/super-admin/roles-data/${selectedRole.value}`, {
-            name: roles.value.find(r => r.id === selectedRole.value)?.name,
-            permissions: permissionForm.permissions
-        });
-        toast.success('Izin role berhasil diperbarui');
-        await fetchData();
-    } catch (e: any) {
-        logger.error('Failed to sync permissions:', e);
-        toast.error(e.response?.data?.message || 'Gagal memperbarui izin');
-    } finally {
-        permissionForm.processing = false;
-    }
+
+    inertiaRouter.post(`/super-admin/roles/${selectedRole.value}/permissions`, {
+        permissions: permissionForm.permissions
+    }, {
+        preserveScroll: true,
+        preserveState: true,
+        onSuccess: () => {
+            toast.success('Izin role berhasil diperbarui');
+            
+            // Re-sync the permission form with the updated role data
+            const updatedRole = roles.value.find(r => r.id === selectedRole.value);
+            if (updatedRole) {
+                permissionForm.permissions = updatedRole.permissions.map((p: any) => p.name);
+            }
+        },
+        onError: (errors: any) => {
+            logger.error('Failed to sync permissions:', errors);
+            toast.error('Gagal memperbarui izin');
+        },
+        onFinish: () => {
+            permissionForm.processing = false;
+        }
+    });
 };
 
 const deleteRole = async (id: number) => {
     if (!confirm('Hapus role ini?')) return;
-    try {
-        await api.delete(`/super-admin/roles-data/${id}`);
-        toast.success('Role dihapus');
-        if (selectedRole.value === id) selectedRole.value = null;
-        await fetchData();
-    } catch (e: any) {
-        toast.error(e.response?.data?.message || 'Gagal menghapus role');
-    }
+    inertiaRouter.delete(`/api/v1/super-admin/roles-data/${id}`, {
+        onSuccess: () => {
+            toast.success('Role dihapus');
+            if (selectedRole.value === id) selectedRole.value = null;
+        },
+        onError: () => toast.error('Gagal menghapus role')
+    });
 };
 
 onMounted(() => {
-    hydrateInitialData();
-
-    if (roles.value.length === 0 && permissions.value.length === 0) {
-        fetchData();
+    if (roles.value.length > 0 && !selectedRole.value) {
+        selectRole(roles.value[0]);
     }
 });
 

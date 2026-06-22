@@ -2,10 +2,10 @@
 
 namespace App\Services;
 
-use App\Models\Internship;
 use App\Models\Company;
-use Illuminate\Support\Str;
+use App\Models\Internship;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Str;
 
 class InternshipService
 {
@@ -40,6 +40,7 @@ class InternshipService
         }
 
         $internship->update($data);
+
         return $internship;
     }
 
@@ -56,6 +57,6 @@ class InternshipService
      */
     protected function generateSlug(string $title): string
     {
-        return Str::slug($title) . '-' . Str::random(5);
+        return Str::slug($title).'-'.Str::random(5);
     }
 }

@@ -10,7 +10,7 @@ COPY frontend ./frontend
 RUN cd frontend && npm run build
 
 
-FROM php:8.4-cli-bookworm AS app
+FROM php:8.4-fpm-bookworm AS app
 
 WORKDIR /var/www/html
 
@@ -18,6 +18,7 @@ ENV COMPOSER_ALLOW_SUPERUSER=1
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
+        nginx \
         git \
         unzip \
         libcurl4-openssl-dev \
@@ -51,6 +52,7 @@ COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 COPY backend ./
 COPY --from=frontend-builder /app/backend/public/build ./public/build
 RUN rm -f public/sw.js
+COPY docker/nginx.conf /etc/nginx/sites-available/default
 COPY docker/railway-start.sh /usr/local/bin/railway-start
 
 RUN composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader \

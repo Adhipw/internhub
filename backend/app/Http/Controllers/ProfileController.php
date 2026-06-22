@@ -53,8 +53,8 @@ class ProfileController extends Controller
         $detail->education = $request->education;
         $detail->skills = $request->skills;
 
-        if ($request->has('ai_consent') && $detail->ai_consent !== (bool)$request->ai_consent) {
-            $detail->ai_consent = (bool)$request->ai_consent;
+        if ($request->has('ai_consent') && $detail->ai_consent !== (bool) $request->ai_consent) {
+            $detail->ai_consent = (bool) $request->ai_consent;
             $detail->ai_consent_updated_at = now();
         }
 

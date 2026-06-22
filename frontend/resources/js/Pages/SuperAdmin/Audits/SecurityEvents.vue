@@ -3,7 +3,7 @@ import logger from '@/Lib/logger';
 import DashboardLayout from '@/Layouts/DashboardLayout.vue';
 import Card from '@/Components/Card.vue';
 import Pagination from '@/Components/Pagination.vue';
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import { 
   Server, ShieldAlert, AlertTriangle, 
   Clock, MapPin, Monitor, Loader2
@@ -22,40 +22,34 @@ const props = defineProps<{
     };
 }>();
 
-const events = ref(props.events || {
+const events = computed(() => props.events || {
     data: [] as any[],
     links: [] as any[]
 });
 const loading = ref(false);
 
-const fetchEvents = async (page = 1) => {
-    loading.value = true;
-    try {
-        const response = await api.get('/super-admin/security-events', {
-            params: { page }
-        });
-        events.value = response.data.data;
-    } catch (error) {
-        logger.error('Failed to fetch security events:', error);
-    } finally {
-        loading.value = false;
-    }
+import { router as inertiaRouter } from '@inertiajs/vue3';
+
+const fetchEvents = (page = 1) => {
+    inertiaRouter.get('/super-admin/security-events', { page }, {
+        preserveState: true,
+        preserveScroll: true,
+        replace: true
+    });
 };
 
 const setupRealtime = () => {
     if (echo) {
         echo.private('admin-security-events')
             .listen('SecurityEventCreated', (e: any) => {
-                fetchEvents(1);
+                inertiaRouter.reload({ only: ['events'] });
                 // Optional: Show a toast or notification
             });
     }
 };
 
 onMounted(() => {
-    if (events.value.data.length === 0) {
-        fetchEvents();
-    }
+
     setupRealtime();
 });
 </script>

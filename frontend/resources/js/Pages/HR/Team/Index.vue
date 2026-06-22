@@ -12,8 +12,8 @@ import {
   TrashIcon,
   Pencil
 } from 'lucide-vue-next';
-import { ref, onMounted } from 'vue';
-import api from '@/Services/api';
+import { ref } from 'vue';
+import { useForm, router } from '@inertiajs/vue3';
 import { useToastStore } from '@/Stores/toast';
 
 interface UserProfile {
@@ -37,120 +37,76 @@ interface CompanyRoleOption {
     label: string;
 }
 
-const members = ref<TeamMember[]>([]);
-const roles = ref<CompanyRoleOption[]>([]);
-const loading = ref(true);
+const props = defineProps<{
+    members: TeamMember[];
+    roles: CompanyRoleOption[];
+}>();
 
 const showAddModal = ref(false);
 const showEditModal = ref(false);
 const selectedMember = ref<TeamMember | null>(null);
 
-const fetchMembers = async () => {
-  loading.value = true;
-  try {
-    const response = await api.get('/hr/team');
-    members.value = response.data?.data?.members || [];
-    roles.value = response.data?.data?.roles || [];
-  } catch (error) {
-    logger.error('Failed to fetch members:', error);
-  } finally {
-    loading.value = false;
-  }
-};
-
-onMounted(() => {
-  fetchMembers();
-});
-
-const addForm = ref({
+const addForm = useForm({
   email: '',
   role: 'hr',
-  processing: false,
-  errors: {
-    email: '',
-    role: '',
-  }
 });
 
-const editForm = ref({
+const editForm = useForm({
   role: '',
   is_active: true,
-  processing: false,
 });
 
 const openEditModal = (member: TeamMember) => {
   selectedMember.value = member;
-  editForm.value.role = member.role;
-  editForm.value.is_active = member.is_active === 1 || member.is_active === true;
+  editForm.role = member.role;
+  editForm.is_active = member.is_active === 1 || member.is_active === true;
   showEditModal.value = true;
 };
 
-const submitAdd = async () => {
-  addForm.value.processing = true;
-  addForm.value.errors = { email: '', role: '' };
-  try {
-    const response = await api.post('/hr/team', {
-      email: addForm.value.email,
-      role: addForm.value.role,
-    });
-    const toastStore = useToastStore();
-    toastStore.success(response.data?.message || 'Anggota tim berhasil ditambahkan.');
-    showAddModal.value = false;
-    addForm.value.email = '';
-    addForm.value.role = 'hr';
-    fetchMembers();
-  } catch (error) {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const err = error as any;
-    if (err.response?.status === 422) {
-      const serverErrors = err.response.data?.errors || {};
-      addForm.value.errors.email = serverErrors.email?.[0] || '';
-      addForm.value.errors.role = serverErrors.role?.[0] || '';
-    } else {
+const submitAdd = () => {
+  addForm.post('/hr/team', {
+    onSuccess: () => {
       const toastStore = useToastStore();
-      toastStore.error(err.response?.data?.message || 'Gagal menambahkan anggota.');
-    }
-  } finally {
-    addForm.value.processing = false;
-  }
-};
-
-const submitEdit = async () => {
-  if (!selectedMember.value) return;
-  editForm.value.processing = true;
-  try {
-    const response = await api.put(`/hr/team/${selectedMember.value.id}`, {
-      role: editForm.value.role,
-      is_active: editForm.value.is_active,
-    });
-    const toastStore = useToastStore();
-    toastStore.success(response.data?.message || 'Data anggota tim diperbarui.');
-    showEditModal.value = false;
-    fetchMembers();
-  } catch (error) {
-    logger.error('Failed to update member:', error);
-  } finally {
-    editForm.value.processing = false;
-  }
-};
-
-const deleteMember = async (id: number) => {
-  if (confirm('Apakah Anda yakin ingin menghapus anggota ini dari perusahaan?')) {
-    try {
-      const response = await api.delete(`/hr/team/${id}`);
+      toastStore.success('Anggota tim berhasil ditambahkan.');
+      showAddModal.value = false;
+      addForm.reset();
+    },
+    onError: (errors) => {
       const toastStore = useToastStore();
-      toastStore.success(response.data?.message || 'Anggota tim berhasil dihapus.');
-      fetchMembers();
-    } catch (error) {
-      const toastStore = useToastStore();
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const err = error as any;
-      if (err.response?.data?.message) {
-        toastStore.error(err.response.data.message);
-      } else {
-        toastStore.error('Gagal menghapus anggota tim.');
+      if (!errors.email && !errors.role) {
+        toastStore.error('Gagal menambahkan anggota.');
       }
     }
+  });
+};
+
+const submitEdit = () => {
+  if (!selectedMember.value) return;
+  editForm.put(`/hr/team/${selectedMember.value.id}`, {
+    onSuccess: () => {
+      const toastStore = useToastStore();
+      toastStore.success('Data anggota tim diperbarui.');
+      showEditModal.value = false;
+    },
+    onError: () => {
+      const toastStore = useToastStore();
+      toastStore.error('Gagal memperbarui anggota.');
+    }
+  });
+};
+
+const deleteMember = (id: number) => {
+  if (confirm('Apakah Anda yakin ingin menghapus anggota ini dari perusahaan?')) {
+    router.delete(`/hr/team/${id}`, {
+      onSuccess: () => {
+        const toastStore = useToastStore();
+        toastStore.success('Anggota tim berhasil dihapus.');
+      },
+      onError: () => {
+        const toastStore = useToastStore();
+        toastStore.error('Gagal menghapus anggota tim.');
+      }
+    });
   }
 };
 </script>

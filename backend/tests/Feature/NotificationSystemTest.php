@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\Application;
 use App\Models\User;
 use App\Notifications\InternshipApplied;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -35,7 +36,7 @@ class NotificationSystemTest extends TestCase
     {
         Notification::fake();
 
-        $application = \App\Models\Application::factory()->create();
+        $application = Application::factory()->create();
         $this->user->notify(new InternshipApplied($application));
 
         Notification::assertSentTo($this->user, InternshipApplied::class);

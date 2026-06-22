@@ -44,9 +44,19 @@ class AttendanceController extends Controller
             }
         }
 
+        $date = clone now();
+        $totalPresent = Attendance::whereHas('application.internship', function ($q) use ($company) {
+            $q->where('company_id', $company->id);
+        })->whereDate('check_in_at', $date->toDateString())->count();
+        $currentlyActive = count($activeUsers);
+
         return Inertia::render('HR/Attendance/Index', [
             'attendances' => $attendances,
             'liveLocations' => $liveLocations,
+            'stats' => [
+                'total_present' => $totalPresent,
+                'currently_active' => $currentlyActive,
+            ],
             'filters' => $request->only(['search']),
         ]);
     }

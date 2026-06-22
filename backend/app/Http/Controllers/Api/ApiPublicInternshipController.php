@@ -26,7 +26,7 @@ class ApiPublicInternshipController extends Controller
      */
     public function companies(Request $request)
     {
-        $companies = Company::withCount(['internships' => function($query) {
+        $companies = Company::withCount(['internships' => function ($query) {
             $query->where('status', 'published');
         }])->paginate(12);
 

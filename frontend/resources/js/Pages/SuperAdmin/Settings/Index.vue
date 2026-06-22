@@ -10,6 +10,7 @@ import {
 import { ref, onMounted, reactive } from 'vue';
 import api from '@/Services/api';
 import { useToastStore } from '@/Stores/toast';
+import { router as inertiaRouter } from '@inertiajs/vue3';
 
 const toast = useToastStore();
 
@@ -23,20 +24,6 @@ const featureFlags = ref<any[]>(props.featureFlags || []);
 const loading = ref(false);
 const processing = ref<number | null>(null);
 
-const fetchData = async () => {
-    loading.value = true;
-    try {
-        const response = await api.get('/super-admin/settings');
-        settings.value = response.data.data.settings;
-        featureFlags.value = response.data.data.feature_flags;
-    } catch (error) {
-        logger.error('Failed to fetch settings:', error);
-        toast.error('Gagal mengambil pengaturan sistem.');
-    } finally {
-        loading.value = false;
-    }
-};
-
 const updateSetting = async (setting: any) => {
     processing.value = setting.id;
     try {
@@ -44,6 +31,7 @@ const updateSetting = async (setting: any) => {
             value: setting.value
         });
         toast.success('Pengaturan berhasil diperbarui.');
+        inertiaRouter.reload({ only: ['settings'] });
     } catch (error) {
         logger.error('Failed to update setting:', error);
         toast.error('Gagal memperbarui pengaturan.');
@@ -59,18 +47,13 @@ const toggleFeature = async (flag: any) => {
     try {
         await api.post(`/super-admin/feature-flags/${flag.id}/toggle`);
         toast.success(`${flag.name} berhasil diperbarui.`);
+        inertiaRouter.reload({ only: ['featureFlags'] });
     } catch (error) {
         flag.is_enabled = originalState; // Rollback
         logger.error('Failed to toggle feature:', error);
         toast.error('Gagal mengubah fitur.');
     }
 };
-
-onMounted(() => {
-    if (settings.value.length === 0 && featureFlags.value.length === 0) {
-        fetchData();
-    }
-});
 </script>
 
 <template>

@@ -29,4 +29,3 @@ Broadcast::channel('admins.online', function ($user) {
 Broadcast::channel('user.{id}', function ($user, $id) {
     return (int) $user->id === (int) $id;
 });
-

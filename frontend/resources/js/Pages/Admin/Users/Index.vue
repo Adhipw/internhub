@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import logger from '@/Lib/logger';
-import { ref, reactive, onMounted, onUnmounted, watch } from 'vue';
+import { ref, reactive, onMounted, onUnmounted, watch, computed } from 'vue';
 import { router as inertiaRouter } from '@inertiajs/vue3';
 import DashboardLayout from '@/Layouts/DashboardLayout.vue';
 import Card from '@/Components/Card.vue';
@@ -20,9 +20,14 @@ const urlParams = new URLSearchParams(window.location.search);
 const langStore = useLangStore();
 const t = (key: string) => langStore.t(key);
 
-const loading = ref(true);
+const props = defineProps<{
+    users?: PaginatedResponse<User>;
+    filters?: any;
+}>();
+
+const loading = ref(false);
 const processing = ref(false);
-const users = ref<PaginatedResponse<User>>({
+const users = computed(() => props.users || {
   data: [],
   links: [],
   meta: {} as any
@@ -35,16 +40,12 @@ const filters = reactive({
   page: urlParams.get('page') || 1
 });
 
-const fetchUsers = async () => {
-    loading.value = true;
-    try {
-        const response = await api.get('/admin/users', { params: filters });
-        users.value = response.data.data;
-    } catch (error) {
-        logger.error('Failed to fetch users:', error);
-    } finally {
-        loading.value = false;
-    }
+const fetchUsers = () => {
+    inertiaRouter.get('/admin/users', { ...filters }, {
+        preserveState: true,
+        preserveScroll: true,
+        replace: true
+    });
 };
 
 const handleSearch = () => {
@@ -53,12 +54,7 @@ const handleSearch = () => {
 };
 
 const updateQuery = () => {
-    inertiaRouter.get('/admin/users', { ...filters }, {
-        preserveState: true,
-        preserveScroll: true,
-        replace: true,
-        onSuccess: () => fetchUsers(),
-    });
+    fetchUsers();
 };
 
 const toggleStatus = async (userId: number) => {
@@ -66,7 +62,7 @@ const toggleStatus = async (userId: number) => {
         processing.value = true;
         try {
             await api.post(`/admin/users/${userId}/toggle-status`);
-            await fetchUsers();
+            inertiaRouter.reload({ only: ['users'] });
         } catch (error) {
             alert(t('common.error_occurred'));
         } finally {
@@ -80,7 +76,7 @@ const deleteUser = async (userId: number) => {
         processing.value = true;
         try {
             await api.delete(`/admin/users/${userId}`);
-            await fetchUsers();
+            inertiaRouter.reload({ only: ['users'] });
         } catch (error) {
             alert(t('common.error_occurred'));
         } finally {
@@ -92,9 +88,10 @@ const deleteUser = async (userId: number) => {
 let refreshInterval: any = null;
 
 onMounted(() => {
-    fetchUsers();
     // Auto refresh every 60 seconds for real-time feel
-    refreshInterval = setInterval(fetchUsers, 60000);
+    refreshInterval = setInterval(() => {
+        inertiaRouter.reload({ only: ['users'] });
+    }, 60000);
 });
 
 onUnmounted(() => {

@@ -14,6 +14,7 @@ use App\Policies\LogPolicy;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -43,6 +44,11 @@ class AppServiceProvider extends ServiceProvider
         if (config('app.env') === 'local' && file_exists(storage_path('cacert.pem'))) {
             ini_set('curl.cainfo', storage_path('cacert.pem'));
             ini_set('openssl.cafile', storage_path('cacert.pem'));
+        }
+
+        // Force HTTPS in production (crucial for Railway and Google OAuth)
+        if (config('app.env') === 'production') {
+            URL::forceScheme('https');
         }
 
         // ELITE STANDARDS: N+1 Prevention

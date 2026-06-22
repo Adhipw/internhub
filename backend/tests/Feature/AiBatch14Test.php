@@ -3,6 +3,9 @@
 namespace Tests\Feature;
 
 use App\Models\User;
+use App\Models\UserDetail;
+use App\Services\AI\AiManager;
+use App\Services\AI\DTOs\AiResponse;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\RateLimiter;
 use Tests\TestCase;
@@ -21,8 +24,8 @@ class AiBatch14Test extends TestCase
         RateLimiter::clear('ai-usage:public-faq:127.0.0.1');
 
         // Global mock for AiManager to prevent external API calls & cURL/SSL certificate errors
-        $this->mock(\App\Services\AI\AiManager::class, function ($mock) {
-            $mock->shouldReceive('generate')->andReturn(new \App\Services\AI\DTOs\AiResponse(
+        $this->mock(AiManager::class, function ($mock) {
+            $mock->shouldReceive('generate')->andReturn(new AiResponse(
                 '{"matches": [], "tips": "Mocked AI response"}', []
             ));
         });
@@ -58,7 +61,7 @@ class AiBatch14Test extends TestCase
         $response->assertStatus(403);
 
         // With consent
-        \App\Models\UserDetail::factory()->create([
+        UserDetail::factory()->create([
             'user_id' => $user->id,
             'ai_consent' => true,
         ]);
@@ -85,7 +88,7 @@ class AiBatch14Test extends TestCase
         $this->withoutExceptionHandling();
         $user = User::factory()->create(['is_active' => true, 'email_verified_at' => now()]);
 
-        \App\Models\UserDetail::factory()->create([
+        UserDetail::factory()->create([
             'user_id' => $user->id,
             'ai_consent' => true,
         ]);

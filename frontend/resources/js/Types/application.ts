@@ -21,6 +21,7 @@ export interface Application {
     portfolio_snapshot?: string;
     onboarding_documents?: ApplicationDocument[];
     interviewer_id?: number;
+    score?: any;
 }
 
 export interface ApplicationTimelineEvent {

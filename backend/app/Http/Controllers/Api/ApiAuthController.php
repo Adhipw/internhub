@@ -17,6 +17,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use Laravel\Sanctum\TransientToken;
 
 class ApiAuthController extends ApiBaseController
 {
@@ -97,12 +98,12 @@ class ApiAuthController extends ApiBaseController
     {
         /** @var User $user */
         $user = $request->user();
-        
+
         if ($user) {
             $token = $user->currentAccessToken();
-            
+
             // Delete personal access token if it exists and is not a transient token (session-based)
-            if ($token && !($token instanceof \Laravel\Sanctum\TransientToken)) {
+            if ($token && ! ($token instanceof TransientToken)) {
                 $token->delete();
             }
 

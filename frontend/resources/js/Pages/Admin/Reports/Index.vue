@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import logger from '@/Lib/logger';
-import { ref, onMounted, onUnmounted } from 'vue';
+import { ref, onMounted, onUnmounted, computed } from 'vue';
 import { Head } from '@/Components';
 
 import DashboardLayout from '@/Layouts/DashboardLayout.vue';
@@ -19,24 +19,20 @@ import {
 import api from '@/Services/api';
 import { router as inertiaRouter } from '@inertiajs/vue3';
 
-const loading = ref(true);
-const applicationStats = ref<any[]>([]);
-const userGrowth = ref<any[]>([]);
-const companyStats = ref<any[]>([]);
+const props = defineProps<{
+    applicationStats?: any[];
+    userGrowth?: any[];
+    companyStats?: any[];
+}>();
 
-const fetchReports = async () => {
-    loading.value = true;
-    try {
-        const response = await api.get('/admin/reports');
-        const data = response.data.data;
-        applicationStats.value = data.applicationStats || [];
-        userGrowth.value = data.userGrowth || [];
-        companyStats.value = data.companyStats || [];
-    } catch (error) {
-        logger.error('Failed to fetch reports:', error);
-    } finally {
-        loading.value = false;
-    }
+const loading = ref(false);
+
+const applicationStats = computed(() => props.applicationStats || []);
+const userGrowth = computed(() => props.userGrowth || []);
+const companyStats = computed(() => props.companyStats || []);
+
+const fetchReports = () => {
+    inertiaRouter.reload({ only: ['applicationStats', 'userGrowth', 'companyStats'] });
 };
 
 const downloadPDF = () => {
@@ -50,7 +46,6 @@ const goToMasterData = () => {
 let refreshInterval: any = null;
 
 onMounted(() => {
-    fetchReports();
     // Refresh analytics every 2 minutes
     refreshInterval = setInterval(fetchReports, 120000);
 });

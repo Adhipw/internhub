@@ -7,36 +7,40 @@ import Pagination from '@/Components/Pagination.vue';
 import Card from '@/Components/Card.vue';
 import EmptyState from '@/Components/EmptyState.vue';
 import { ShieldCheck, Activity, Terminal, Loader2 } from 'lucide-vue-next';
-import { ref, onMounted } from 'vue';
+import { ref, computed } from 'vue';
 import api from '@/Services/api';
 import { useLangStore } from '@/Stores/lang';
 
 const langStore = useLangStore();
 const t = (key: string) => langStore.t(key);
 
-const logs = ref({
+import { router as inertiaRouter } from '@inertiajs/vue3';
+
+const props = defineProps<{
+    logs?: {
+        data: any[];
+        links: any[];
+    };
+    filters?: any;
+}>();
+
+const logs = computed(() => props.logs || {
     data: [] as any[],
     links: [] as any[]
 });
-const loading = ref(true);
-const filters = ref<any>({});
+const loading = ref(false);
+const filters = ref<any>(props.filters || {});
 
-const fetchLogs = async (page = 1, extraFilters = {}) => {
-    loading.value = true;
-    try {
-        const response = await api.get('/admin/audit-logs', {
-            params: {
-                page,
-                ...filters.value,
-                ...extraFilters
-            }
-        });
-        logs.value = response.data.data;
-    } catch (error) {
-        logger.error('Failed to fetch activity logs:', error);
-    } finally {
-        loading.value = false;
-    }
+const fetchLogs = (page = 1, extraFilters = {}) => {
+    inertiaRouter.get('/super-admin/activity-logs', {
+        page,
+        ...filters.value,
+        ...extraFilters
+    }, {
+        preserveState: true,
+        preserveScroll: true,
+        replace: true
+    });
 };
 
 const handleFilter = (newFilters: any) => {
@@ -48,10 +52,6 @@ const handleReset = () => {
     filters.value = {};
     fetchLogs(1);
 };
-
-onMounted(() => {
-    fetchLogs();
-});
 </script>
 
 <template>

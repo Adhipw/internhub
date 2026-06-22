@@ -7,6 +7,7 @@ use App\Enums\UserRole;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisterRequest;
+use App\Models\User;
 use App\Notifications\Auth\EmailVerificationOtpNotification;
 use App\Notifications\Auth\SuspiciousLoginNotification;
 use App\Services\Auth\EmailVerificationOtpService;
@@ -99,6 +100,7 @@ class AuthController extends Controller
     ) {
         $request->authenticate();
 
+        /** @var User $user */
         $user = Auth::user();
 
         if ($user->banned_at) {

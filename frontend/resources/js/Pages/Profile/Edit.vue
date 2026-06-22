@@ -12,12 +12,15 @@ import {
 import FileUpload from '@/Components/FileUpload.vue';
 import Breadcrumbs from '@/Components/Breadcrumbs.vue';
 
+const props = defineProps<{
+    userDetail?: any;
+}>();
+
 const authStore = useAuthStore();
 const toast = useToastStore();
 const activeTab = ref('biodata');
-const loading = ref(true);
 const processing = ref(false);
-const userDetail = ref<any>({});
+const userDetail = computed(() => props.userDetail || {});
 const errors = reactive<any>({});
 const showCurrentPassword = ref(false);
 const showNewPassword = ref(false);
@@ -61,29 +64,16 @@ const form = reactive({
     new_password_confirmation: '',
 });
 
-const fetchData = async () => {
-    loading.value = true;
-    try {
-        const response = await api.get('/profile');
-        const data = response.data.data;
-        userDetail.value = data.userDetail;
-        
         // Sync form with fetched data
-        form.bio = data.userDetail.bio || '';
-        form.phone_number = data.user.phone_number || '';
-        form.address = data.userDetail.address || '';
-        form.education = data.userDetail.education || [];
-        form.skills = data.userDetail.skills || [];
-        form.ai_consent = !!data.userDetail.ai_consent;
-    } catch (err) {
-        logger.error('Failed to fetch profile:', err);
-    } finally {
-        loading.value = false;
-    }
-};
+        form.bio = userDetail.value?.bio || '';
+        form.phone_number = authStore.user?.phone_number || '';
+        form.address = userDetail.value?.address || '';
+        form.education = userDetail.value?.education || [];
+        form.skills = userDetail.value?.skills || [];
+        form.ai_consent = !!userDetail.value?.ai_consent;
 
 onMounted(() => {
-    fetchData();
+    // Initial sync
 });
 
 const addEducation = () => {
@@ -132,7 +122,8 @@ const submit = async () => {
             headers: { 'Content-Type': 'multipart/form-data' }
         });
         toast.success('Profil berhasil diperbarui!');
-        fetchData();
+        // Page reload to get new props
+        window.location.reload();
     } catch (error: any) {
         if (error.response?.data?.errors) {
             Object.assign(errors, error.response.data.errors);
@@ -145,11 +136,7 @@ const submit = async () => {
 
 <template>
     <DashboardLayout>
-        <div v-if="loading" class="flex justify-center py-20">
-            <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
-        </div>
-
-        <div v-else class="max-w-5xl mx-auto space-y-10 pb-20">
+        <div class="max-w-5xl mx-auto space-y-10 pb-20">
             <!-- Breadcrumbs -->
             <Breadcrumbs :items="[
                 { label: 'Profil Saya' }

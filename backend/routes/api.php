@@ -3,9 +3,8 @@
 /* [NEW] [api.php](file:///c:/Users/ASUS/Downloads/rollback_backups/backend/routes/api.php) */
 
 use App\Http\Controllers\AiHrController;
-use App\Http\Controllers\AiUserController;
 use App\Http\Controllers\AiPublicController;
-use App\Http\Controllers\NearbyController;
+use App\Http\Controllers\AiUserController;
 use App\Http\Controllers\Api\ApiAdminAuditController;
 use App\Http\Controllers\Api\ApiAdminCompanyController;
 use App\Http\Controllers\Api\ApiAdminDashboardController;
@@ -25,8 +24,8 @@ use App\Http\Controllers\Api\ApiHrApplicationController;
 use App\Http\Controllers\Api\ApiHrAttendanceController;
 use App\Http\Controllers\Api\ApiHrDashboardController;
 use App\Http\Controllers\Api\ApiHrInternshipController;
-use App\Http\Controllers\Api\ApiHrMemberController;
 use App\Http\Controllers\Api\ApiImportController;
+use App\Http\Controllers\Api\ApiMasterDataController;
 use App\Http\Controllers\Api\ApiMenteeController;
 use App\Http\Controllers\Api\ApiMentorDashboardController;
 use App\Http\Controllers\Api\ApiMentorEvaluationController;
@@ -40,6 +39,9 @@ use App\Http\Controllers\Api\ApiSuperAdminDashboardController;
 use App\Http\Controllers\Api\ApiSuperAdminSettingController;
 use App\Http\Controllers\Api\ApiSuperAdminUserController;
 use App\Http\Controllers\Api\ApiUserDashboardController;
+use App\Http\Controllers\Api\ApplicationMessageController;
+use App\Http\Controllers\Mentor\AttendanceController;
+use App\Http\Controllers\NearbyController;
 use App\Http\Middleware\CheckBanned;
 use Illuminate\Support\Facades\Route;
 
@@ -67,8 +69,8 @@ Route::prefix('v1')->group(function () {
     Route::post('/auth/password/reset', [ApiAuthController::class, 'resetPassword'])->middleware('throttle:5,1');
 
     // Master Data
-    Route::get('/industries', [\App\Http\Controllers\Api\ApiMasterDataController::class, 'industries']);
-    Route::get('/locations', [\App\Http\Controllers\Api\ApiMasterDataController::class, 'locations']);
+    Route::get('/industries', [ApiMasterDataController::class, 'industries']);
+    Route::get('/locations', [ApiMasterDataController::class, 'locations']);
 });
 
 // Protected Routes
@@ -95,8 +97,8 @@ Route::middleware(['auth:sanctum', CheckBanned::class])->prefix('v1')->group(fun
     Route::get('/applications/{application}', [ApiApplicationController::class, 'show']);
     Route::post('/internships/{internship:slug}/apply', [ApiApplicationController::class, 'store']);
     Route::post('/applications/{application}/withdraw', [ApiApplicationController::class, 'withdraw']);
-    Route::get('/applications/{application}/messages', [\App\Http\Controllers\Api\ApplicationMessageController::class, 'index']);
-    Route::post('/applications/{application}/messages', [\App\Http\Controllers\Api\ApplicationMessageController::class, 'store']);
+    Route::get('/applications/{application}/messages', [ApplicationMessageController::class, 'index']);
+    Route::post('/applications/{application}/messages', [ApplicationMessageController::class, 'store']);
     Route::get('/saved-internships', [ApiSavedInternshipController::class, 'index']);
     Route::post('/internships/{internship:slug}/toggle-save', [ApiSavedInternshipController::class, 'toggle']);
 
@@ -137,9 +139,9 @@ Route::middleware(['auth:sanctum', CheckBanned::class])->prefix('v1')->group(fun
         Route::post('/mentees/{application}/tasks', [ApiMenteeController::class, 'storeTask']);
         Route::patch('/tasks/{task}/status', [ApiMenteeController::class, 'updateTaskStatus']);
         Route::get('/tasks', [ApiMenteeController::class, 'allTasks']);
-        
+
         // Attendance Monitoring for Mentees
-        Route::get('/attendance', [\App\Http\Controllers\Mentor\AttendanceController::class, 'index']);
+        Route::get('/attendance', [AttendanceController::class, 'index']);
     });
 
     Route::middleware(['role:mentor|hr|admin'])->get('/dashboard/mentor', [ApiMentorDashboardController::class, 'index']);
@@ -230,12 +232,6 @@ Route::middleware(['auth:sanctum', CheckBanned::class])->prefix('v1')->group(fun
         Route::get('/internships/{internship}', [ApiHrInternshipController::class, 'show']);
         Route::put('/internships/{internship}', [ApiHrInternshipController::class, 'update']);
         Route::delete('/internships/{internship}', [ApiHrInternshipController::class, 'destroy']);
-
-        // Team Management
-        Route::get('/team', [ApiHrMemberController::class, 'index']);
-        Route::post('/team', [ApiHrMemberController::class, 'store']);
-        Route::put('/team/{member}', [ApiHrMemberController::class, 'update']);
-        Route::delete('/team/{member}', [ApiHrMemberController::class, 'destroy']);
 
         // Application Management
         Route::get('/applications', [ApiHrApplicationController::class, 'index']);

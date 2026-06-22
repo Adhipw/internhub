@@ -8,22 +8,31 @@ use App\Models\SocialAccount;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Laravel\Socialite\Facades\Socialite;
+use Laravel\Socialite\Two\GoogleProvider;
 
 class SocialiteController extends Controller
 {
     public function redirect()
     {
-        return Socialite::driver('google')->redirect();
+        /** @var GoogleProvider $driver */
+        $driver = Socialite::driver('google');
+
+        return $driver->stateless()->redirect();
     }
 
     public function callback()
     {
         try {
-            $socialUser = Socialite::driver('google')->user();
+            /** @var GoogleProvider $driver */
+            $driver = Socialite::driver('google');
+            $socialUser = $driver->stateless()->user();
         } catch (\Exception $e) {
-            return redirect()->route('login')->with('error', 'Gagal masuk dengan Google.');
+            Log::error('Google OAuth Error: '.$e->getMessage().' | Trace: '.$e->getTraceAsString());
+
+            return redirect()->route('login')->with('error', 'Gagal masuk dengan Google. '.$e->getMessage());
         }
 
         $user = DB::transaction(function () use ($socialUser) {

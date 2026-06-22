@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import logger from '@/Lib/logger';
 import { Link, router as inertiaRouter } from '@inertiajs/vue3';
-import { ref, reactive, onMounted, watch } from 'vue';
+import { ref, reactive, onMounted, watch, computed } from 'vue';
 import DashboardLayout from '@/Layouts/DashboardLayout.vue';
 import Card from '@/Components/Card.vue';
 import Pagination from '@/Components/Pagination.vue';
@@ -17,30 +17,31 @@ const urlParams = new URLSearchParams(window.location.search);
 const langStore = useLangStore();
 const t = (key: string) => langStore.t(key);
 
-const loading = ref(true);
+const props = defineProps<{
+    companies?: { data: any[]; links: any[]; meta: any };
+    filters?: any;
+}>();
+
+const loading = ref(false);
 const processing = ref(false);
-const companies = ref<{ data: any[]; links: any[]; meta: any }>({
+const companies = computed(() => props.companies || {
   data: [],
   links: [],
   meta: {}
 });
 
 const filters = reactive({
-  search: urlParams.get('search') || '',
-  status: urlParams.get('status') || '',
+  search: props.filters?.search || urlParams.get('search') || '',
+  status: props.filters?.status || urlParams.get('status') || '',
   page: urlParams.get('page') || 1
 });
 
-const fetchCompanies = async () => {
-    loading.value = true;
-    try {
-        const response = await api.get('/admin/companies', { params: filters });
-        companies.value = response.data.data;
-    } catch (error) {
-        logger.error('Failed to fetch companies:', error);
-    } finally {
-        loading.value = false;
-    }
+const fetchCompanies = () => {
+    inertiaRouter.get('/admin/companies', { ...filters }, {
+        preserveState: true,
+        preserveScroll: true,
+        replace: true
+    });
 };
 
 const handleSearch = () => {
@@ -49,12 +50,7 @@ const handleSearch = () => {
 };
 
 const updateQuery = () => {
-    inertiaRouter.get('/admin/companies', { ...filters }, {
-        preserveState: true,
-        preserveScroll: true,
-        replace: true,
-        onSuccess: () => fetchCompanies(),
-    });
+    fetchCompanies();
 };
 
 // Inline Confirmation States
@@ -79,7 +75,7 @@ const handleConfirmedAction = async (companyId: number) => {
             await api.post(`/admin/companies/${companyId}/unverify`);
         }
         confirmingId.value = null;
-        await fetchCompanies();
+        inertiaRouter.reload({ only: ['companies'] });
     } catch (error) {
         alert(t('common.error_occurred'));
     } finally {
@@ -87,9 +83,7 @@ const handleConfirmedAction = async (companyId: number) => {
     }
 };
 
-onMounted(() => {
-    fetchCompanies();
-});
+// Removed onMounted fetch
 </script>
 
 <template>

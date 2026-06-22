@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\Admin\AuditLogController;
+use App\Http\Controllers\Admin\CompanyController;
 use App\Http\Controllers\Admin\CompanyController as AdminCompanyController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\ExternalIntegrationController;
@@ -36,7 +37,6 @@ use App\Http\Controllers\Mentor\EvaluationController;
 use App\Http\Controllers\Mentor\MenteeController;
 use App\Http\Controllers\Mentor\SessionController;
 use App\Http\Controllers\Mentor\TaskController;
-use App\Http\Controllers\NearbyController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PipelineController;
 use App\Http\Controllers\ProfileController;
@@ -47,6 +47,7 @@ use App\Http\Controllers\SuperAdmin\IntegrationController;
 use App\Http\Controllers\SuperAdmin\LogController;
 use App\Http\Controllers\SuperAdmin\RolePermissionController;
 use App\Http\Controllers\SuperAdmin\SettingController;
+use App\Models\Application;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -93,7 +94,7 @@ Route::get('/', [InternshipController::class, 'welcome'])->name('welcome');
 Route::match(['get', 'post'], '/language/{locale}', function ($locale) {
     if (in_array($locale, ['en', 'id'])) {
         session(['locale' => $locale]);
-        \Illuminate\Support\Facades\App::setLocale($locale);
+        Illuminate\Support\Facades\App::setLocale($locale);
     }
 
     return back();
@@ -128,8 +129,7 @@ Route::get('/companies/{company:slug}', [CompanyPublicController::class, 'show']
 Route::post('/ai/public/faq', [AiPublicController::class, 'faq'])->name('ai.public.faq');
 Route::post('/ai/public/finder', [AiPublicController::class, 'internshipFinder'])->name('ai.public.finder');
 
-Route::get('/auth/callback', fn () => \Inertia\Inertia::render('Auth/AuthCallback'))->name('auth.callback');
-
+Route::get('/auth/callback', fn () => Inertia::render('Auth/AuthCallback'))->name('auth.callback');
 
 // Partner Webhooks
 Route::post('/api/webhooks/partner/{uuid}', [PartnerWebhookController::class, 'handle'])->name('webhooks.partner');
@@ -137,7 +137,7 @@ Route::post('/api/webhooks/partner/{uuid}', [PartnerWebhookController::class, 'h
 Route::middleware('guest')->group(function () {
     Route::get('register', [AuthController::class, 'showRegister'])->name('register');
     Route::post('register', [AuthController::class, 'register']);
-    Route::get('verify-otp', fn () => \Inertia\Inertia::render('Auth/VerifyOtp', [
+    Route::get('verify-otp', fn () => Inertia::render('Auth/VerifyOtp', [
         'email' => request('email'),
     ]))->name('verify.otp');
 
@@ -152,7 +152,6 @@ Route::middleware('guest')->group(function () {
     Route::get('auth/google/redirect', [SocialiteController::class, 'redirect'])->name('google.redirect');
     Route::get('auth/google/callback', [SocialiteController::class, 'callback'])->name('google.callback');
 });
-
 
 Route::middleware('auth')->group(function () {
     Route::get('verify-email', [VerifyEmailController::class, 'show'])->name('verification.notice');
@@ -179,17 +178,17 @@ Route::middleware('auth')->group(function () {
 
         Route::get('/my-applications', [ApplicationController::class, 'index'])->name('applications.index');
         Route::get('/my-applications/{application}', [ApplicationController::class, 'show'])->name('applications.show');
-        Route::get('/my-applications/{application}/onboarding', function (\App\Models\Application $application) {
+        Route::get('/my-applications/{application}/onboarding', function (Application $application) {
             abort_unless($application->user_id === auth()->id(), 403);
 
-            return \Inertia\Inertia::render('Applications/Onboarding', [
+            return Inertia::render('Applications/Onboarding', [
                 'application' => $application->load(['internship.company', 'onboardingDocuments.verifier']),
                 'documents' => $application->onboardingDocuments()->with('verifier')->get(),
             ]);
         })->name('applications.onboarding');
         Route::redirect('/applications', '/my-applications');
-        Route::get('/applications/{application}', fn (\App\Models\Application $application) => redirect()->route('applications.show', $application));
-        Route::get('/applications/{application}/onboarding', fn (\App\Models\Application $application) => redirect()->route('applications.onboarding', $application));
+        Route::get('/applications/{application}', fn (Application $application) => redirect()->route('applications.show', $application));
+        Route::get('/applications/{application}/onboarding', fn (Application $application) => redirect()->route('applications.onboarding', $application));
         Route::post('/my-applications/{application}/withdraw', [ApplicationController::class, 'withdraw'])->name('applications.withdraw');
         Route::post('/internships/{internship:slug}/apply', [ApplicationController::class, 'store'])->name('internships.apply');
 
@@ -285,12 +284,12 @@ Route::middleware('auth')->group(function () {
 
             // Attendance
             Route::get('/attendance', [App\Http\Controllers\Mentor\AttendanceController::class, 'index'])->name('attendance.index');
-            Route::get('/tasks', fn () => \Inertia\Inertia::render('Mentor/Tasks/Index'))->name('tasks.index');
+            Route::get('/tasks', [TaskController::class, 'index'])->name('tasks.index');
         });
 
         // Admin Routes
         Route::prefix('admin')->name('admin.')->middleware(['role:admin'])->group(function () {
-            Route::get('/dashboard', [App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard');
+            Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
 
             // User Moderation
             Route::get('/users', [UserController::class, 'index'])->name('users.index');
@@ -299,8 +298,8 @@ Route::middleware('auth')->group(function () {
 
             // Company Moderation
             Route::get('/companies', [AdminCompanyController::class, 'index'])->name('companies.index');
-            Route::post('/companies/{company}/verify', [App\Http\Controllers\Admin\CompanyController::class, 'verify'])->name('companies.verify');
-            Route::post('/companies/{company}/unverify', [App\Http\Controllers\Admin\CompanyController::class, 'unverify'])->name('companies.unverify');
+            Route::post('/companies/{company}/verify', [CompanyController::class, 'verify'])->name('companies.verify');
+            Route::post('/companies/{company}/unverify', [CompanyController::class, 'unverify'])->name('companies.unverify');
 
             // Internship Moderation
             Route::get('/internships', [App\Http\Controllers\Admin\InternshipController::class, 'index'])->name('internships.index');

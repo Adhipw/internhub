@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import logger from '@/Lib/logger';
-import { ref, onMounted, watch } from 'vue';
+import { ref, onMounted, watch, computed } from 'vue';
+import { router as inertiaRouter } from '@inertiajs/vue3';
 import api from '@/Services/api';
 import DashboardLayout from '@/Layouts/DashboardLayout.vue';
 import Card from '@/Components/Card.vue';
@@ -17,45 +18,38 @@ import { useLangStore } from '@/Stores/lang';
 import type { Attendance, LiveLocation } from '@/Types/attendance';
 import type { PaginationLink } from '@/Types/user';
 
+const props = defineProps<{
+    attendances?: { data: Attendance[], links: PaginationLink[] };
+    liveLocations?: Record<number, LiveLocation>;
+    stats?: { total_present: number, currently_active: number };
+    filters?: any;
+}>();
+
 const langStore = useLangStore();
 const t = (key: string) => langStore.t(key);
 
-const attendances = ref<{ data: Attendance[], links: PaginationLink[] }>({ data: [], links: [] });
-const liveLocations = ref<Record<number, LiveLocation>>({});
-const stats = ref({ total_present: 0, currently_active: 0 });
-const loading = ref(true);
+const attendances = computed(() => props.attendances || { data: [], links: [] });
+const liveLocations = computed(() => props.liveLocations || {});
+const stats = computed(() => props.stats || { total_present: 0, currently_active: 0 });
+const loading = ref(false);
 
 const filters = ref({
-    date: format(new Date(), 'yyyy-MM-dd'),
-    search: ''
+    date: props.filters?.date || format(new Date(), 'yyyy-MM-dd'),
+    search: props.filters?.search || ''
 });
 
-const fetchData = async (page = 1) => {
-    loading.value = true;
-    try {
-        const [attRes, statsRes] = await Promise.all([
-            api.get('/hr/attendance', { params: { ...filters.value, page } }),
-            api.get('/hr/attendance/stats')
-        ]);
-        
-        attendances.value = attRes.data.data.attendances;
-        liveLocations.value = attRes.data.data.liveLocations;
-        stats.value = statsRes.data.data;
-    } catch (error) {
-        logger.error('Failed to fetch HR attendance data:', error);
-    } finally {
-        loading.value = false;
-    }
+const fetchData = (page = 1) => {
+    inertiaRouter.get('/hr/attendance', { ...filters.value, page }, {
+        preserveState: true,
+        preserveScroll: true,
+        replace: true
+    });
 };
 
 watch(() => filters.value.date, () => fetchData());
 const handleSearch = () => fetchData();
 
 const getLiveLoc = (userId: number) => liveLocations.value[userId] || null;
-
-onMounted(() => {
-    fetchData();
-});
 </script>
 
 <template>

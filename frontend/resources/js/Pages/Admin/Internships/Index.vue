@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import logger from '@/Lib/logger';
 import { Link } from '@inertiajs/vue3';
-import { ref, onMounted, watch } from 'vue';
+import { ref, onMounted, watch, computed } from 'vue';
 import { Head } from '@/Components';
 import DashboardLayout from '@/Layouts/DashboardLayout.vue';
 import Card from '@/Components/Card.vue';
@@ -18,19 +18,26 @@ import api from '@/Services/api';
 import type { Internship } from '@/Types/internship';
 import type { PaginatedResponse } from '@/Types/user';
 
+import { router as inertiaRouter } from '@inertiajs/vue3';
+
+const props = defineProps<{
+    internships?: PaginatedResponse<Internship>;
+    filters?: { search?: string };
+}>();
+
 const urlParams = new URLSearchParams(window.location.search);
 const langStore = useLangStore();
 const t = (key: string) => langStore.t(key);
 
-const loading = ref(true);
+const loading = ref(false);
 const processing = ref(false);
-const internships = ref<PaginatedResponse<Internship>>({
+const internships = computed(() => props.internships || {
   data: [],
   links: [],
   meta: {} as any
 });
 
-const search = ref(urlParams.get('search') || '');
+const search = ref(props.filters?.search || '');
 const currentPage = ref(urlParams.get('page') || 1);
 
 // Auto-Spam & Content Flagging System
@@ -107,7 +114,7 @@ const updateStatusDirectly = async (internshipId: number, status: string) => {
     processing.value = true;
     try {
         await api.patch(`/admin/internships/${internshipId}/status`, { status });
-        await fetchInternships();
+        inertiaRouter.reload({ only: ['internships'] });
         // If the open drawer matches the updated item, refresh its status in real time
         if (selectedJobForReview.value && selectedJobForReview.value.id === internshipId) {
             selectedJobForReview.value.status = status as any;
@@ -119,21 +126,15 @@ const updateStatusDirectly = async (internshipId: number, status: string) => {
     }
 };
 
-const fetchInternships = async () => {
-    loading.value = true;
-    try {
-        const response = await api.get('/admin/internships', { 
-            params: { 
-                search: search.value,
-                page: currentPage.value
-            } 
-        });
-        internships.value = response.data.data;
-    } catch (error) {
-        logger.error('Failed to fetch internships:', error);
-    } finally {
-        loading.value = false;
-    }
+const fetchInternships = () => {
+    inertiaRouter.get('/admin/internships', { 
+        search: search.value,
+        page: currentPage.value
+    }, {
+        preserveState: true,
+        preserveScroll: true,
+        replace: true
+    });
 };
 
 const updateStatus = async (internshipId: number, status: string) => {
@@ -141,7 +142,7 @@ const updateStatus = async (internshipId: number, status: string) => {
         processing.value = true;
         try {
             await api.patch(`/admin/internships/${internshipId}/status`, { status });
-            await fetchInternships();
+            inertiaRouter.reload({ only: ['internships'] });
         } catch (error) {
             alert(t('common.error_occurred'));
         } finally {
@@ -152,7 +153,6 @@ const updateStatus = async (internshipId: number, status: string) => {
 
 onMounted(() => {
     langStore.fetchTranslations();
-    fetchInternships();
 });
 </script>
 

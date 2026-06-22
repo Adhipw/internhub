@@ -33,3 +33,6 @@ Schedule::call(function () {
         ]);
     }
 })->daily()->name('auto-withdraw-stale-applications');
+
+// Scrape real internships every 12 hours
+Schedule::command('internships:scrape')->twiceDaily(1, 13)->name('scrape-real-internships');

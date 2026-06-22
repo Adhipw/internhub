@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import logger from '@/Lib/logger';
-import { Link } from '@inertiajs/vue3';
-import { ref, onMounted } from 'vue';
-import api from '@/Services/api';
+import { Link, router } from '@inertiajs/vue3';
 import DashboardLayout from '@/Layouts/DashboardLayout.vue';
 import Card from '@/Components/Card.vue';
 import { 
@@ -10,24 +8,9 @@ import {
 } from 'lucide-vue-next';
 import { formatDate } from '@/Lib/utils';
 
-const tasks = ref<any[]>([]);
-const loading = ref(true);
-
-const fetchData = async () => {
-    loading.value = true;
-    try {
-        const response = await api.get('/mentor/tasks');
-        tasks.value = response.data.data;
-    } catch (error) {
-        logger.error('Failed to fetch tasks:', error);
-    } finally {
-        loading.value = false;
-    }
-};
-
-onMounted(() => {
-    fetchData();
-});
+const props = defineProps<{
+    tasks: any;
+}>();
 
 const getPriorityLabel = (priority: number) => {
     switch(priority) {
@@ -37,24 +20,15 @@ const getPriorityLabel = (priority: number) => {
     }
 };
 
-const updateTaskStatus = async (taskId: number, currentStatus: string) => {
-    try {
-        const newStatus = currentStatus === 'completed' ? 'in_progress' : 'completed';
-        await api.patch(`/mentor/tasks/${taskId}/status`, { status: newStatus });
-        fetchData();
-    } catch (error) {
-        alert('Gagal memperbarui status tugas.');
-    }
+const updateTaskStatus = (taskId: number, currentStatus: string) => {
+    const newStatus = currentStatus === 'completed' ? 'in_progress' : 'completed';
+    router.patch(`/mentor/tasks/${taskId}/status`, { status: newStatus }, { preserveScroll: true });
 };
 </script>
 
 <template>
   <DashboardLayout>
-    <div v-if="loading" class="flex justify-center py-20">
-        <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
-    </div>
-
-    <div v-else class="space-y-10">
+    <div class="space-y-10">
       <!-- Header -->
       <div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
         <div>
@@ -76,7 +50,7 @@ const updateTaskStatus = async (taskId: number, currentStatus: string) => {
 
       <!-- Tasks Grid -->
       <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
-          <Card v-for="(task, index) in tasks" :key="task.id" class="p-6 border-none shadow-sm flex flex-col group hover:-translate-y-1 transition-transform">
+          <Card v-for="(task, index) in tasks.data" :key="task.id" class="p-6 border-none shadow-sm flex flex-col group hover:-translate-y-1 transition-transform">
             <div class="flex items-start justify-between mb-4">
                 <button 
                     @click="updateTaskStatus(task.id, task.status)"
@@ -97,8 +71,8 @@ const updateTaskStatus = async (taskId: number, currentStatus: string) => {
                 
                 <div class="p-3 bg-slate-50 dark:bg-slate-900/50 rounded-xl mb-4 border border-slate-100 dark:border-slate-800">
                     <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Ditugaskan Kepada</p>
-                    <p class="text-xs font-bold text-slate-900 dark:text-white">{{ task.mentee }}</p>
-                    <p class="text-[10px] text-slate-500 mt-0.5">{{ task.internship }}</p>
+                    <p class="text-xs font-bold text-slate-900 dark:text-white">{{ task.application?.user?.name }}</p>
+                    <p class="text-[10px] text-slate-500 mt-0.5">{{ task.application?.internship?.title }}</p>
                 </div>
             </div>
 
@@ -113,7 +87,7 @@ const updateTaskStatus = async (taskId: number, currentStatus: string) => {
             </div>
           </Card>
 
-          <div v-if="tasks.length === 0" class="col-span-full py-24 text-center bg-white dark:bg-slate-800 rounded-[3rem] border border-slate-100 dark:border-slate-700 shadow-sm">
+          <div v-if="tasks.data.length === 0" class="col-span-full py-24 text-center bg-white dark:bg-slate-800 rounded-[3rem] border border-slate-100 dark:border-slate-700 shadow-sm">
             <div class="w-20 h-20 bg-slate-50 dark:bg-slate-900/50 rounded-3xl shadow-inner flex items-center justify-center mx-auto mb-6">
                 <Target class="w-10 h-10 text-slate-300" />
             </div>

@@ -16,13 +16,14 @@ class ApiHrMemberController extends ApiBaseController
     {
         $user = $request->user();
         $membership = $user->companyMemberships()->where('is_active', true)->first();
+
         return $membership ? $membership->company_id : null;
     }
 
     public function index(Request $request): JsonResponse
     {
         $companyId = $this->getCompanyId($request);
-        if (!$companyId) {
+        if (! $companyId) {
             return $this->sendError('You are not associated with any active company.', [], 403);
         }
 
@@ -44,7 +45,7 @@ class ApiHrMemberController extends ApiBaseController
     public function store(Request $request): JsonResponse
     {
         $companyId = $this->getCompanyId($request);
-        if (!$companyId) {
+        if (! $companyId) {
             return $this->sendError('You are not associated with any active company.', [], 403);
         }
 
@@ -79,7 +80,7 @@ class ApiHrMemberController extends ApiBaseController
     public function update(Request $request, CompanyMember $member): JsonResponse
     {
         $companyId = $this->getCompanyId($request);
-        if (!$companyId || $member->company_id !== $companyId) {
+        if (! $companyId || $member->company_id !== $companyId) {
             return $this->sendError('Access Denied', [], 403);
         }
 
@@ -98,7 +99,7 @@ class ApiHrMemberController extends ApiBaseController
     public function destroy(Request $request, CompanyMember $member): JsonResponse
     {
         $companyId = $this->getCompanyId($request);
-        if (!$companyId || $member->company_id !== $companyId) {
+        if (! $companyId || $member->company_id !== $companyId) {
             return $this->sendError('Access Denied', [], 403);
         }
 

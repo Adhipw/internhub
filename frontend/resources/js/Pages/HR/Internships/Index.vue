@@ -20,45 +20,43 @@ import { Download } from 'lucide-vue-next';
 import type { Internship } from '@/Types/internship';
 import type { PaginatedResponse } from '@/Types/user';
 
+import { router as inertiaRouter } from '@inertiajs/vue3';
+
+const props = defineProps<{
+    internships?: PaginatedResponse<Internship>;
+}>();
+
 const authStore = useAuthStore();
 const langStore = useLangStore();
 const t = (key: string) => langStore.t(key);
 const user = computed(() => authStore.user || {});
 
-const internships = ref<PaginatedResponse<Internship>>({
+const internships = computed(() => props.internships || {
     data: [],
     links: [],
     meta: {} as any
 });
-const loading = ref(true);
+const loading = ref(false);
 
-const fetchData = async (page = 1) => {
-    loading.value = true;
-    try {
-        const response = await api.get('/hr/internships', { params: { page } });
-        internships.value = response.data.data;
-    } catch (error) {
-        logger.error('Failed to fetch HR internships:', error);
-    } finally {
-        loading.value = false;
-    }
+const fetchData = (page = 1) => {
+    inertiaRouter.get('/hr/internships', { page }, {
+        preserveState: true,
+        preserveScroll: true,
+        replace: true
+    });
 };
 
 const showImportModal = ref(false);
 const handleImportSuccess = () => {
     showImportModal.value = false;
-    fetchData();
+    inertiaRouter.reload({ only: ['internships'] });
 };
-
-onMounted(() => {
-    fetchData();
-});
 
 const deleteInternship = async (id: number) => {
     if (confirm(t('hr.internships.delete_confirm'))) {
         try {
             await api.delete(`/hr/internships/${id}`);
-            fetchData();
+            inertiaRouter.reload({ only: ['internships'] });
         } catch (error) {
             alert(t('common.error_occurred'));
         }

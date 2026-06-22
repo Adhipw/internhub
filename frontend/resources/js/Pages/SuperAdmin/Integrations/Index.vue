@@ -23,17 +23,7 @@ const integrations = ref<any[]>(props.integrations || []);
 const loading = ref(false);
 const processing = ref<number | null | boolean>(null);
 
-const fetchData = async () => {
-    loading.value = true;
-    try {
-        const response = await api.get('/super-admin/integrations');
-        integrations.value = response.data.data;
-    } catch (error) {
-        logger.error('Failed to fetch integrations:', error);
-    } finally {
-        loading.value = false;
-    }
-};
+import { router as inertiaRouter } from '@inertiajs/vue3';
 
 // Create Integration
 const showCreateModal = ref(false);
@@ -57,7 +47,7 @@ const submitCreate = async () => {
     try {
         await api.post('/super-admin/integrations', createForm);
         showCreateModal.value = false;
-        fetchData();
+        inertiaRouter.reload({ only: ['integrations'] });
     } catch (error) {
         logger.error('Failed to create integration:', error);
         alert('Gagal membuat integrasi baru.');
@@ -74,7 +64,7 @@ const updateIntegration = async (integration: any) => {
             is_active: integration.is_active,
             settings: integration.settings
         });
-        fetchData();
+        inertiaRouter.reload({ only: ['integrations'] });
     } catch (error) {
         logger.error('Failed to update integration:', error);
     } finally {
@@ -88,7 +78,7 @@ const deleteIntegration = async (id: number) => {
     processing.value = id;
     try {
         await api.delete(`/super-admin/integrations/${id}`);
-        fetchData();
+        inertiaRouter.reload({ only: ['integrations'] });
     } catch (error) {
         logger.error('Failed to delete integration:', error);
     } finally {
@@ -110,11 +100,7 @@ const syncIntegration = async (id: number) => {
 
 const getProviderIcon = (provider: string) => ShieldCheck;
 
-onMounted(() => {
-    if (integrations.value.length === 0) {
-        fetchData();
-    }
-});
+
 </script>
 
 <template>

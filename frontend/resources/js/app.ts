@@ -181,4 +181,10 @@ createInertiaApp({
 
         logger.log('InterHub Inertia Web App Mounted');
     },
+    progress: {
+        delay: 250,
+        color: '#2563eb', // primary-600
+        includeCSS: true,
+        showSpinner: true,
+    },
 });

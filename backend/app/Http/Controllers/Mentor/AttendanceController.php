@@ -26,8 +26,8 @@ class AttendanceController extends Controller
             return response()->json([
                 'success' => true,
                 'data' => [
-                    'attendances' => $attendances
-                ]
+                    'attendances' => $attendances,
+                ],
             ]);
         }
 

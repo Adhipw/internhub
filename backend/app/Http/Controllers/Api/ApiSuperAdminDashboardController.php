@@ -45,16 +45,16 @@ class ApiSuperAdminDashboardController extends ApiBaseController
                 'laravel_version' => app()->version(),
                 'server_software' => $_SERVER['SERVER_SOFTWARE'] ?? 'Unknown',
                 'database_driver' => DB::getDriverName(),
-                'memory_usage' => round(memory_get_usage(true) / 1024 / 1024, 2) . ' MB',
+                'memory_usage' => round(memory_get_usage(true) / 1024 / 1024, 2).' MB',
                 'os' => PHP_OS,
             ],
             'system_health' => [
                 'status' => 'healthy',
                 'uptime' => '99.9%',
-                'latency' => round((microtime(true) - LARAVEL_START) * 1000, 2) . 'ms',
+                'latency' => round((microtime(true) - LARAVEL_START) * 1000, 2).'ms',
                 'database' => 'connected',
                 'storage' => $stats['storage_used'] < 90 ? 'optimal' : 'critical',
-            ]
+            ],
         ];
 
         return $this->sendResponse($response, 'Super Admin dashboard data retrieved');

@@ -66,7 +66,6 @@ class ApiSuperAdminUserController extends ApiBaseController
             'avatar' => 'nullable|image|max:2048',
         ]);
 
-
         $user = new User;
         $user->name = $validated['name'];
         $user->email = $validated['email'];
@@ -141,7 +140,6 @@ class ApiSuperAdminUserController extends ApiBaseController
         }
 
         $user->save();
-
 
         return $this->sendResponse($user->load('roles'), 'User updated successfully');
     }

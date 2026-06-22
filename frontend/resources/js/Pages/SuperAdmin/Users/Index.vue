@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import logger from '@/Lib/logger';
-import { ref, reactive, watch, onMounted } from 'vue';
+import { ref, reactive, onMounted, onUnmounted, watch, computed } from 'vue';
+import { router as inertiaRouter } from '@inertiajs/vue3';
 import DashboardLayout from '@/Layouts/DashboardLayout.vue';
 import Card from '@/Components/Card.vue';
 import Modal from '@/Components/Modal.vue';
@@ -11,7 +12,6 @@ import {
   Plus, Filter, AlertCircle, Phone, Mail, User as UserIcon,
   Lock, Eye, EyeOff, Loader2, Download, Image as ImageIcon
 } from 'lucide-vue-next';
-
 import { formatDate } from '@/Lib/utils';
 import { useDebounceFn } from '@vueuse/core';
 import { useLangStore } from '@/Stores/lang';
@@ -37,18 +37,18 @@ const props = defineProps<{
 
 const loading = ref(false);
 const processing = ref(false);
-const users = ref<PaginatedResponse<User>>(props.users || {
+const users = computed(() => props.users || {
     data: [],
     links: [],
     meta: {} as any
 });
-const roles = ref(props.roles || ['admin', 'hr', 'mentor', 'user']);
+const roles = computed(() => props.roles || ['admin', 'hr', 'mentor', 'user']);
 
 // Batch Import
 const showImportModal = ref(false);
 const handleImportSuccess = () => {
     showImportModal.value = false;
-    fetchUsers();
+    inertiaRouter.reload();
 };
 
 const exportUsers = () => {
@@ -60,28 +60,22 @@ const search = ref(props.filters?.search || '');
 const roleFilter = ref(props.filters?.role || '');
 const statusFilter = ref(props.filters?.status || '');
 
-const fetchUsers = async (page = 1) => {
-    loading.value = true;
-    try {
-        const response = await api.get('/super-admin/users', {
-            params: {
-                page,
-                search: search.value,
-                role: roleFilter.value,
-                status: statusFilter.value
-            }
-        });
-        users.value = response.data.data.users;
-        roles.value = response.data.data.roles;
-    } catch (error) {
-        logger.error('Failed to fetch users:', error);
-    } finally {
-        loading.value = false;
-    }
+
+const fetchUsers = (page = 1) => {
+    inertiaRouter.get('/super-admin/users', {
+        page,
+        search: search.value,
+        role: roleFilter.value,
+        status: statusFilter.value
+    }, {
+        preserveState: true,
+        preserveScroll: true,
+        replace: true
+    });
 };
 
 const debouncedSearch = useDebounceFn(() => {
-    fetchUsers();
+    fetchUsers(1);
 }, 500);
 
 watch([search, roleFilter, statusFilter], () => {
@@ -154,7 +148,7 @@ const submitCreate = async () => {
             headers: { 'Content-Type': 'multipart/form-data' }
         });
         showCreateModal.value = false;
-        fetchUsers();
+        inertiaRouter.reload({ only: ['users'] });
     } catch (error: any) {
         if (error.response?.data?.errors) {
             createForm.errors = error.response.data.errors;
@@ -227,7 +221,7 @@ const submitEdit = async () => {
             headers: { 'Content-Type': 'multipart/form-data' }
         });
         showEditModal.value = false;
-        fetchUsers();
+        inertiaRouter.reload({ only: ['users'] });
     } catch (error: any) {
         if (error.response?.data?.errors) {
             editForm.errors = error.response.data.errors;
@@ -271,7 +265,7 @@ const handleConfirmedAction = async () => {
             await api.post(`/super-admin/users/${confirmUser.value.id}/unban`);
         }
         showConfirmModal.value = false;
-        fetchUsers();
+        inertiaRouter.reload({ only: ['users'] });
     } catch (error: any) {
         alert(error.response?.data?.message || t('common.error_occurred'));
     } finally {
@@ -283,11 +277,6 @@ const getObjectURL = (file: File | null) => {
     return file ? URL.createObjectURL(file) : '';
 };
 
-onMounted(() => {
-    if (users.value.data.length === 0) {
-        fetchUsers();
-    }
-});
 </script>
 
 <template>

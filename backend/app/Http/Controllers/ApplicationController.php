@@ -8,6 +8,7 @@ use App\Services\AuditService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
 class ApplicationController extends Controller
@@ -47,16 +48,16 @@ class ApplicationController extends Controller
 
         DB::transaction(function () use ($user, $internship, $request) {
             $cvSnapshot = $user->detail->cv_path;
-            if ($cvSnapshot && \Illuminate\Support\Facades\Storage::exists($cvSnapshot)) {
-                $newCvPath = 'snapshots/' . uniqid() . '_' . basename($cvSnapshot);
-                \Illuminate\Support\Facades\Storage::copy($cvSnapshot, $newCvPath);
+            if ($cvSnapshot && Storage::exists($cvSnapshot)) {
+                $newCvPath = 'snapshots/'.uniqid().'_'.basename($cvSnapshot);
+                Storage::copy($cvSnapshot, $newCvPath);
                 $cvSnapshot = $newCvPath;
             }
 
             $portfolioSnapshot = $user->detail->portfolio_path;
-            if ($portfolioSnapshot && \Illuminate\Support\Facades\Storage::exists($portfolioSnapshot)) {
-                $newPortfolioPath = 'snapshots/' . uniqid() . '_' . basename($portfolioSnapshot);
-                \Illuminate\Support\Facades\Storage::copy($portfolioSnapshot, $newPortfolioPath);
+            if ($portfolioSnapshot && Storage::exists($portfolioSnapshot)) {
+                $newPortfolioPath = 'snapshots/'.uniqid().'_'.basename($portfolioSnapshot);
+                Storage::copy($portfolioSnapshot, $newPortfolioPath);
                 $portfolioSnapshot = $newPortfolioPath;
             }
 

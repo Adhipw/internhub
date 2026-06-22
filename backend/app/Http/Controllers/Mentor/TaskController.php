@@ -7,9 +7,22 @@ use App\Models\Application;
 use App\Models\MentorTask;
 use App\Services\AuditService;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class TaskController extends Controller
 {
+    public function index()
+    {
+        $tasks = MentorTask::with(['application.user', 'application.internship'])
+            ->where('mentor_user_id', auth()->id())
+            ->latest()
+            ->paginate(10);
+
+        return Inertia::render('Mentor/Tasks/Index', [
+            'tasks' => $tasks,
+        ]);
+    }
+
     public function store(Request $request, Application $application)
     {
         if ($application->mentor_user_id !== auth()->id()) {

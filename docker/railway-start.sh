@@ -75,4 +75,5 @@ fi
 
 php artisan config:cache || true
 
-exec php artisan serve --host=0.0.0.0 --port="${PORT}"
+php-fpm -D
+exec nginx -g 'daemon off;'

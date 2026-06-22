@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import logger from '@/Lib/logger';
-import { ref, reactive, onMounted } from 'vue';
+import { ref, reactive, onMounted, computed } from 'vue';
 import DashboardLayout from '@/Layouts/DashboardLayout.vue';
 import Card from '@/Components/Card.vue';
 import Pagination from '@/Components/Pagination.vue';
@@ -23,9 +23,15 @@ interface Location {
 const langStore = useLangStore();
 const t = (key: string) => langStore.t(key);
 
-const loading = ref(true);
+import { router as inertiaRouter } from '@inertiajs/vue3';
+
+const props = defineProps<{
+    locations?: PaginatedResponse<Location>;
+}>();
+
+const loading = ref(false);
 const processing = ref(false);
-const locations = ref<PaginatedResponse<Location>>({
+const locations = computed(() => props.locations || {
   data: [],
   links: [],
   meta: {} as any
@@ -37,16 +43,12 @@ const form = reactive({
     errors: {} as any
 });
 
-const fetchLocations = async (page = 1) => {
-    loading.value = true;
-    try {
-        const response = await api.get('/admin/locations', { params: { page } });
-        locations.value = response.data.data;
-    } catch (error) {
-        logger.error('Failed to fetch locations:', error);
-    } finally {
-        loading.value = false;
-    }
+const fetchLocations = (page = 1) => {
+    inertiaRouter.get('/admin/locations', { page }, {
+        preserveState: true,
+        preserveScroll: true,
+        replace: true
+    });
 };
 
 const submit = async () => {
@@ -56,7 +58,7 @@ const submit = async () => {
         await api.post('/admin/locations', form);
         form.name = '';
         form.type = 'city';
-        await fetchLocations();
+        inertiaRouter.reload({ only: ['locations'] });
     } catch (error: any) {
         if (error.response?.data?.errors) {
             form.errors = error.response.data.errors;
@@ -71,7 +73,7 @@ const submit = async () => {
 const toggleStatus = async (id: number) => {
     try {
         await api.post(`/admin/locations/${id}/toggle`);
-        await fetchLocations();
+        inertiaRouter.reload({ only: ['locations'] });
     } catch (error) {
         alert(t('common.error_occurred'));
     }
@@ -81,7 +83,7 @@ const deleteLocation = async (id: number) => {
     if (confirm(t('admin.locations.delete_confirm'))) {
         try {
             await api.delete(`/admin/locations/${id}`);
-            await fetchLocations();
+            inertiaRouter.reload({ only: ['locations'] });
         } catch (error) {
             alert(t('common.error_occurred'));
         }
@@ -90,7 +92,6 @@ const deleteLocation = async (id: number) => {
 
 onMounted(() => {
     langStore.fetchTranslations();
-    fetchLocations();
 });
 </script>
 

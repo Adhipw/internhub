@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import logger from '@/Lib/logger';
-import { Link } from '@inertiajs/vue3';
+import { Link, router } from '@inertiajs/vue3';
 import { ref, onMounted, onUnmounted, reactive } from 'vue';
 import api from '@/Services/api';
 import { useAuthStore } from '@/Stores/auth';
@@ -16,30 +16,35 @@ import {
     Info, CheckCircle2, ArrowRight
 } from 'lucide-vue-next';
 
-const authStore = useAuthStore();
-const activeApplication = ref<any>(null);
-const activeSession = ref<any>(null);
-const history = ref<{ data: any[] }>({ data: [] });
-const error = ref<string | null>(null);
-const loading = ref(true);
+const props = defineProps<{
+    activeApplication: any;
+    activeSession: any;
+    history: any;
+    error: string | null;
+}>();
 
-const fetchData = async () => {
-    loading.value = true;
-    try {
-        const response = await api.get('/attendance');
-        const data = response.data.data;
-        activeApplication.value = data.activeApplication;
-        activeSession.value = data.activeSession;
-        history.value = data.history;
-        
-        if (activeSession.value) {
-            startRealtimeTracking();
+const authStore = useAuthStore();
+const activeApplication = ref<any>(props.activeApplication);
+const activeSession = ref<any>(props.activeSession);
+const history = ref<{ data: any[] }>(props.history as { data: any[] } || { data: [] });
+const error = ref<string | null>(props.error as string | null);
+
+const reloadData = () => {
+    router.reload({
+        only: ['activeApplication', 'activeSession', 'history', 'error'],
+        onSuccess: (page) => {
+            activeApplication.value = page.props.activeApplication;
+            activeSession.value = page.props.activeSession;
+            history.value = (page.props.history as { data: any[] }) || { data: [] };
+            error.value = page.props.error as string | null;
+            
+            if (activeSession.value) {
+                startRealtimeTracking();
+            } else {
+                stopRealtimeTracking();
+            }
         }
-    } catch (err: any) {
-        error.value = err.response?.data?.message || 'Gagal memuat data absensi.';
-    } finally {
-        loading.value = false;
-    }
+    });
 };
 
 const location = ref<{ lat: number | null, lng: number | null }>({ lat: null, lng: null });
@@ -74,7 +79,7 @@ const handleCheckIn = async () => {
         });
 
         showConsentModal.value = false;
-        fetchData(); 
+        reloadData(); 
     } catch (err: any) {
         locationError.value = err.response?.data?.message || "Gagal mengambil lokasi. Pastikan izin lokasi diberikan.";
     }
@@ -89,7 +94,7 @@ const handleCheckOut = async () => {
         });
 
         stopRealtimeTracking();
-        fetchData();
+        reloadData();
     } catch (err: any) {
         alert("Gagal melakukan check-out.");
     }
@@ -122,7 +127,9 @@ const stopRealtimeTracking = () => {
 };
 
 onMounted(() => {
-    fetchData();
+    if (activeSession.value) {
+        startRealtimeTracking();
+    }
 });
 
 onUnmounted(() => {
@@ -138,11 +145,7 @@ onUnmounted(() => {
         </template>
 
         <div class="py-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div v-if="loading" class="flex justify-center py-20">
-                <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
-            </div>
-
-            <div v-else-if="error" class="bg-red-50 border-l-4 border-red-400 p-4 mb-6">
+            <div v-if="error" class="bg-red-50 border-l-4 border-red-400 p-4 mb-6">
                 <p class="text-sm text-red-700">{{ error }}</p>
             </div>
 

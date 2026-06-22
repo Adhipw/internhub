@@ -78,6 +78,7 @@ class ProfileUpdateRequest extends FormRequest
                         $realMime = $finfo->file($value->getPathname());
                         if ($realMime !== 'application/pdf') {
                             $fail('CV wajib berupa dokumen PDF asli.');
+
                             return;
                         }
 
@@ -89,7 +90,7 @@ class ProfileUpdateRequest extends FormRequest
                             $fail('Keamanan Unggahan: Struktur dokumen PDF tidak valid.');
                         }
                     }
-                }
+                },
             ],
             'portfolio' => [
                 'nullable',
@@ -101,18 +102,19 @@ class ProfileUpdateRequest extends FormRequest
                         // Real MIME-type inspection via finfo
                         $finfo = new \finfo(FILEINFO_MIME_TYPE);
                         $realMime = $finfo->file($value->getPathname());
-                        
+
                         $allowed = [
                             'application/pdf',
                             'application/zip',
                             'application/x-zip-compressed',
                             'application/x-rar',
                             'application/x-rar-compressed',
-                            'application/octet-stream'
+                            'application/octet-stream',
                         ];
 
-                        if (!in_array($realMime, $allowed)) {
+                        if (! in_array($realMime, $allowed)) {
                             $fail('Portofolio harus berupa file PDF, ZIP, atau RAR asli.');
+
                             return;
                         }
 
@@ -125,11 +127,11 @@ class ProfileUpdateRequest extends FormRequest
                         $isZip = ($magic === "PK\x03\x04");
                         $isRar = (str_starts_with($magic, 'Rar!'));
 
-                        if (!$isPdf && !$isZip && !$isRar) {
+                        if (! $isPdf && ! $isZip && ! $isRar) {
                             $fail('Keamanan Unggahan: Struktur file Portofolio tidak valid.');
                         }
                     }
-                }
+                },
             ],
             'ai_consent' => 'nullable|boolean',
         ];

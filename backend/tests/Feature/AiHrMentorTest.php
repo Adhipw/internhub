@@ -6,6 +6,7 @@ namespace Tests\Feature;
 
 use App\Models\Application;
 use App\Models\Company;
+use App\Models\CompanyMember;
 use App\Models\Internship;
 use App\Models\User;
 use App\Services\AI\AiManager;
@@ -38,7 +39,7 @@ class AiHrMentorTest extends TestCase
         $this->hr = User::factory()->create(['role' => 'hr', 'is_active' => true]);
         $this->hr->assignRole('hr');
 
-        \App\Models\CompanyMember::create([
+        CompanyMember::create([
             'company_id' => $this->company->id,
             'user_id' => $this->hr->id,
             'role' => 'owner',
@@ -48,7 +49,7 @@ class AiHrMentorTest extends TestCase
         $this->mentor = User::factory()->create(['role' => 'mentor', 'is_active' => true]);
         $this->mentor->assignRole('mentor');
 
-        \App\Models\CompanyMember::create([
+        CompanyMember::create([
             'company_id' => $this->company->id,
             'user_id' => $this->mentor->id,
             'role' => 'mentor',

@@ -26,7 +26,7 @@ class InternshipController extends Controller
             'description' => 'Temukan lowongan magang hebat di InterHub. Peluang karir terbaik untuk mahasiswa Indonesia dengan pencocokan kecerdasan buatan (Gemini AI).',
             'image' => asset('brand/logo-mark.svg'),
             'url' => request()->url(),
-            'type' => 'website'
+            'type' => 'website',
         ]);
 
         return Inertia::render('Welcome', [
@@ -67,16 +67,16 @@ class InternshipController extends Controller
         }
 
         $companyName = $internship->company->name ?? 'InterHub';
-        $title = $internship->title . " di " . $companyName;
-        $description = "Daftar sekarang untuk lowongan magang " . $internship->title . " di " . $companyName . ". Lokasi: " . $internship->location . ". " . strip_tags(substr($internship->description ?? '', 0, 150)) . "...";
+        $title = $internship->title.' di '.$companyName;
+        $description = 'Daftar sekarang untuk lowongan magang '.$internship->title.' di '.$companyName.'. Lokasi: '.$internship->location.'. '.strip_tags(substr($internship->description ?? '', 0, 150)).'...';
         $logoUrl = $internship->company->logo_url ?? asset('brand/logo-mark.svg');
-        
+
         view()->share('seo', [
             'title' => $title,
             'description' => $description,
             'image' => $logoUrl,
             'url' => request()->url(),
-            'type' => 'website'
+            'type' => 'website',
         ]);
 
         return Inertia::render('Internships/Show', [

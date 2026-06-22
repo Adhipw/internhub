@@ -2,6 +2,7 @@
 
 namespace Tests;
 
+use Database\Seeders\RolesAndPermissionsSeeder;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 
 abstract class TestCase extends BaseTestCase
@@ -11,6 +12,6 @@ abstract class TestCase extends BaseTestCase
         parent::setUp();
 
         // Automatically seed Spatie roles & permissions to prevent missing role exceptions in test environments
-        $this->seed(\Database\Seeders\RolesAndPermissionsSeeder::class);
+        $this->seed(RolesAndPermissionsSeeder::class);
     }
 }

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import logger from '@/Lib/logger';
-import { ref, onMounted, onUnmounted, watch } from 'vue';
+import { ref, onMounted, onUnmounted, watch, computed } from 'vue';
+import { router as inertiaRouter } from '@inertiajs/vue3';
 import { Head } from '@/Components';
 
 import DashboardLayout from '@/Layouts/DashboardLayout.vue';
@@ -28,10 +29,16 @@ interface AuditLog {
 }
 
 const urlParams = new URLSearchParams(window.location.search);
-const loading = ref(true);
-const search = ref(urlParams.get('search') || '');
+
+const props = defineProps<{
+    logs?: PaginatedResponse<AuditLog>;
+    filters?: any;
+}>();
+
+const loading = ref(false);
+const search = ref(props.filters?.search || urlParams.get('search') || '');
 const currentPage = ref(urlParams.get('page') || 1);
-const logs = ref<PaginatedResponse<AuditLog>>({
+const logs = computed(() => props.logs || {
     data: [],
     links: [],
     meta: {} as any
@@ -45,21 +52,15 @@ const debounce = (fn: Function, ms: number) => {
     };
 };
 
-const fetchLogs = async () => {
-    loading.value = true;
-    try {
-        const response = await api.get('/admin/audit-logs', {
-            params: {
-                search: search.value,
-                page: currentPage.value
-            }
-        });
-        logs.value = response.data.data;
-    } catch (error) {
-        logger.error('Failed to fetch audit logs:', error);
-    } finally {
-        loading.value = false;
-    }
+const fetchLogs = () => {
+    inertiaRouter.get('/admin/audit-logs', {
+        search: search.value,
+        page: currentPage.value
+    }, {
+        preserveState: true,
+        preserveScroll: true,
+        replace: true
+    });
 };
 
 watch(search, debounce(() => {
@@ -69,9 +70,10 @@ watch(search, debounce(() => {
 let refreshInterval: any = null;
 
 onMounted(() => {
-    fetchLogs();
     // High-frequency polling for audit logs (30s)
-    refreshInterval = setInterval(fetchLogs, 30000);
+    refreshInterval = setInterval(() => {
+        inertiaRouter.reload({ only: ['logs'] });
+    }, 30000);
 });
 
 onUnmounted(() => {

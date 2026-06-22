@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import logger from '@/Lib/logger';
-import { Link } from '@inertiajs/vue3';
-import { ref, reactive, onMounted, computed } from 'vue';
-import api from '@/Services/api';
+import { Link, useForm, router } from '@inertiajs/vue3';
+import { ref, computed } from 'vue';
 import DashboardLayout from '@/Layouts/DashboardLayout.vue';
 import Card from '@/Components/Card.vue';
 import StatusBadge from '@/Components/StatusBadge.vue';
@@ -16,49 +15,40 @@ import {
 import { formatDate } from '@/Lib/utils';
 
 const props = defineProps<{
-    application?: any;
-    feedbacks?: any[];
-    tasks?: any[];
-    evaluations?: any[];
-    sessions?: any[];
+    application: any;
+    feedbacks: any[];
+    tasks: any[];
+    evaluations: any[];
+    sessions: any[];
 }>();
 
-const application = ref<any>(props.application || null);
-const feedbacks = ref<any[]>(props.feedbacks || []);
-const tasks = ref<any[]>(props.tasks || []);
-const evaluations = ref<any[]>(props.evaluations || []);
-const sessions = ref<any[]>(props.sessions || []);
-const loading = ref(!props.application);
 const activeTab = ref('overview');
 
-const feedbackForm = reactive({
+const feedbackForm = useForm({
     content: '',
     assessment: {
         technical: 3,
         soft_skills: 3,
         attitude: 3
     } as any,
-    processing: false
 });
 
-const taskForm = reactive({
+const taskForm = useForm({
     title: '',
     description: '',
     due_date: '',
     priority: 2,
-    processing: false
 });
 
-const sessionForm = reactive({
+const sessionForm = useForm({
     title: '',
     description: '',
     scheduled_at: '',
     duration_minutes: 60,
     meeting_link: '',
-    processing: false
 });
 
-const evaluationForm = reactive({
+const evaluationForm = useForm({
     title: 'Evaluasi Akhir Periode Magang',
     summary: '',
     metrics: {
@@ -69,7 +59,6 @@ const evaluationForm = reactive({
     } as any,
     recommendation: '',
     final_status: 'recommend',
-    processing: false
 });
 
 const getMetricDisplay = (val: number) => {
@@ -118,164 +107,110 @@ const getMetricDisplay = (val: number) => {
     }
 };
 
-const fetchData = async () => {
-    loading.value = true;
-    try {
-        const id = window.location.pathname.split('/').filter(Boolean).pop();
-        const response = await api.get(`/mentor/mentees/${id}`);
-        const data = response.data.data;
-        application.value = data.application || data;
-        feedbacks.value = data.feedbacks || application.value?.feedbacks || [];
-        tasks.value = data.tasks || application.value?.tasks || [];
-        evaluations.value = data.evaluations || application.value?.evaluations || [];
-        sessions.value = data.sessions || application.value?.sessions || [];
-    } catch (error) {
-        logger.error('Failed to fetch mentee details:', error);
-    } finally {
-        loading.value = false;
-    }
-};
-
-onMounted(() => {
-    if (!props.application) {
-        fetchData();
-    }
-});
-
-const submitFeedback = async () => {
+const submitFeedback = () => {
     if (!feedbackForm.content.trim()) return;
-    feedbackForm.processing = true;
-    try {
-        await api.post(`/mentor/mentees/${application.value.id}/feedback`, feedbackForm);
-        feedbackForm.content = '';
-        fetchData();
-    } catch (error) {
-        alert('Gagal mengirim catatan feedback.');
-    } finally {
-        feedbackForm.processing = false;
-    }
-};
-
-const submitTask = async () => {
-    taskForm.processing = true;
-    try {
-        await api.post(`/mentor/mentees/${application.value.id}/tasks`, taskForm);
-        Object.assign(taskForm, { title: '', description: '', due_date: '', priority: 2 });
-        fetchData();
-    } catch (error) {
-        alert('Gagal membuat penugasan.');
-    } finally {
-        taskForm.processing = false;
-    }
-};
-
-const submitSession = async () => {
-    sessionForm.processing = true;
-    try {
-        await api.post(`/mentor/mentees/${application.value.id}/sessions`, sessionForm);
-        Object.assign(sessionForm, { title: '', description: '', scheduled_at: '', duration_minutes: 60, meeting_link: '' });
-        fetchData();
-    } catch (error) {
-        alert('Gagal menjadwalkan sesi bimbingan.');
-    } finally {
-        sessionForm.processing = false;
-    }
-};
-
-const updateSessionStatus = async (sessionId: number, status: string) => {
-    try {
-        await api.patch(`/mentor/sessions/${sessionId}/status`, { status });
-        fetchData();
-    } catch (error) {
-        alert('Gagal memperbarui status sesi.');
-    }
-};
-
-const updateTaskStatus = async (taskId: number, status: string) => {
-    try {
-        await api.patch(`/mentor/tasks/${taskId}/status`, { status });
-        fetchData();
-    } catch (error) {
-        alert('Gagal memperbarui status tugas.');
-    }
-};
-
-const deleteTask = async (taskId: number) => {
-    if (confirm('Apakah Anda yakin ingin menghapus penugasan ini?')) {
-        try {
-            await api.delete(`/mentor/tasks/${taskId}`);
-            fetchData();
-        } catch (error) {
-            alert('Gagal menghapus tugas.');
+    feedbackForm.post(`/mentor/mentees/${props.application.id}/feedback`, {
+        preserveScroll: true,
+        onSuccess: () => {
+            feedbackForm.reset();
         }
+    });
+};
+
+const submitTask = () => {
+    taskForm.post(`/mentor/mentees/${props.application.id}/tasks`, {
+        preserveScroll: true,
+        onSuccess: () => {
+            taskForm.reset();
+        }
+    });
+};
+
+const submitSession = () => {
+    sessionForm.post(`/mentor/mentees/${props.application.id}/sessions`, {
+        preserveScroll: true,
+        onSuccess: () => {
+            sessionForm.reset();
+        }
+    });
+};
+
+const updateSessionStatus = (sessionId: number, status: string) => {
+    router.patch(`/mentor/sessions/${sessionId}/status`, { status }, { preserveScroll: true });
+};
+
+const updateTaskStatus = (taskId: number, status: string) => {
+    router.patch(`/mentor/tasks/${taskId}/status`, { status }, { preserveScroll: true });
+};
+
+const deleteTask = (taskId: number) => {
+    if (confirm('Apakah Anda yakin ingin menghapus penugasan ini?')) {
+        router.delete(`/mentor/tasks/${taskId}`, { preserveScroll: true });
     }
 };
 
-const submitEvaluation = async () => {
-    evaluationForm.processing = true;
-    try {
-        await api.post('/mentor/evaluations', {
-            ...evaluationForm,
-            application_id: application.value.id,
-            final_status: evaluationForm.final_status === 'recommend' ? 'completed' : 'failed'
-        });
-        fetchData();
-        activeTab.value = 'evaluations';
-    } catch (error) {
-        alert('Gagal mengirim evaluasi akhir.');
-    } finally {
-        evaluationForm.processing = false;
-    }
+const submitEvaluation = () => {
+    evaluationForm.transform((data) => ({
+        ...data,
+        application_id: props.application.id,
+        final_status: data.final_status === 'recommend' ? 'completed' : 'failed'
+    })).post('/mentor/evaluations', {
+        preserveScroll: true,
+        onSuccess: () => {
+            activeTab.value = 'evaluations';
+        }
+    });
 };
 
 const timelineEvents = computed(() => {
-    if (!application.value) return [];
+    if (!props.application) return [];
     const events: any[] = [];
     
     events.push({
-        date: application.value.created_at,
+        date: props.application.created_at,
         title: 'Langkah Awal Dimulai',
-        description: 'Kandidat resmi bergabung untuk posisi ' + application.value.internship.title,
+        description: 'Kandidat resmi bergabung untuk posisi ' + props.application.internship.title,
         icon: Briefcase,
         color: 'bg-blue-500'
     });
 
-    tasks.value.forEach(task => {
+    props.tasks?.forEach((task: any) => {
         events.push({
             date: task.created_at,
             title: 'Tantangan Baru: ' + task.title,
-            description: 'Mentor memberikan penugasan baru dengan tingkat prioritas ' + getPriorityLabel(task.priority).label,
-            icon: Target,
-            color: 'bg-orange-500'
+            status: task.status,
+            icon: CheckSquare
         });
-        if (task.status === 'completed') {
+
+        if (task.status === 'completed' && task.updated_at) {
             events.push({
+                id: `task_completed_${task.id}`,
+                type: 'task_completed',
+                title: `Tugas Selesai: ${task.title}`,
                 date: task.updated_at,
-                title: 'Misi Terselesaikan',
-                description: 'Kandidat berhasil menyelesaikan tugas: ' + task.title,
-                icon: CheckCircle2,
-                color: 'bg-green-500'
+                icon: CheckCircle2
             });
         }
     });
 
-    sessions.value.forEach(session => {
+    props.sessions?.forEach((session: any) => {
         events.push({
+            id: `session_${session.id}`,
+            type: 'session',
+            title: `Sesi: ${session.title}`,
             date: session.scheduled_at,
-            title: 'Sesi Bimbingan',
-            description: session.title + ' (Status: ' + session.status + ')',
-            icon: Calendar,
-            color: 'bg-purple-500'
+            status: session.status,
+            icon: Calendar
         });
     });
 
-    feedbacks.value.forEach(fb => {
+    props.feedbacks?.forEach((fb: any) => {
         events.push({
+            id: `feedback_${fb.id}`,
+            type: 'feedback',
+            title: 'Catatan Mentor',
             date: fb.created_at,
-            title: 'Feedback Mentor',
-            description: fb.content.length > 80 ? fb.content.substring(0, 80) + '...' : fb.content,
-            icon: Sparkles,
-            color: 'bg-pink-500'
+            icon: MessageSquare
         });
     });
 
@@ -301,14 +236,7 @@ const tabs = [
 
 <template>
   <DashboardLayout>
-    <div v-if="loading" class="flex justify-center items-center py-40">
-        <div class="relative w-16 h-16">
-            <div class="absolute inset-0 rounded-full border-4 border-primary-100 dark:border-slate-800"></div>
-            <div class="absolute inset-0 rounded-full border-4 border-primary-600 border-t-transparent animate-spin"></div>
-        </div>
-    </div>
-
-    <div v-else-if="application" class="max-w-7xl mx-auto space-y-8 pb-20 animate-in fade-in duration-700">
+    <div class="max-w-7xl mx-auto space-y-8 pb-20 animate-in fade-in duration-700">
       <!-- Breadcrumbs & Status -->
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <Link href="/mentor/mentees" class="group inline-flex items-center gap-2 text-sm font-bold text-slate-500 hover:text-primary-600 transition-all">

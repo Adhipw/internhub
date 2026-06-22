@@ -7,6 +7,9 @@ use App\Models\Application;
 use App\Models\CompanyMember;
 use App\Models\Internship;
 use App\Models\User;
+use App\Services\AI\AiService;
+use App\Services\AI\DTOs\AiMessage;
+use App\Services\AI\Enums\AiRole;
 use App\Services\AuditService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -223,7 +226,7 @@ class ApiHrApplicationController extends ApiBaseController
     /**
      * Generate an AI resume/CV summary for the candidate.
      */
-    public function getAiSummary(Application $application, \App\Services\AI\AiService $aiService): JsonResponse
+    public function getAiSummary(Application $application, AiService $aiService): JsonResponse
     {
         /** @var User $user */
         $user = Auth::user();
@@ -237,7 +240,7 @@ class ApiHrApplicationController extends ApiBaseController
         $detail = $candidate->detail;
         $internship = $application->internship;
 
-        if (!$detail) {
+        if (! $detail) {
             return $this->sendResponse(['summary' => "• **Kelebihan Utama:** Profil kandidat belum dilengkapi.\n• **Kesenjangan Keahlian:** N/A\n• **Rekomendasi Tindakan:** Hubungi kandidat untuk melengkapi profil."], 'Profile incomplete');
         }
 
@@ -250,13 +253,13 @@ class ApiHrApplicationController extends ApiBaseController
 Tugas Anda adalah membaca data profil kandidat berikut dan menganalisis kecocokannya dengan posisi magang:
 
 Posisi Magang: {$internship->title}
-Persyaratan/Keahlian Yang Dibutuhkan: " . implode(', ', $requiredRequirements) . "
+Persyaratan/Keahlian Yang Dibutuhkan: ".implode(', ', $requiredRequirements)."
 Deskripsi Lowongan: {$internship->description}
 
 Nama Kandidat: {$candidate->name}
 Bio: {$detail->bio}
-Pendidikan: " . json_encode($detail->education) . "
-Keahlian Kandidat: " . json_encode($candidateSkills) . "
+Pendidikan: ".json_encode($detail->education).'
+Keahlian Kandidat: '.json_encode($candidateSkills)."
 Cover Letter: {$application->cover_letter}
 
 Berikan analisis terstruktur dalam tepat 3 poin berbutir (bullet points) pendek dan padat berbahasa Indonesia:
@@ -268,8 +271,8 @@ Format keluaran harus persis berupa teks dengan 3 baris poin tersebut, tanpa tam
 
         try {
             $messages = [
-                new \App\Services\AI\DTOs\AiMessage(\App\Services\AI\Enums\AiRole::SYSTEM, "Anda adalah asisten rekrutmen AI profesional yang menganalisis kecocokan pelamar magang dengan lowongan secara taktis."),
-                new \App\Services\AI\DTOs\AiMessage(\App\Services\AI\Enums\AiRole::USER, $prompt)
+                new AiMessage(AiRole::SYSTEM, 'Anda adalah asisten rekrutmen AI profesional yang menganalisis kecocokan pelamar magang dengan lowongan secara taktis.'),
+                new AiMessage(AiRole::USER, $prompt),
             ];
 
             // Chat with AI Service (skip authorization since this endpoint is protected by HR gate)
@@ -282,7 +285,7 @@ Format keluaran harus persis berupa teks dengan 3 baris poin tersebut, tanpa tam
             $matchCount = 0;
             $requiredSkillsLower = array_map('strtolower', $requiredRequirements);
             $candidateSkillsLower = array_map('strtolower', $candidateSkills);
-            
+
             foreach ($requiredSkillsLower as $req) {
                 if (in_array($req, $candidateSkillsLower)) {
                     $matchCount++;
@@ -293,8 +296,8 @@ Format keluaran harus persis berupa teks dengan 3 baris poin tersebut, tanpa tam
             $missing = array_diff($requiredSkillsLower, $candidateSkillsLower);
             $missingText = count($missing) > 0 ? implode(', ', array_slice($missing, 0, 3)) : 'Tidak ada kesenjangan keahlian signifikan';
 
-            $fallback = "• **Kelebihan Utama:** Kandidat menguasai keahlian " . implode(', ', array_slice($candidateSkills, 0, 3)) . " dan memiliki latar belakang pendidikan yang relevan.\n" .
-                        "• **Kesenjangan Keahlian (Skill Gap):** Kurang mendalam di bidang " . $missingText . ".\n" .
+            $fallback = '• **Kelebihan Utama:** Kandidat menguasai keahlian '.implode(', ', array_slice($candidateSkills, 0, 3))." dan memiliki latar belakang pendidikan yang relevan.\n".
+                        '• **Kesenjangan Keahlian (Skill Gap):** Kurang mendalam di bidang '.$missingText.".\n".
                         "• **Rekomendasi Tindakan:** Pertimbangkan untuk dipertahankan (Taksiran skor kecocokan: {$score}%).";
 
             return $this->sendResponse(['summary' => $fallback], 'AI Resume summary generated via fallback');

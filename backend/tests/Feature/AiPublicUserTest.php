@@ -5,6 +5,9 @@ namespace Tests\Feature;
 use App\Models\Company;
 use App\Models\Internship;
 use App\Models\User;
+use App\Models\UserDetail;
+use App\Services\AI\AiManager;
+use App\Services\AI\DTOs\AiResponse;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Auth;
 use PHPUnit\Framework\Attributes\Test;
@@ -21,7 +24,7 @@ class AiPublicUserTest extends TestCase
         parent::setUp();
         $this->user = User::factory()->create(['email_verified_at' => now(), 'is_active' => true]);
 
-        \App\Models\UserDetail::factory()->create([
+        UserDetail::factory()->create([
             'user_id' => $this->user->id,
             'ai_consent' => true,
         ]);
@@ -34,8 +37,8 @@ class AiPublicUserTest extends TestCase
         ]);
 
         // Global mock for AiManager to prevent external API calls & cURL/SSL certificate errors
-        $this->mock(\App\Services\AI\AiManager::class, function ($mock) {
-            $mock->shouldReceive('generate')->andReturn(new \App\Services\AI\DTOs\AiResponse(
+        $this->mock(AiManager::class, function ($mock) {
+            $mock->shouldReceive('generate')->andReturn(new AiResponse(
                 '{"matches": [], "tips": "Mocked profile tips without any other user data"}', []
             ));
         });

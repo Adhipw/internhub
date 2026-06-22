@@ -12,60 +12,35 @@ import {
 import api from '@/Services/api';
 import { useAuthStore } from '@/Stores/auth';
 
+import { useForm } from '@inertiajs/vue3';
+
+const props = defineProps<{
+    company?: any;
+}>();
+
 const authStore = useAuthStore();
-const loading = ref(true);
+const loading = ref(false);
 const processing = ref(false);
 const successMessage = ref('');
 const errors = reactive<any>({});
 
-const form = reactive({
-    name: '',
-    website: '',
-    location: '',
-    description: '',
-    logo_url: '',
-    industry: '',
+const form = useForm({
+    name: props.company?.name || '',
+    website: props.company?.website || '',
+    location: props.company?.location || '',
+    description: props.company?.description || '',
+    logo_url: props.company?.logo_url || '',
+    industry: props.company?.industry || '',
 });
 
-const fetchData = async () => {
-    loading.value = true;
-    try {
-        const response = await api.get('/hr/company');
-        const data = response.data.data;
-        
-        form.name = data.name || '';
-        form.website = data.website || '';
-        form.location = data.location || '';
-        form.description = data.description || '';
-        form.logo_url = data.logo_url || '';
-        form.industry = data.industry || '';
-    } catch (error) {
-        logger.error('Failed to fetch company profile:', error);
-    } finally {
-        loading.value = false;
-    }
-};
-
-onMounted(() => {
-    fetchData();
-});
-
-const submit = async () => {
-    processing.value = true;
-    successMessage.value = '';
-    Object.keys(errors).forEach(key => delete errors[key]);
-
-    try {
-        await api.put('/hr/company', form);
-        successMessage.value = 'Profil perusahaan berhasil diperbarui!';
-        setTimeout(() => { successMessage.value = ''; }, 5000);
-    } catch (error: any) {
-        if (error.response?.data?.errors) {
-            Object.assign(errors, error.response.data.errors);
+const submit = () => {
+    form.put('/hr/company', {
+        preserveScroll: true,
+        onSuccess: () => {
+            successMessage.value = 'Profil perusahaan berhasil diperbarui!';
+            setTimeout(() => { successMessage.value = ''; }, 5000);
         }
-    } finally {
-        processing.value = false;
-    }
+    });
 };
 </script>
 
@@ -147,7 +122,7 @@ const submit = async () => {
                                     <div class="space-y-3">
                                         <label class="text-xs font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest ml-1">Nama Perusahaan</label>
                                         <input v-model="form.name" type="text" class="w-full bg-slate-50 dark:bg-slate-900 border-none rounded-2xl px-6 py-4 text-sm font-black focus:ring-2 focus:ring-primary-500 shadow-inner" />
-                                        <p v-if="errors.name" class="text-xs text-red-500 font-bold">{{ errors.name[0] }}</p>
+                                        <p v-if="form.errors.name" class="text-xs text-red-500 font-bold">{{ form.errors.name }}</p>
                                     </div>
                                     <div class="space-y-3">
                                         <label class="text-xs font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest ml-1">Industri</label>
@@ -192,7 +167,7 @@ const submit = async () => {
                                     placeholder="Ceritakan sejarah, visi, dan misi perusahaan Anda..." 
                                     class="w-full bg-slate-50 dark:bg-slate-900 border-none rounded-[2rem] px-6 py-8 text-sm font-medium focus:ring-2 focus:ring-primary-500 shadow-inner resize-none leading-relaxed"
                                 ></textarea>
-                                <p v-if="errors.description" class="text-xs text-red-500 font-bold">{{ errors.description[0] }}</p>
+                                <p v-if="form.errors.description" class="text-xs text-red-500 font-bold">{{ form.errors.description }}</p>
                             </div>
                         </Card>
                     </div>

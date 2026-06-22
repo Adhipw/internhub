@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import logger from '@/Lib/logger';
-import { Link, router as inertiaRouter } from '@inertiajs/vue3';
-import { reactive, ref, onMounted } from 'vue';
-import api from '@/Services/api';
+import { Link, useForm } from '@inertiajs/vue3';
+import { ref } from 'vue';
 import { useLangStore } from '@/Stores/lang';
 import DashboardLayout from '@/Layouts/DashboardLayout.vue';
 import Card from '@/Components/Card.vue';
@@ -13,7 +12,11 @@ import { ArrowLeftIcon, MapPinIcon } from '@heroicons/vue/24/outline';
 const langStore = useLangStore();
 const t = (key: string) => langStore.t(key);
 
-const form = reactive({
+const props = defineProps<{
+    industries: any[];
+}>();
+
+const form = useForm({
   title: '',
   description: '',
   requirements: '',
@@ -27,26 +30,10 @@ const form = reactive({
   stipend: '',
   deadline_at: '',
   status: 'published',
-  processing: false,
-  errors: {} as any,
 });
-
-const industries = ref<any[]>([]);
-const fetchIndustries = async () => {
-    try {
-        const response = await api.get('/industries');
-        industries.value = response.data.data || [];
-    } catch (err) {
-        logger.error('Failed to fetch industries:', err);
-    }
-};
 
 const showCoordinates = ref(false);
 const detecting = ref(false);
-
-onMounted(() => {
-    fetchIndustries();
-});
 
 const detectLocation = () => {
   if (!navigator.geolocation) {
@@ -85,35 +72,24 @@ const detectLocation = () => {
   );
 };
 
-const submit = async () => {
-  form.processing = true;
-  form.errors = {};
-  
+const submit = () => {
   // Ensure date is in YYYY-MM-DD format to avoid year 12026 bugs
-  const formattedData = { ...form };
-  if (formattedData.deadline_at) {
+  if (form.deadline_at) {
     try {
-      const d = new Date(formattedData.deadline_at);
+      const d = new Date(form.deadline_at);
       if (!isNaN(d.getTime())) {
-        formattedData.deadline_at = d.toISOString().split('T')[0];
+        form.deadline_at = d.toISOString().split('T')[0];
       }
     } catch (e) {
       logger.error('Date formatting failed:', e);
     }
   }
 
-  try {
-    await api.post('/hr/internships', formattedData);
-    inertiaRouter.visit('/hr/internships');
-  } catch (error: any) {
-    if (error.response?.data?.errors) {
-        form.errors = error.response.data.errors;
-    } else {
-        alert(t('common.error_occurred'));
-    }
-  } finally {
-    form.processing = false;
-  }
+  form.post('/hr/internships', {
+      onError: (errors: any) => {
+          logger.error('Failed to create internship:', errors);
+      }
+  });
 };
 </script>
 

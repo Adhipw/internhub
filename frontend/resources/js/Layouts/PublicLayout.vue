@@ -166,8 +166,8 @@ onUnmounted(() => {
                         <button class="text-lg font-bold text-red-600 text-left" @click="logout">{{ t('nav.logout') }}</button>
                     </template>
                     <template v-else>
-                        <Link href="/login" class="text-lg font-bold" @click="isMobileMenuOpen = false">{{ t('nav.login') }}</Link>
-                        <Link href="/register" class="bg-blue-600 text-white px-6 py-4 rounded-full text-center font-bold" @click="isMobileMenuOpen = false">{{ t('nav.register') }}</Link>
+                        <Link href="/login" class="text-center font-bold bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white py-4 rounded-2xl" @click="isMobileMenuOpen = false">{{ t('nav.login') }}</Link>
+                        <Link href="/register" class="bg-blue-600 text-white px-6 py-4 rounded-2xl text-center font-bold" @click="isMobileMenuOpen = false">{{ t('nav.register') }}</Link>
                         <Link href="/login?role=hr" class="text-center font-bold text-blue-600 border border-blue-600 py-4 rounded-2xl" @click="isMobileMenuOpen = false">{{ t('nav.post_job') }}</Link>
                     </template>
                 </div>

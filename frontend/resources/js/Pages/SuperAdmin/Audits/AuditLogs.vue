@@ -3,7 +3,7 @@ import logger from '@/Lib/logger';
 import DashboardLayout from '@/Layouts/DashboardLayout.vue';
 import Card from '@/Components/Card.vue';
 import Pagination from '@/Components/Pagination.vue';
-import { ref, onMounted, onUnmounted, watch } from 'vue';
+import { ref, onMounted, onUnmounted, watch, computed } from 'vue';
 import { 
   Activity, Search, User, Clock, 
   ExternalLink, Filter, Loader2, Download
@@ -24,7 +24,7 @@ const props = defineProps<{
     };
 }>();
 
-const logs = ref(props.logs || {
+const logs = computed(() => props.logs || {
     data: [] as any[],
     links: [] as any[]
 });
@@ -32,23 +32,17 @@ const loading = ref(false);
 const searchQuery = ref(props.filters?.search || '');
 let refreshInterval: any = null;
 
-const fetchLogs = async (page = 1) => {
-    // Only show full loading on initial load or manual search
-    if (logs.value.data.length === 0) loading.value = true;
-    
-    try {
-        const response = await api.get('/super-admin/audit-logs', {
-            params: {
-                page,
-                search: searchQuery.value
-            }
-        });
-        logs.value = response.data.data;
-    } catch (error) {
-        logger.error('Failed to fetch audit logs:', error);
-    } finally {
-        loading.value = false;
-    }
+import { router as inertiaRouter } from '@inertiajs/vue3';
+
+const fetchLogs = (page = 1) => {
+    inertiaRouter.get('/super-admin/audit-logs', {
+        page,
+        search: searchQuery.value
+    }, {
+        preserveState: true,
+        preserveScroll: true,
+        replace: true
+    });
 };
 
 const exportLogs = () => {
@@ -64,12 +58,9 @@ watch(searchQuery, () => {
 });
 
 onMounted(() => {
-    if (logs.value.data.length === 0) {
-        fetchLogs();
-    }
     // Auto-refresh every 30 seconds
     refreshInterval = setInterval(() => {
-        fetchLogs(logs.value.links.find(l => l.active)?.label || 1);
+        inertiaRouter.reload({ only: ['logs'] });
     }, 30000);
 });
 

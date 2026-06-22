@@ -16,10 +16,15 @@ use Illuminate\Support\Str;
 class E2eNavigationSeeder extends Seeder
 {
     public const STUDENT_EMAIL = 'e2e.student@example.com';
+
     public const HR_EMAIL = 'e2e.hr@example.com';
+
     public const ADMIN_EMAIL = 'e2e.admin@example.com';
+
     public const MENTOR_EMAIL = 'e2e.mentor@example.com';
+
     public const UNVERIFIED_EMAIL = 'e2e.unverified@example.com';
+
     public const STUDENT_PASSWORD = 'Password123!';
 
     public function run(): void

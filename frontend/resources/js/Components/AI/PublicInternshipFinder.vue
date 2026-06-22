@@ -5,7 +5,7 @@ import { Sparkles, Search, Lightbulb, ArrowRight, Bot, CheckCircle2 } from 'luci
 import api from '@/Services/api';
 
 const prompt = ref('');
-const answer = ref('');
+const matches = ref([]);
 const isLoading = ref(false);
 const error = ref('');
 
@@ -20,13 +20,13 @@ const search = async () => {
     
     isLoading.value = true;
     error.value = '';
-    answer.value = '';
+    matches.value = [];
 
     try {
         const response = await api.post('/ai/public/finder', {
             prompt: prompt.value
         });
-        answer.value = response.data.answer;
+        matches.value = response.data.matches || [];
     } catch (err) {
         error.value = err.response?.data?.error || 'Maaf, terjadi kesalahan. Silakan coba lagi.';
     } finally {
@@ -93,13 +93,13 @@ const search = async () => {
 
             <!-- Output Side -->
             <div class="p-10 lg:p-16 bg-neutral-50/50 dark:bg-neutral-950/50 flex flex-col">
-                <div v-if="!answer && !isLoading" class="flex-1 flex flex-col items-center justify-center text-center space-y-6 py-20">
+                <div v-if="!matches.length && !isLoading" class="flex-1 flex flex-col items-center justify-center text-center space-y-6 py-20">
                     <div class="w-24 h-24 bg-white dark:bg-neutral-900 rounded-[2.5rem] flex items-center justify-center shadow-xl border border-neutral-100 dark:border-white/5 animate-float">
                         <Bot class="w-12 h-12 text-neutral-300 dark:text-neutral-700" />
                     </div>
                     <div class="max-w-xs">
                         <h4 class="text-xl font-black text-neutral-900 dark:text-white mb-2">Belum ada hasil</h4>
-                        <p class="text-sm font-bold text-neutral-400 leading-relaxed">Tuliskan sesuatu di sebelah kiri, dan asisten AI kami akan memberikan rekomendasi terbaik untukmu.</p>
+                        <p class="text-sm font-bold text-neutral-400 leading-relaxed">Tuliskan sesuatu di sebelah kiri, dan asisten AI kami akan memberikan rekomendasi magang terbaik untukmu.</p>
                     </div>
                 </div>
 
@@ -110,32 +110,48 @@ const search = async () => {
                             <Sparkles class="w-10 h-10 text-white" />
                         </div>
                     </div>
-                    <p class="mt-8 text-sm font-black text-primary-600 uppercase tracking-[0.3em] animate-pulse">Menghubungkan ke Brain...</p>
+                    <p class="mt-8 text-sm font-black text-primary-600 uppercase tracking-[0.3em] animate-pulse">Menganalisis Kualifikasi...</p>
                 </div>
 
-                <div v-else class="flex-1 animate-slide-up">
-                    <div class="bg-white dark:bg-neutral-900 rounded-[2.5rem] p-10 shadow-xl border border-primary-500/10 h-full flex flex-col">
-                        <div class="flex items-center gap-3 mb-8 pb-8 border-b border-neutral-100 dark:border-white/5">
-                            <div class="w-10 h-10 bg-emerald-500/10 rounded-xl flex items-center justify-center">
-                                <CheckCircle2 class="w-6 h-6 text-emerald-500" />
-                            </div>
-                            <h4 class="text-lg font-black text-neutral-900 dark:text-white">Rekomendasi AI</h4>
+                <div v-else class="flex-1 animate-slide-up flex flex-col h-full">
+                    <div class="flex items-center gap-3 mb-6 pb-4 border-b border-neutral-200 dark:border-neutral-800">
+                        <div class="w-10 h-10 bg-emerald-500/10 rounded-xl flex items-center justify-center">
+                            <CheckCircle2 class="w-6 h-6 text-emerald-500" />
                         </div>
-                        
-                        <div class="flex-1 overflow-y-auto pr-2 custom-scrollbar">
-                            <div class="prose prose-sm dark:prose-invert max-w-none">
-                                <p class="whitespace-pre-wrap leading-relaxed text-neutral-600 dark:text-neutral-400 font-medium text-lg italic">
-                                    "{{ answer }}"
-                                </p>
+                        <h4 class="text-lg font-black text-neutral-900 dark:text-white">Rekomendasi AI Ditemukan</h4>
+                    </div>
+                    
+                    <div class="flex-1 overflow-y-auto pr-2 custom-scrollbar space-y-4">
+                        <div v-for="match in matches" :key="match.id" class="bg-white dark:bg-neutral-900 rounded-3xl p-6 shadow-sm border border-neutral-100 dark:border-neutral-800 hover:border-primary-500/50 transition-all group relative">
+                            <div class="absolute top-6 right-6 flex items-center justify-center w-12 h-12 rounded-full bg-primary-50 dark:bg-primary-900/20">
+                                <span class="text-sm font-black text-primary-600">{{ match.match_score }}%</span>
                             </div>
-                        </div>
-
-                        <div class="mt-10 pt-8 border-t border-neutral-100 dark:border-white/5 flex flex-col md:flex-row items-center justify-between gap-6">
-                            <span class="text-[10px] font-black text-neutral-400 uppercase tracking-[0.2em] italic">Output asisten AI 2026</span>
-                            <Link href="/internships" class="w-full md:w-auto px-8 py-3 bg-neutral-900 dark:bg-white dark:text-neutral-900 text-white rounded-xl font-black text-xs hover:bg-primary-600 dark:hover:bg-primary-600 dark:hover:text-white transition-all text-center">
-                                Cari Lowongan Serupa
+                            
+                            <h5 class="text-lg font-black text-neutral-900 dark:text-white pr-14">{{ match.title }}</h5>
+                            <p class="text-sm font-bold text-primary-600 mb-4">{{ match.company }}</p>
+                            
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="px-3 py-1 bg-neutral-100 dark:bg-neutral-800 rounded-full text-xs font-bold text-neutral-600 dark:text-neutral-400">
+                                    {{ match.location }}
+                                </span>
+                                <span class="px-3 py-1 bg-neutral-100 dark:bg-neutral-800 rounded-full text-xs font-bold text-neutral-600 dark:text-neutral-400">
+                                    {{ match.type }}
+                                </span>
+                            </div>
+                            
+                            <p class="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed italic mb-6">
+                                "{{ match.explanation }}"
+                            </p>
+                            
+                            <Link :href="'/internships/' + match.slug" class="inline-flex items-center gap-2 text-sm font-black text-white bg-neutral-900 dark:bg-white dark:text-neutral-900 px-6 py-2.5 rounded-xl hover:bg-primary-600 dark:hover:bg-primary-600 dark:hover:text-white transition-all">
+                                Lihat Detail
+                                <ArrowRight class="w-4 h-4" />
                             </Link>
                         </div>
+                    </div>
+
+                    <div class="mt-6 pt-6 border-t border-neutral-200 dark:border-neutral-800 flex justify-between items-center">
+                        <span class="text-[10px] font-black text-neutral-400 uppercase tracking-[0.2em] italic">Dipersembahkan oleh Gemini AI</span>
                     </div>
                 </div>
             </div>

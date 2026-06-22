@@ -14,27 +14,11 @@ import { formatDate } from '@/Lib/utils';
 import type { Application } from '@/Types/application';
 import type { PaginationLink } from '@/Types/user';
 
-const mentees = ref<{ data: Application[], links: PaginationLink[] }>({
-    data: [],
-    links: []
-});
-const loading = ref(true);
+const props = defineProps<{
+    mentees: { data: Application[], links: PaginationLink[] };
+}>();
 
-const fetchData = async () => {
-    loading.value = true;
-    try {
-        const response = await api.get('/mentor/mentees');
-        mentees.value = response.data.data;
-    } catch (error) {
-        logger.error('Failed to fetch mentees:', error);
-    } finally {
-        loading.value = false;
-    }
-};
-
-onMounted(() => {
-    fetchData();
-});
+const loading = ref(false);
 </script>
 
 <template>

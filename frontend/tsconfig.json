@@ -14,9 +14,9 @@
         "lib": ["ESNext", "DOM"],
         "skipLibCheck": true,
         "paths": {
-            "@/*": ["resources/js/*"],
-            "vue": ["node_modules/vue/dist/vue.d.ts"],
-            "vue/*": ["node_modules/vue/*"]
+            "@/*": ["./resources/js/*"],
+            "vue": ["./node_modules/vue/dist/vue.d.ts"],
+            "vue/*": ["./node_modules/vue/*"]
         },
         "types": ["vite/client", "ziggy-js"],
         "noEmit": true

@@ -29,6 +29,7 @@ interface HrApplication {
 }
 
 interface Company {
+    id?: number;
     name?: string;
     slug?: string;
 }

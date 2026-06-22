@@ -12,12 +12,12 @@ import {
 import Card from '@/Components/Card.vue';
 import Skeleton from '@/Components/Skeleton.vue';
 import { useAuthStore } from '@/Stores/auth';
-import { useLangStore } from '@/Stores/lang';
 import api from '@/Services/api';
 import logger from '@/Lib/logger';
 import echo from '@/echo';
-import { onMounted, onUnmounted, ref } from 'vue';
+import { onMounted, onUnmounted, ref, computed } from 'vue';
 import VueApexCharts from 'vue3-apexcharts';
+import type { ApexOptions } from 'apexcharts';
 
 interface SuperAdminDashboardProps {
     stats?: Record<string, any>;
@@ -67,7 +67,7 @@ const fetchData = () => {
     });
 };
 
-const chartOptions = computed(() => {
+const chartOptions = computed<ApexOptions>(() => {
     const isDark = document.documentElement.classList.contains('dark');
     return {
         chart: {

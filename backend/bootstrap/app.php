@@ -41,8 +41,8 @@ return Application::configure(basePath: dirname(__DIR__))
             RequestIdMiddleware::class,
             SetLocale::class,
             CheckBanned::class,
-            CheckMaintenanceMode::class,
             HandleInertiaRequests::class,
+            CheckMaintenanceMode::class,
         ]);
 
         $middleware->api(append: [

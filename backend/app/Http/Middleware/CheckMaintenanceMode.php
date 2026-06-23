@@ -29,9 +29,12 @@ class CheckMaintenanceMode
 
         if ($isMaintenance) {
             // Allow super_admin to bypass
+            // For API requests, we need to check the sanctum guard
+            $guard = $request->is('api/*') ? 'sanctum' : 'web';
             /** @var \App\Models\User|null $user */
-            $user = \Illuminate\Support\Facades\Auth::user();
-            if (\Illuminate\Support\Facades\Auth::check() && $user && $user->role === 'super_admin') {
+            $user = \Illuminate\Support\Facades\Auth::guard($guard)->user();
+            
+            if ($user && $user->role === 'super_admin') {
                 return $next($request);
             }
             

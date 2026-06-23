@@ -50,7 +50,14 @@ const analyzeSpamRisk = (job: Internship) => {
   let riskScore = 0;
   const reasons: string[] = [];
 
-  const textToScan = `${job.title} ${job.description || ''} ${job.requirements ? job.requirements.join(' ') : ''}`.toLowerCase();
+  let reqText = '';
+  if (Array.isArray(job.requirements)) {
+    reqText = job.requirements.join(' ');
+  } else if (typeof job.requirements === 'string') {
+    reqText = job.requirements;
+  }
+
+  const textToScan = `${job.title} ${job.description || ''} ${reqText}`.toLowerCase();
 
   // Scan keywords
   spamKeywords.forEach(kw => {

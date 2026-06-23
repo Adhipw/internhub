@@ -84,7 +84,7 @@ JS;
         'Cache-Control' => 'no-store, no-cache, must-revalidate, max-age=0',
         'Pragma' => 'no-cache',
         'Expires' => '0',
-        'X-InterHub-Service-Worker' => 'service-worker-cleanup',
+        'X-InternHub-Service-Worker' => 'service-worker-cleanup',
     ]);
 })->name('service-worker-cleanup');
 Route::get('/', [InternshipController::class, 'welcome'])->name('welcome');

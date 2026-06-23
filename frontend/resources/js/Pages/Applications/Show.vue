@@ -135,7 +135,7 @@ const withdraw = async () => {
                     <AlertCircle class="w-6 h-6 text-red-500 shrink-0 mt-0.5" />
                     <div class="space-y-1">
                         <p class="text-sm font-bold text-red-900 dark:text-red-400">Lamaran Tidak Lolos Seleksi</p>
-                        <p class="text-xs text-red-700 dark:text-red-300 leading-relaxed">Terima kasih atas minat Anda pada lowongan magang ini. Sayangnya, perusahaan belum bisa melanjutkan lamaran Anda ke tahap berikutnya. Jangan berkecil hati, mari cari peluang magang hebat lainnya di InterHub!</p>
+                        <p class="text-xs text-red-700 dark:text-red-300 leading-relaxed">Terima kasih atas minat Anda pada lowongan magang ini. Sayangnya, perusahaan belum bisa melanjutkan lamaran Anda ke tahap berikutnya. Jangan berkecil hati, mari cari peluang magang hebat lainnya di InternHub!</p>
                     </div>
                 </div>
 
@@ -294,7 +294,7 @@ const withdraw = async () => {
                                 </div>
                             </div>
                             <p class="text-sm text-white/70 leading-relaxed">
-                                {{ application.internship.company.description || 'Perusahaan terverifikasi yang bekerja sama dengan InterHub.' }}
+                                {{ application.internship.company.description || 'Perusahaan terverifikasi yang bekerja sama dengan InternHub.' }}
                             </p>
                             <Link :href="'/internships/' + application.internship.slug" class="inline-flex items-center gap-2 text-sm font-bold text-primary-400 hover:text-primary-300 transition-colors">
                                 Lihat Detail Lowongan

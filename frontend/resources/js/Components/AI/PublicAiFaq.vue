@@ -59,7 +59,7 @@ const ask = async (q) => {
         <div class="flex-1 overflow-y-auto p-8 space-y-6 custom-scrollbar">
             <div v-if="conversation.length === 0" class="h-full flex flex-col items-center justify-center text-center space-y-6 opacity-50">
                 <MessageSquare class="w-16 h-16 text-white/20" />
-                <p class="text-white/60 font-bold text-sm max-w-[200px]">Halo! Ada yang bisa saya bantu terkait InterHub?</p>
+                <p class="text-white/60 font-bold text-sm max-w-[200px]">Halo! Ada yang bisa saya bantu terkait InternHub?</p>
             </div>
 
             <div

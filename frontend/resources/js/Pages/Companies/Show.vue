@@ -122,7 +122,7 @@ const internships = computed(() => Array.isArray(props.internships) ? props.inte
                         
                         <div class="p-8 bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-100 dark:border-emerald-800/50 rounded-[2.5rem] flex items-center gap-4">
                             <ShieldCheck class="w-8 h-8 text-emerald-500" />
-                            <p class="text-xs font-bold text-emerald-700 dark:text-emerald-400 leading-relaxed">Perusahaan ini telah diverifikasi oleh tim kepatuhan InterHub.</p>
+                            <p class="text-xs font-bold text-emerald-700 dark:text-emerald-400 leading-relaxed">Perusahaan ini telah diverifikasi oleh tim kepatuhan InternHub.</p>
                         </div>
                     </aside>
                 </div>

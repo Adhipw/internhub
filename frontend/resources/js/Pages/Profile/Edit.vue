@@ -419,7 +419,7 @@ type="file" class="hidden" accept="image/*" @change="(e: Event) => {
                                 <div class="flex-1">
                                     <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2">Persetujuan AI (AI Consent)</h3>
                                     <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed mb-6">
-                                        Dengan mengaktifkan fitur ini, Anda memberikan izin kepada sistem InterHub untuk memproses data menggunakan teknologi kecerdasan buatan (Google Gemini) guna memberikan manfaat:
+                                        Dengan mengaktifkan fitur ini, Anda memberikan izin kepada sistem InternHub untuk memproses data menggunakan teknologi kecerdasan buatan (Google Gemini) guna memberikan manfaat:
                                     </p>
                                     <ul v-if="!authStore.isHR && !authStore.isAdmin" class="space-y-3 mb-8">
                                         <li class="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-400">

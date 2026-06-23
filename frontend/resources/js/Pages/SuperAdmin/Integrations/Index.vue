@@ -113,7 +113,7 @@ const getProviderIcon = (provider: string) => ShieldCheck;
       <div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
         <div>
           <h1 class="text-3xl font-bold text-slate-900 dark:text-white mb-2">Integrasi Eksternal</h1>
-          <p class="text-slate-500 dark:text-slate-400">Hubungkan InterHub dengan layanan pihak ketiga melalui API yang aman.</p>
+          <p class="text-slate-500 dark:text-slate-400">Hubungkan InternHub dengan layanan pihak ketiga melalui API yang aman.</p>
         </div>
         
         <button 

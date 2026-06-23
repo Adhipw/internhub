@@ -177,7 +177,7 @@ const deleteMember = (id: number) => {
     <Modal :show="showAddModal" title="Tambah Anggota Tim" @close="showAddModal = false">
       <form class="p-8 space-y-6" @submit.prevent="submitAdd">
         <p class="text-sm text-slate-500 leading-relaxed">
-          Masukkan email user yang sudah terdaftar di InterHub untuk diberikan akses ke perusahaan ini.
+          Masukkan email user yang sudah terdaftar di InternHub untuk diberikan akses ke perusahaan ini.
         </p>
         
         <Input 

@@ -155,7 +155,7 @@ const runFeature = async (payload = {}) => {
                 <div v-if="activeFeature.id === 'support'" class="space-y-4">
                     <div class="bg-indigo-50 p-4 rounded-xl border border-indigo-100">
                         <p class="text-xs text-indigo-700 leading-relaxed font-medium">
-                            Tanyakan apa saja tentang InterHub, bantuan teknis, atau panduan magang.
+                            Tanyakan apa saja tentang InternHub, bantuan teknis, atau panduan magang.
                         </p>
                     </div>
                     <textarea 

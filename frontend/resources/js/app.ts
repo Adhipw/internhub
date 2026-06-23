@@ -14,7 +14,7 @@ import { setupServiceWorker } from './Services/serviceWorker';
 import { startDomI18nBridge } from './Services/domI18n';
 import { route as routeFn, ZiggyVue } from 'ziggy-js';
 
-logger.log('InterHub Web App Starting (Inertia + REST API)...');
+logger.log('InternHub Web App Starting (Inertia + REST API)...');
 
 declare global {
     interface Window {
@@ -121,7 +121,7 @@ window.alert = function (message: any) {
 
 createInertiaApp({
     page: readInitialPageFromLegacyDOM(),
-    title: (title) => title ? `${title} - InterHub` : 'InterHub',
+    title: (title) => title ? `${title} - InternHub` : 'InternHub',
     resolve: async (name) => {
         const page = pages[`./Pages/${name}.vue`];
 
@@ -179,7 +179,7 @@ createInertiaApp({
 
         setupServiceWorker(toastStore);
 
-        logger.log('InterHub Inertia Web App Mounted');
+        logger.log('InternHub Inertia Web App Mounted');
     },
     progress: {
         delay: 250,

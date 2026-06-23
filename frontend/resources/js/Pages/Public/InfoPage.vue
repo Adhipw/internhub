@@ -184,7 +184,7 @@ onMounted(() => {
                                         <div class="p-8 rounded-[2rem] bg-slate-50 dark:bg-neutral-800/50 border border-slate-100 dark:border-neutral-700 flex flex-col items-center text-center">
                                             <Mail class="w-10 h-10 text-primary-600 mb-4" />
                                             <h4 class="font-bold text-slate-900 dark:text-white">{{ t('info.email_support') }}</h4>
-                                            <p class="text-sm text-slate-500 dark:text-neutral-400 mt-2">support@InterHub.my.id</p>
+                                            <p class="text-sm text-slate-500 dark:text-neutral-400 mt-2">support@InternHub.my.id</p>
                                         </div>
                                         <div class="p-8 rounded-[2rem] bg-slate-50 dark:bg-neutral-800/50 border border-slate-100 dark:border-neutral-700 flex flex-col items-center text-center">
                                             <Phone class="w-10 h-10 text-emerald-600 mb-4" />

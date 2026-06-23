@@ -20,9 +20,9 @@ class PasswordResetOtpNotification extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->subject('Reset Password InterHub')
+            ->subject('Reset Password InternHub')
             ->greeting('Halo '.$notifiable->name.'!')
-            ->line('Anda meminta pengaturan ulang password untuk akun InterHub Anda.')
+            ->line('Anda meminta pengaturan ulang password untuk akun InternHub Anda.')
             ->line('Gunakan kode OTP berikut untuk melanjutkan:')
             ->line('**'.$this->otp.'**')
             ->line('Kode ini akan kadaluwarsa dalam 15 menit.')

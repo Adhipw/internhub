@@ -37,7 +37,7 @@ class AiPublicController extends Controller
         $internshipsJson = json_encode($internshipsList, JSON_PRETTY_PRINT);
 
         // 2. Prepare structured system prompt for Gemini
-        $systemPrompt = "You are InterHub's AI Internship Matcher. Below is the list of active internships in our database:\n".
+        $systemPrompt = "You are InternHub's AI Internship Matcher. Below is the list of active internships in our database:\n".
             $internshipsJson."\n\n".
             "Analyze the student's input (major, interests, skills) and recommend the top 3 matching internships.\n".
             "For each match, calculate a 'match_score' (integer between 0 and 100) and write an encouraging, brief 'explanation' (1-2 sentences in Indonesian) why it's a great match.\n\n".

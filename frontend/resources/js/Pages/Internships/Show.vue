@@ -29,13 +29,13 @@ const internship = computed(() => props.internship);
 const updateSeo = () => {
     if (!props.internship) return;
 
-    const companyName = props.internship.company.name ?? 'InterHub';
-    const pageTitle = `${props.internship.title} di ${companyName} - InterHub`;
+    const companyName = props.internship.company.name ?? 'InternHub';
+    const pageTitle = `${props.internship.title} di ${companyName} - InternHub`;
     document.title = pageTitle;
 
     const metaDesc = document.querySelector('meta[name="description"]');
     if (metaDesc) {
-        metaDesc.setAttribute('content', `Daftar lowongan magang ${props.internship.title} di ${companyName} melalui InterHub. Lokasi: ${props.internship.location}.`);
+        metaDesc.setAttribute('content', `Daftar lowongan magang ${props.internship.title} di ${companyName} melalui InternHub. Lokasi: ${props.internship.location}.`);
     }
 };
 
@@ -231,7 +231,7 @@ updateSeo();
                                 </div>
                             </div>
                             <p class="text-sm font-medium text-neutral-500 dark:text-neutral-400 leading-relaxed line-clamp-4">
-                                {{ internship.company?.description || 'Perusahaan terverifikasi di platform InterHub yang berfokus pada inovasi dan pengembangan talenta muda.' }}
+                                {{ internship.company?.description || 'Perusahaan terverifikasi di platform InternHub yang berfokus pada inovasi dan pengembangan talenta muda.' }}
                             </p>
                             <Button variant="outline" class="w-full" @click="inertiaRouter.visit('/companies/' + internship.company?.slug)">
                                 {{ t('company.view_profile') }}

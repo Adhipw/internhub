@@ -292,7 +292,7 @@ const navigation = computed(() => {
         >
             <!-- Sidebar Header -->
             <div class="h-24 flex items-center px-8 shrink-0 overflow-hidden">
-                <Link href="/" class="group" aria-label="InterHub Dashboard">
+                <Link href="/" class="group" aria-label="InternHub Dashboard">
                     <AppLogo 
                         variant="compact" 
                         :show-text="isSidebarOpen" 

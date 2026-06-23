@@ -8,9 +8,9 @@ const props = defineProps<{
 
 const updateHead = () => {
   if (props.title) {
-    document.title = props.title.includes('InterHub') 
+    document.title = props.title.includes('InternHub') 
       ? props.title 
-      : `${props.title} - InterHub`;
+      : `${props.title} - InternHub`;
   }
   
   if (props.description) {

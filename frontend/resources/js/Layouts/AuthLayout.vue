@@ -56,7 +56,7 @@ const t = (key: string) => langStore.t(key);
                     <Link href="/terms" class="hover:text-blue-600 transition-colors">{{ t('info.terms') }}</Link>
                 </div>
                 <p class="text-slate-400 text-[10px] font-medium opacity-60">
-                    &copy; 2026 InterHub Platform Ecosystem
+                    &copy; 2026 InternHub Platform Ecosystem
                 </p>
             </footer>
         </div>

@@ -67,7 +67,7 @@ onUnmounted(() => {
       <div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
         <div>
           <h1 class="text-3xl font-bold text-slate-900 dark:text-white mb-2 text-glow-sm">Analitik & Laporan 📊</h1>
-          <p class="text-slate-500 dark:text-slate-400 font-medium">Pantau pertumbuhan ekosistem InterHub secara real-time.</p>
+          <p class="text-slate-500 dark:text-slate-400 font-medium">Pantau pertumbuhan ekosistem InternHub secara real-time.</p>
         </div>
         <div class="flex items-center gap-3 bg-white dark:bg-slate-800 p-2 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm">
            <div class="px-4 py-2 flex items-center gap-2 text-xs font-bold text-slate-400 uppercase tracking-widest border-r border-slate-100 dark:border-slate-700">

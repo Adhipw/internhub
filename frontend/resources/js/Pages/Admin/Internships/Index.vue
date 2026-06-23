@@ -309,7 +309,7 @@ onMounted(() => {
               </div>
               <div>
                 <h3 class="text-sm font-black text-slate-900 dark:text-white uppercase tracking-widest">Moderasi Cepat AI</h3>
-                <p class="text-[10px] text-slate-500 font-medium">Asisten Tinjau Otomatis InterHub</p>
+                <p class="text-[10px] text-slate-500 font-medium">Asisten Tinjau Otomatis InternHub</p>
               </div>
             </div>
             <button 

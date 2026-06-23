@@ -249,7 +249,7 @@ class ApiHrApplicationController extends ApiBaseController
         $candidateSkills = $detail->skills ?? [];
 
         // Build Gemini prompt
-        $prompt = "Anda adalah Asisten Rekrutmen AI profesional untuk InterHub.
+        $prompt = "Anda adalah Asisten Rekrutmen AI profesional untuk InternHub.
 Tugas Anda adalah membaca data profil kandidat berikut dan menganalisis kecocokannya dengan posisi magang:
 
 Posisi Magang: {$internship->title}

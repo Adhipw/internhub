@@ -87,7 +87,7 @@ onUnmounted(() => {
                     <h1 class="text-5xl font-black text-slate-900 dark:text-white tracking-tight">
                         {{ t('admin.dashboard.title') || 'Control Center' }}
                     </h1>
-                    <p class="text-slate-500 dark:text-slate-400 font-medium text-lg">Monitor dan kelola seluruh ekosistem InterHub.</p>
+                    <p class="text-slate-500 dark:text-slate-400 font-medium text-lg">Monitor dan kelola seluruh ekosistem InternHub.</p>
                 </div>
                 
                 <div class="flex items-center gap-4 bg-white dark:bg-slate-900 p-2 rounded-2xl border border-slate-100 dark:border-white/5 shadow-sm">

@@ -1,6 +1,6 @@
 # 🚀 LAPORAN AUDIT LIVE & KODE KOMPREHENSIF: PORTAL INTERHUB
 
-> **Konteks Audit:** Evaluasi langsung (Live Audit) terhadap homepage InterHub (`http://localhost:8000/`) dan analisis struktur kode frontend Vue 3 / Vite serta backend Laravel.
+> **Konteks Audit:** Evaluasi langsung (Live Audit) terhadap homepage InternHub (`http://localhost:8000/`) dan analisis struktur kode frontend Vue 3 / Vite serta backend Laravel.
 
 ---
 
@@ -15,7 +15,7 @@ Berdasarkan audit komprehensif, kami memberikan nilai **8.2 / 10** dengan rincia
 *   **Responsiveness (9.5/10):** Skalabilitas layout di berbagai resolusi layar berjalan dengan luar biasa baik. Drawer menu mobile sangat taktil dan tidak ada elemen visual yang bertabrakan secara ekstrem.
 
 ### 2. Kesan Pertama (First Impression)
-Website InterHub memberikan impresi **"Wow Factor"** yang sangat kuat saat pertama kali dimuat. Estetika futuristik yang bersih, tipografi dinamis dengan font `Outfit`, pergerakan tombol yang taktil (`active:scale-95`), serta logo SVG minimalis baru memberikan citra bahwa platform ini kredibel, profesional, dan siap pakai oleh mahasiswa modern Indonesia.
+Website InternHub memberikan impresi **"Wow Factor"** yang sangat kuat saat pertama kali dimuat. Estetika futuristik yang bersih, tipografi dinamis dengan font `Outfit`, pergerakan tombol yang taktil (`active:scale-95`), serta logo SVG minimalis baru memberikan citra bahwa platform ini kredibel, profesional, dan siap pakai oleh mahasiswa modern Indonesia.
 
 ### 3. Masalah Paling Kritis (Critical Issues)
 Kami mengidentifikasi **3 masalah teknis kritis** yang harus segera diperbaiki sebelum platform dideploy ke production:
@@ -38,7 +38,7 @@ Berikut adalah tabel matriks temuan audit lengkap beserta dampak, tingkat kepara
 | **5** | **Pusat Bantuan (`/help`)** | FAQ pada tab "Pusat Bantuan" menampilkan pertanyaan yang sama ("Berapa lama proses seleksi magang?") **secara berulang 5 kali berturut-turut**. | Halaman bantuan terlihat amatir, rusak, dan tidak kredibel. | **MEDIUM** | Buka `InfoPage.vue` baris 155-167. Hapus kode iterasi statis `v-for="i in 5"` yang dipasangkan pada key statis `t('info.faq_q1')`, dan ubah dengan melalukan loop dinamis pada array FAQ yang sesungguhnya (mirip seperti di `Welcome.vue`). |
 | **6** | **Rekomendasi AI (Beranda & Dashboard)** | Input pencarian rekomendasi AI hanya berupa **mockup visual**. Mengeklik "Cari Rekomendasi" tidak memicu visual loading ataupun respons hasil rekomendasi. | User merasa fitur kecerdasan buatan (AI) yang diiklankan adalah kebohongan / rusak. | **MEDIUM** | Tambahkan umpan balik visual (seperti modal *"Segera Hadir"* atau *Toast Notification*) jika modul backend AI belum diintegrasikan, agar user tahu fitur ini sedang dipersiapkan. |
 | **7** | **Language Switcher** | Status bahasa kembali **reset ke Bahasa Inggris (EN) setiap kali halaman direfresh**, meskipun user sebelumnya telah memilih Bahasa Indonesia (ID). | Masalah lokalisasi; user terganggu karena harus mengganti bahasa secara manual setiap kali memuat halaman baru. | **HIGH** | Pada file `app.ts` baris 98, fungsi `langStore.fetchTranslations()` dipanggil tanpa argumen di background saat inisialisasi, yang menimpa `locale` aktif dengan data default server (English) karena inisialisasi Inertia page props. Perbaiki logika sinkronisasi agar mendahulukan nilai di `localStorage` saat bootstrapping. |
-| **8** | **Hubungi Kami (`/help`)** | Penulisan alamat email support menggunakan kombinasi kapitalisasi tidak standar: `support@InterHub.my.id`. | Secara estetika kurang profesional. Email secara standar ditulis dengan huruf kecil semua. | **LOW** | Ubah penulisan di `InfoPage.vue` baris 178 menjadi `support@interhub.my.id`. |
+| **8** | **Hubungi Kami (`/help`)** | Penulisan alamat email support menggunakan kombinasi kapitalisasi tidak standar: `support@InternHub.my.id`. | Secara estetika kurang profesional. Email secara standar ditulis dengan huruf kecil semua. | **LOW** | Ubah penulisan di `InfoPage.vue` baris 178 menjadi `support@interhub.my.id`. |
 | **9** | **SEO Public Pages** | Halaman lowongan magang public menggunakan render murni SPA (Client-Side Rendering). | Bot Google/Search Engine tidak dapat mengindeks detail lowongan secara optimal karena konten dimuat secara dinamis via JS. | **MEDIUM** | Integrasikan SSR (Server-Side Rendering) menggunakan Inertia SSR atau manfaatkan fitur pre-rendering Laravel untuk rute publik `/internships/:slug` agar performa SEO maksimal. |
 
 ---
@@ -103,7 +103,7 @@ Kami menguji ketahanan layout responsif di empat resolusi standar berikut:
 
 ## ✍️ F. Audit Copywriting (Bahasa Indonesia)
 
-Copywriting yang digunakan di InterHub sudah cukup baik, memotivasi, dan relevan dengan segmen mahasiswa Indonesia. Namun, ada beberapa inkonsistensi yang perlu diperbaiki:
+Copywriting yang digunakan di InternHub sudah cukup baik, memotivasi, dan relevan dengan segmen mahasiswa Indonesia. Namun, ada beberapa inkonsistensi yang perlu diperbaiki:
 
 ### 1. Analisis Gaya Bahasa & Kesesuaian
 *   **Gaya Bahasa:** Menggunakan kata-kata inklusif seperti *"Kamu"*, *"Temukan"*, dan *"Mulai"* yang sangat cocok untuk mahasiswa.
@@ -138,14 +138,14 @@ Untuk mempermudah tim developer mengeksekusi perbaikan, berikut adalah daftar pr
 
 ### ✨ Prioritas 3: Nice to Have (Low / Enhancement)
 1.  **Standardisasi Copywriting:** Ubah semua instansi teks `"Verified"` menjadi `"Terverifikasi"` pada localization file Indonesia.
-2.  **Perbaikan Email Capitalization:** Ubah format penulisan email `support@InterHub.my.id` menjadi lowercase `support@interhub.my.id`.
+2.  **Perbaikan Email Capitalization:** Ubah format penulisan email `support@InternHub.my.id` menjadi lowercase `support@interhub.my.id`.
 3.  **Optimalisasi Spacing Mobile:** Kurangi padding `py-24` menjadi `py-12` pada layar lebar 375px untuk menghemat ruang scroll layar.
 
 ---
 
 ## 💡 H. Rekomendasi Final
 
-Agar website InterHub terlihat jauh lebih kredibel, profesional, dan siap digunakan secara massal, kami menyarankan langkah konkret berikut:
+Agar website InternHub terlihat jauh lebih kredibel, profesional, dan siap digunakan secara massal, kami menyarankan langkah konkret berikut:
 
 1.  **Implementasikan Validasi Form Sisi Klien (Client-side Validation):** Sebelum mengirimkan pencarian kosong atau input rekomendasi AI, berikan validasi instan berupa animasi getar pada kolom input jika data yang dimasukkan kosong atau tidak valid.
 2.  **Tambahkan Visual Shimmer Loading State:** Saat memuat detail lowongan atau data pencarian, gunakan komponen skeleton loader premium yang sudah tersedia (`Skeleton.vue`) alih-alih transisi layar hitam instan agar terkesan sangat mulus dan interaktif.

@@ -23,7 +23,7 @@ class InternshipController extends Controller
     {
         view()->share('seo', [
             'title' => 'Cari Lowongan Magang Mahasiswa Terbaik',
-            'description' => 'Temukan lowongan magang hebat di InterHub. Peluang karir terbaik untuk mahasiswa Indonesia dengan pencocokan kecerdasan buatan (Gemini AI).',
+            'description' => 'Temukan lowongan magang hebat di InternHub. Peluang karir terbaik untuk mahasiswa Indonesia dengan pencocokan kecerdasan buatan (Gemini AI).',
             'image' => asset('brand/logo-mark.svg'),
             'url' => request()->url(),
             'type' => 'website',
@@ -66,7 +66,7 @@ class InternshipController extends Controller
             abort(404);
         }
 
-        $companyName = $internship->company->name ?? 'InterHub';
+        $companyName = $internship->company->name ?? 'InternHub';
         $title = $internship->title.' di '.$companyName;
         $description = 'Daftar sekarang untuk lowongan magang '.$internship->title.' di '.$companyName.'. Lokasi: '.$internship->location.'. '.strip_tags(substr($internship->description ?? '', 0, 150)).'...';
         $logoUrl = $internship->company->logo_url ?? asset('brand/logo-mark.svg');

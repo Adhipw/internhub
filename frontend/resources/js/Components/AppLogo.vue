@@ -69,7 +69,7 @@ const cobalt = computed(() => props.isDarkMode ? '#60A5FA' : '#0056B3'); // Coba
             </svg>
         </div>
 
-        <!-- Wordmark: InterHub -->
+        <!-- Wordmark: InternHub -->
         <div v-if="variant !== 'mark' && showText" class="flex items-center">
             <h1 
                 :class="[
@@ -77,7 +77,7 @@ const cobalt = computed(() => props.isDarkMode ? '#60A5FA' : '#0056B3'); // Coba
                     'font-black tracking-tight flex items-center'
                 ]"
             >
-                <span :class="isDarkMode ? 'text-white' : 'text-slate-950'">Inter</span>
+                <span :class="isDarkMode ? 'text-white' : 'text-slate-950'">Intern</span>
                 <span :class="isDarkMode ? 'text-blue-400' : 'text-blue-600'">Hub</span>
             </h1>
             

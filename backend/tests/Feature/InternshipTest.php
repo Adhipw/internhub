@@ -93,6 +93,6 @@ class InternshipTest extends TestCase
         $response = $this->get(route('welcome'));
 
         $response->assertStatus(200);
-        $response->assertSee('InterHub');
+        $response->assertSee('InternHub');
     }
 }

@@ -72,7 +72,7 @@ onUnmounted(() => {
         >
             <div class="max-w-7xl mx-auto px-4 sm:px-6 h-full flex items-center justify-between">
                 <!-- Logo -->
-                <Link href="/" class="group shrink-0" aria-label="InterHub Home">
+                <Link href="/" class="group shrink-0" aria-label="InternHub Home">
                     <AppLogo 
                         variant="full" 
                         size="md" 
@@ -184,7 +184,7 @@ onUnmounted(() => {
             <div class="max-w-7xl mx-auto px-6">
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-16 mb-20">
                     <div class="lg:col-span-1">
-                        <Link href="/" class="inline-block mb-6 group" aria-label="InterHub Home">
+                        <Link href="/" class="inline-block mb-6 group" aria-label="InternHub Home">
                             <AppLogo 
                                 variant="full" 
                                 size="md" 
@@ -225,7 +225,7 @@ onUnmounted(() => {
                 </div>
                 
                 <div class="pt-12 border-t flex flex-col md:flex-row justify-between items-center gap-8 text-xs font-bold uppercase tracking-widest" :class="isDarkMode ? 'border-slate-800 text-slate-500' : 'border-slate-100 text-slate-400'">
-                    <p>© 2026 InterHub. {{ t('footer.all_rights') }}</p>
+                    <p>© 2026 InternHub. {{ t('footer.all_rights') }}</p>
                     <div class="flex items-center gap-8">
                         <span>{{ t('footer.made_in') }}</span>
                     </div>

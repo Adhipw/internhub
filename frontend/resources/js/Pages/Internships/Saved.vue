@@ -47,7 +47,7 @@ const removeSaved = async (slug: string) => {
 </script>
 
 <template>
-    <Head title="Internship Tersimpan - InterHub" />
+    <Head title="Internship Tersimpan - InternHub" />
 
     <DashboardLayout>
         <div class="max-w-5xl mx-auto space-y-10">

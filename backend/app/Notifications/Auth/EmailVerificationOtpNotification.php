@@ -20,9 +20,9 @@ class EmailVerificationOtpNotification extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->subject('Kode Verifikasi InterHub')
+            ->subject('Kode Verifikasi InternHub')
             ->greeting('Halo '.$notifiable->name.'!')
-            ->line('Terima kasih telah mendaftar di InterHub.')
+            ->line('Terima kasih telah mendaftar di InternHub.')
             ->line('Gunakan kode OTP berikut untuk memverifikasi akun Anda:')
             ->line('**'.$this->otp.'**')
             ->line('Kode ini akan kadaluwarsa dalam 10 menit.')

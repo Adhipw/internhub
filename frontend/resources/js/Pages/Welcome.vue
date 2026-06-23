@@ -186,7 +186,7 @@ const faqs = computed(() => [
 
 <template>
     <PublicLayout>
-        <Head :title="t('hero.title') + ' - InterHub'" />
+        <Head :title="t('hero.title') + ' - InternHub'" />
 
         <!-- 1. Hero Section -->
         <section class="relative pt-16 pb-24 lg:pt-24 lg:pb-32 overflow-hidden transition-colors duration-500" :class="isDarkMode ? 'bg-slate-950' : 'bg-white'">
@@ -431,7 +431,7 @@ v-for="item in [
             </div>
         </section>
 
-        <!-- 7. Keunggulan InterHub -->
+        <!-- 7. Keunggulan InternHub -->
         <section class="py-24 transition-colors duration-300" :class="isDarkMode ? 'bg-slate-950' : 'bg-white'">
             <div class="max-w-7xl mx-auto px-6">
                 <div class="text-center mb-16">

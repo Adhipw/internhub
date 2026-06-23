@@ -3,9 +3,11 @@
 namespace App\Http\Middleware;
 
 use App\Models\Company;
+use App\Models\FeatureFlag;
 use App\Models\User;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use Inertia\Middleware;
 use Tighten\Ziggy\Ziggy;
@@ -47,19 +49,20 @@ class HandleInertiaRequests extends Middleware
                 'session_id' => $request->session()->getId(),
             ],
             'locale' => app()->getLocale(),
-            'translations' => fn() => \Illuminate\Support\Facades\Cache::remember('translations_' . app()->getLocale(), 3600, function () {
-                $path = base_path('lang/' . app()->getLocale() . '.json');
+            'translations' => fn () => Cache::remember('translations_'.app()->getLocale(), 3600, function () {
+                $path = base_path('lang/'.app()->getLocale().'.json');
+
                 return file_exists($path) ? json_decode(file_get_contents($path), true) : [];
             }),
-            'stats' => fn() => $this->publicStats(),
-            'feature_flags' => fn() => \Illuminate\Support\Facades\Cache::remember('global_feature_flags', 60, function () {
+            'stats' => fn () => $this->publicStats(),
+            'feature_flags' => fn () => Cache::remember('global_feature_flags', 60, function () {
                 try {
-                    return \App\Models\FeatureFlag::pluck('is_enabled', 'key')->toArray();
+                    return FeatureFlag::pluck('is_enabled', 'key')->toArray();
                 } catch (\Exception $e) {
                     return [];
                 }
             }),
-            'ziggy' => fn() => [
+            'ziggy' => fn () => [
                 ...(new Ziggy)->toArray(),
                 'location' => $request->url(),
             ],
@@ -92,22 +95,23 @@ class HandleInertiaRequests extends Middleware
      */
     private function publicStats(): array
     {
-        return \Illuminate\Support\Facades\Cache::remember('public_stats', 60, function () {
+        return Cache::remember('public_stats', 60, function () {
+            $applicantsCount = 0;
+            $companiesCount = 0;
+
             try {
-                return [
-                    'applicants_count' => User::where('role', 'user')->count(),
-                    'companies_count' => Company::where('is_verified', true)->count(),
-                ];
+                $applicantsCount = User::where('role', 'user')->count();
+                $companiesCount = Company::where('is_verified', true)->count();
             } catch (QueryException $e) {
                 Log::warning('Failed to load shared public stats', [
-                'message' => $e->getMessage(),
-            ]);
+                    'message' => $e->getMessage(),
+                ]);
+            }
 
             return [
-                'applicants_count' => 0,
-                'companies_count' => 0,
+                'applicants_count' => $applicantsCount,
+                'companies_count' => $companiesCount,
             ];
-            }
         });
     }
 }

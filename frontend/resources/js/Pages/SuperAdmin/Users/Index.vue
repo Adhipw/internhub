@@ -130,7 +130,7 @@ const getApiErrorMessage = (error: any) => {
     return error.response?.data?.message || t('common.error_occurred');
 };
 
-const submitCreate = async () => {
+const submitCreate = () => {
     processing.value = true;
     createForm.errors = {};
     
@@ -143,21 +143,19 @@ const submitCreate = async () => {
         }
     });
 
-    try {
-        await api.post('/super-admin/users', formData, {
-            headers: { 'Content-Type': 'multipart/form-data' }
-        });
-        showCreateModal.value = false;
-        inertiaRouter.reload({ only: ['users'] });
-    } catch (error: any) {
-        if (error.response?.data?.errors) {
-            createForm.errors = error.response.data.errors;
+    inertiaRouter.post('/super-admin/users', formData, {
+        preserveScroll: true,
+        onSuccess: () => {
+            showCreateModal.value = false;
+        },
+        onError: (errors) => {
+            createForm.errors = errors;
+            toast.error(t('common.error_occurred'));
+        },
+        onFinish: () => {
+            processing.value = false;
         }
-        logger.error('Failed to create user:', error);
-        toast.error(getApiErrorMessage(error));
-    } finally {
-        processing.value = false;
-    }
+    });
 };
 
 const handleAvatarChange = (event: any, mode: 'create' | 'edit') => {
@@ -200,7 +198,7 @@ const openEditModal = (user: User) => {
 };
 
 
-const submitEdit = async () => {
+const submitEdit = () => {
     processing.value = true;
     editForm.errors = {};
     
@@ -215,22 +213,24 @@ const submitEdit = async () => {
         }
     });
 
-    try {
-        if (!editingUser.value) return;
-        await api.post(`/super-admin/users/${editingUser.value.id}`, formData, {
-            headers: { 'Content-Type': 'multipart/form-data' }
-        });
-        showEditModal.value = false;
-        inertiaRouter.reload({ only: ['users'] });
-    } catch (error: any) {
-        if (error.response?.data?.errors) {
-            editForm.errors = error.response.data.errors;
-        }
-        logger.error('Failed to update user:', error);
-        toast.error(getApiErrorMessage(error));
-    } finally {
+    if (!editingUser.value) {
         processing.value = false;
+        return;
     }
+
+    inertiaRouter.post(`/super-admin/users/${editingUser.value.id}`, formData, {
+        preserveScroll: true,
+        onSuccess: () => {
+            showEditModal.value = false;
+        },
+        onError: (errors) => {
+            editForm.errors = errors;
+            toast.error(t('common.error_occurred'));
+        },
+        onFinish: () => {
+            processing.value = false;
+        }
+    });
 };
 
 
@@ -247,29 +247,34 @@ const openConfirmModal = (type: 'ban' | 'delete' | 'unban', user: User) => {
     showConfirmModal.value = true;
 };
 
-const handleConfirmedAction = async () => {
+const handleConfirmedAction = () => {
     if (!confirmUser.value) return;
 
     processing.value = true;
-    try {
-        if (confirmActionType.value === 'delete') {
-            await api.delete(`/super-admin/users/${confirmUser.value.id}`);
-        } else if (confirmActionType.value === 'ban') {
-            if (!banReason.value) {
-                alert('Alasan blokir harus diisi.');
-                processing.value = false;
-                return;
-            }
-            await api.post(`/super-admin/users/${confirmUser.value.id}/ban`, { reason: banReason.value });
-        } else if (confirmActionType.value === 'unban') {
-            await api.post(`/super-admin/users/${confirmUser.value.id}/unban`);
+    const options = {
+        preserveScroll: true,
+        onSuccess: () => {
+            showConfirmModal.value = false;
+        },
+        onError: () => {
+            toast.error(t('common.error_occurred'));
+        },
+        onFinish: () => {
+            processing.value = false;
         }
-        showConfirmModal.value = false;
-        inertiaRouter.reload({ only: ['users'] });
-    } catch (error: any) {
-        alert(error.response?.data?.message || t('common.error_occurred'));
-    } finally {
-        processing.value = false;
+    };
+
+    if (confirmActionType.value === 'delete') {
+        inertiaRouter.delete(`/super-admin/users/${confirmUser.value.id}`, options);
+    } else if (confirmActionType.value === 'ban') {
+        if (!banReason.value) {
+            alert('Alasan blokir harus diisi.');
+            processing.value = false;
+            return;
+        }
+        inertiaRouter.patch(`/super-admin/users/${confirmUser.value.id}/ban`, { reason: banReason.value }, options);
+    } else if (confirmActionType.value === 'unban') {
+        inertiaRouter.patch(`/super-admin/users/${confirmUser.value.id}/unban`, {}, options);
     }
 };
 

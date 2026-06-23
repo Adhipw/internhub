@@ -22,7 +22,7 @@ class StoreInternshipRequest extends FormRequest
             'location' => 'required_if:type,Office,Hybrid|nullable|string',
             'salary_range' => 'nullable|string',
             'deadline_at' => 'nullable|date|after:today',
-            'status' => 'required|in:draft,published',
+            'status' => 'required|in:draft,published,closed',
         ];
     }
 }

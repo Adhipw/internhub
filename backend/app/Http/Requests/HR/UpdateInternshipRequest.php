@@ -12,18 +12,21 @@ class UpdateInternshipRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true; // Handled by policy in controller
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, ValidationRule|array<mixed>|string>
-     */
     public function rules(): array
     {
         return [
-            //
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'requirements' => 'nullable|string',
+            'benefits' => 'nullable|string',
+            'type' => 'required|in:WFH,Office,Hybrid',
+            'location' => 'required_if:type,Office,Hybrid|nullable|string',
+            'salary_range' => 'nullable|string',
+            'deadline_at' => 'nullable|date',
+            'status' => 'required|in:draft,published,closed',
         ];
     }
 }

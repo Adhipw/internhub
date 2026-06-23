@@ -67,11 +67,11 @@ const submit = () => {
               <div>
                 <label class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Tipe Magang</label>
                 <select v-model="form.type" class="w-full rounded-xl border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-sm focus:ring-primary-500 focus:border-primary-500 h-[42px] transition-all">
-                  <option value="full-time">Full-time</option>
-                  <option value="part-time">Part-time</option>
-                  <option value="remote">Remote</option>
-                  <option value="hybrid">Hybrid</option>
+                  <option value="Office">Office (WFO)</option>
+                  <option value="WFH">Remote (WFH)</option>
+                  <option value="Hybrid">Hybrid</option>
                 </select>
+                <div v-if="form.errors.type" class="mt-1 text-xs text-red-600">{{ form.errors.type }}</div>
               </div>
               <Input 
                 v-model="form.location"
@@ -148,6 +148,7 @@ const submit = () => {
                 <option value="draft">Draft</option>
                 <option value="closed">Ditutup</option>
               </select>
+              <div v-if="form.errors.status" class="mt-1 text-xs text-red-600">{{ form.errors.status }}</div>
             </div>
           </div>
         </section>

@@ -159,7 +159,7 @@ onUnmounted(() => {
                         {{ t('super_admin.dashboard.root_authority') }}
                     </div>
                     <h1 class="text-5xl font-black text-slate-900 dark:text-white tracking-tight">
-                        <span class="text-indigo-600">{{ t('super_admin.dashboard.platform_commander') }}</span>
+                        Super Admin <span class="text-indigo-600">Dashboard</span>
                     </h1>
                     <p class="text-slate-500 dark:text-slate-400 font-medium text-lg">{{ t('super_admin.dashboard.sub_desc') }}</p>
                 </div>

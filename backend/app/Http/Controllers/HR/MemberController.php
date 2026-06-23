@@ -22,7 +22,7 @@ class MemberController extends Controller
 
         return Inertia::render('HR/Team/Index', [
             'members' => $members,
-            'roles' => collect(CompanyRole::cases())->map(fn ($role) => [
+            'roles' => collect(CompanyRole::cases())->map(fn($role) => [
                 'value' => $role->value,
                 'label' => $role->label(),
             ]),

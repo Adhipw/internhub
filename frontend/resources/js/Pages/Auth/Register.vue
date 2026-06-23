@@ -66,15 +66,15 @@ const submit = async () => {
         <template #title>{{ t('auth.create_account') }}</template>
         <template #subtitle>{{ t('auth.register_subtitle') }}</template>
 
-        <GoogleAuthButton :processing="form.processing" />
-        
-        <AuthDivider />
+        <template v-if="$page.props.feature_flags?.social_login !== false">
+            <GoogleAuthButton :processing="form.processing" />
+            <AuthDivider />
+        </template>
 
         <form class="space-y-6" @submit.prevent="submit">
             <div v-if="generalError" class="p-3 bg-red-50 text-red-600 text-sm rounded-lg border border-red-100">
                 {{ generalError }}
             </div>
-
             <!-- Role Selector -->
             <div class="grid grid-cols-2 gap-4 mb-8">
                 <button 

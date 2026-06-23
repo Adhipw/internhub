@@ -34,6 +34,7 @@ declare module '@inertiajs/core' {
         errors?: Record<string, string> & {
             application?: string;
         };
+        feature_flags?: Record<string, boolean>;
     }
 }
 

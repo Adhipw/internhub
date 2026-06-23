@@ -676,7 +676,7 @@ v-for="item in [
                     </p>
                     
                     <div class="flex flex-col md:flex-row justify-center items-center gap-6 mb-20">
-                        <Link href="/register" class="w-full md:w-auto bg-blue-600 text-white px-16 py-6 rounded-full font-black text-lg uppercase tracking-[0.2em] hover:bg-blue-700 hover:scale-105 transition-all shadow-2xl shadow-blue-600/40">
+                        <Link v-if="$page.props.feature_flags?.public_registration !== false" href="/register" class="w-full md:w-auto bg-blue-600 text-white px-16 py-6 rounded-full font-black text-lg uppercase tracking-[0.2em] hover:bg-blue-700 hover:scale-105 transition-all shadow-2xl shadow-blue-600/40">
                             {{ t('cta.btn_register') }}
                         </Link>
                         <Link href="/internships" class="w-full md:w-auto px-16 py-6 rounded-full font-black text-lg uppercase tracking-[0.2em] border-2 transition-all hover:bg-slate-50 dark:hover:bg-slate-800" :class="isDarkMode ? 'border-slate-800 text-white' : 'border-slate-200 text-slate-950'">

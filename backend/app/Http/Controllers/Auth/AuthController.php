@@ -7,6 +7,7 @@ use App\Enums\UserRole;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisterRequest;
+use App\Models\FeatureFlag;
 use App\Models\User;
 use App\Notifications\Auth\EmailVerificationOtpNotification;
 use App\Notifications\Auth\SuspiciousLoginNotification;
@@ -38,11 +39,21 @@ class AuthController extends Controller
 
     public function showRegister()
     {
+        $flag = FeatureFlag::where('key', 'public_registration')->first();
+        if ($flag && ! $flag->is_enabled) {
+            abort(403, 'Pendaftaran akun baru saat ini sedang ditutup.');
+        }
+
         return Inertia::render('Auth/Register');
     }
 
     public function register(RegisterRequest $request, RegisterUserAction $registerAction, EmailVerificationOtpService $otpService)
     {
+        $flag = FeatureFlag::where('key', 'public_registration')->first();
+        if ($flag && ! $flag->is_enabled) {
+            abort(403, 'Pendaftaran akun baru saat ini sedang ditutup.');
+        }
+
         $user = $registerAction->execute($request->validated());
 
         // Roles that bypass OTP/Verification

@@ -118,7 +118,7 @@ onUnmounted(() => {
                         </template>
                         <template v-else>
                             <Link href="/login" class="text-sm font-bold hover:text-blue-600 transition-colors px-2" :class="isDarkMode ? 'text-slate-300' : 'text-slate-600'">{{ t('nav.login') }}</Link>
-                            <Link href="/register" class="bg-blue-600 text-white px-6 py-2.5 rounded-full text-sm font-bold hover:bg-blue-700 shadow-lg shadow-blue-600/10 transition-all">
+                            <Link v-if="$page.props.feature_flags?.public_registration !== false" href="/register" class="bg-blue-600 text-white px-6 py-2.5 rounded-full text-sm font-bold hover:bg-blue-700 shadow-lg shadow-blue-600/10 transition-all">
                                 {{ t('nav.register') }}
                             </Link>
                             <Link href="/login?role=hr" class="text-sm font-bold text-blue-600 border border-blue-600 px-6 py-2.5 rounded-xl hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-all">
@@ -167,7 +167,7 @@ onUnmounted(() => {
                     </template>
                     <template v-else>
                         <Link href="/login" class="text-center font-bold bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white py-4 rounded-2xl" @click="isMobileMenuOpen = false">{{ t('nav.login') }}</Link>
-                        <Link href="/register" class="bg-blue-600 text-white px-6 py-4 rounded-2xl text-center font-bold" @click="isMobileMenuOpen = false">{{ t('nav.register') }}</Link>
+                        <Link v-if="$page.props.feature_flags?.public_registration !== false" href="/register" class="bg-blue-600 text-white px-6 py-4 rounded-2xl text-center font-bold" @click="isMobileMenuOpen = false">{{ t('nav.register') }}</Link>
                         <Link href="/login?role=hr" class="text-center font-bold text-blue-600 border border-blue-600 py-4 rounded-2xl" @click="isMobileMenuOpen = false">{{ t('nav.post_job') }}</Link>
                     </template>
                 </div>

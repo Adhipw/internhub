@@ -51,6 +51,13 @@ class HandleInertiaRequests extends Middleware
                 ? json_decode(file_get_contents(base_path('lang/' . app()->getLocale() . '.json')), true)
                 : [],
             'stats' => fn() => $this->publicStats(),
+            'feature_flags' => fn() => \Illuminate\Support\Facades\Cache::remember('global_feature_flags', 60, function () {
+                try {
+                    return \App\Models\FeatureFlag::pluck('is_enabled', 'key')->toArray();
+                } catch (\Exception $e) {
+                    return [];
+                }
+            }),
             'ziggy' => fn() => [
                 ...(new Ziggy)->toArray(),
                 'location' => $request->url(),

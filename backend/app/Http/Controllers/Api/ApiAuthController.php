@@ -6,6 +6,7 @@ use App\Actions\Auth\RegisterUserAction;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Http\Resources\Api\UserResource;
+use App\Models\FeatureFlag;
 use App\Models\User;
 use App\Notifications\Auth\EmailVerificationOtpNotification;
 use App\Notifications\Auth\PasswordResetOtpNotification;
@@ -61,6 +62,11 @@ class ApiAuthController extends ApiBaseController
      */
     public function register(RegisterRequest $request, RegisterUserAction $registerAction, EmailVerificationOtpService $otpService): JsonResponse
     {
+        $flag = FeatureFlag::where('key', 'public_registration')->first();
+        if ($flag && ! $flag->is_enabled) {
+            return $this->sendError(__('Pendaftaran akun baru saat ini sedang ditutup.'), [], 403);
+        }
+
         $user = $registerAction->execute($request->validated());
 
         $otp = $otpService->generate($user->email);
@@ -103,7 +109,7 @@ class ApiAuthController extends ApiBaseController
             $token = $user->currentAccessToken();
 
             // Delete personal access token if it exists and is not a transient token (session-based)
-            if ($token && ! ($token instanceof TransientToken)) {
+            if ($token && ! ($token instanceof TransientToken) && method_exists($token, 'delete')) {
                 $token->delete();
             }
 

@@ -93,9 +93,10 @@ const submit = async () => {
             {{ t('auth.login_subtitle') }}
         </template>
 
-        <GoogleAuthButton :processing="processing" />
-        
-        <AuthDivider />
+        <template v-if="$page.props.feature_flags?.social_login !== false">
+            <GoogleAuthButton :processing="processing" />
+            <AuthDivider />
+        </template>
 
         <form class="space-y-6" @submit.prevent="submit">
             <div v-if="errors.general" class="p-4 bg-red-50 text-red-600 text-xs font-bold rounded-2xl border border-red-100 text-center">
@@ -147,7 +148,7 @@ const submit = async () => {
             </LoadingButton>
         </form>
 
-        <div class="mt-8">
+        <div v-if="$page.props.feature_flags?.public_registration !== false" class="mt-8">
             <AuthLink 
                 :label="t('auth.no_account')" 
                 :link-text="t('auth.register_link')" 

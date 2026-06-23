@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Enums\UserRole;
 use App\Http\Controllers\Controller;
 use App\Models\SocialAccount;
+use App\Models\FeatureFlag;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -17,6 +18,11 @@ class SocialiteController extends Controller
 {
     public function redirect()
     {
+        $flag = FeatureFlag::where('key', 'social_login')->first();
+        if ($flag && ! $flag->is_enabled) {
+            abort(403, 'Login dengan sosial media saat ini sedang dinonaktifkan.');
+        }
+
         /** @var GoogleProvider $driver */
         $driver = Socialite::driver('google');
 
@@ -25,6 +31,11 @@ class SocialiteController extends Controller
 
     public function callback()
     {
+        $flag = FeatureFlag::where('key', 'social_login')->first();
+        if ($flag && ! $flag->is_enabled) {
+            abort(403, 'Login dengan sosial media saat ini sedang dinonaktifkan.');
+        }
+
         try {
             /** @var GoogleProvider $driver */
             $driver = Socialite::driver('google');

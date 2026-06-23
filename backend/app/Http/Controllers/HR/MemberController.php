@@ -34,11 +34,38 @@ class MemberController extends Controller
         $company = app('current_company');
 
         $request->validate([
-            'email' => 'required|email|exists:users,email',
+            'email' => 'required|email',
+            'name' => 'nullable|string|max:255',
+            'password' => 'nullable|string|min:8',
             'role' => ['required', new Enum(CompanyRole::class)],
         ]);
 
         $user = User::where('email', $request->email)->first();
+        $isNewUser = false;
+
+        if (!$user) {
+            $request->validate([
+                'name' => 'required|string|max:255',
+                'password' => 'required|string|min:8',
+            ], [
+                'name.required' => 'Nama wajib diisi untuk membuat akun baru.',
+                'password.required' => 'Password wajib diisi untuk membuat akun baru.',
+            ]);
+
+            $user = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => \Illuminate\Support\Facades\Hash::make($request->password),
+                'role' => 'mentor',
+                'is_active' => false,
+            ]);
+
+            if (method_exists($user, 'assignRole')) {
+                $user->assignRole('mentor');
+            }
+
+            $isNewUser = true;
+        }
 
         // Check if already a member
         $exists = CompanyMember::where('company_id', $company->id)
@@ -53,13 +80,14 @@ class MemberController extends Controller
             'company_id' => $company->id,
             'user_id' => $user->id,
             'role' => $request->role,
-            'is_active' => true,
+            'is_active' => true, // team link is active, but User is inactive
         ]);
 
-        // Sync Spatie role if needed (optional, depends on system design)
-        // For now, we trust the CompanyMember role for scope
-
         AuditService::log('company_member_added', $member, "Member added: {$user->name} as {$request->role}");
+
+        if ($isNewUser) {
+            return back()->with('status', 'Akun mentor berhasil dibuat namun menunggu verifikasi Admin untuk aktif.');
+        }
 
         return back()->with('status', 'Anggota tim berhasil ditambahkan.');
     }

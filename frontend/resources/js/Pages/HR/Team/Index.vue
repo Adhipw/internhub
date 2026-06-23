@@ -47,7 +47,9 @@ const showEditModal = ref(false);
 const selectedMember = ref<TeamMember | null>(null);
 
 const addForm = useForm({
+  name: '',
   email: '',
+  password: '',
   role: 'hr',
 });
 
@@ -73,7 +75,7 @@ const submitAdd = () => {
     },
     onError: (errors) => {
       const toastStore = useToastStore();
-      if (!errors.email && !errors.role) {
+      if (!errors.email && !errors.role && !errors.name && !errors.password) {
         toastStore.error('Gagal menambahkan anggota.');
       }
     }
@@ -177,15 +179,30 @@ const deleteMember = (id: number) => {
     <Modal :show="showAddModal" title="Tambah Anggota Tim" @close="showAddModal = false">
       <form class="p-8 space-y-6" @submit.prevent="submitAdd">
         <p class="text-sm text-slate-500 leading-relaxed">
-          Masukkan email user yang sudah terdaftar di InternHub untuk diberikan akses ke perusahaan ini.
+          Masukkan email user yang sudah terdaftar, ATAU masukkan Nama Lengkap & Password untuk membuatkan akun baru untuk Mentor Anda (memerlukan persetujuan Admin).
         </p>
         
+        <Input 
+          v-model="addForm.name"
+          label="Nama Lengkap (Jika Akun Baru)"
+          placeholder="Contoh: John Doe"
+          :error="addForm.errors.name"
+        />
+
         <Input 
           v-model="addForm.email"
           label="Email User"
           placeholder="user@example.com"
           :error="addForm.errors.email"
           required
+        />
+
+        <Input 
+          v-model="addForm.password"
+          label="Password (Jika Akun Baru)"
+          type="password"
+          placeholder="••••••••"
+          :error="addForm.errors.password"
         />
 
         <div>

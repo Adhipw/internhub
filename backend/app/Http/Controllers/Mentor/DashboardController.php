@@ -14,7 +14,7 @@ class DashboardController extends Controller
     public function index()
     {
         /** @var \App\Models\User $user */
-        $user = auth()->user();
+        $user = \Illuminate\Support\Facades\Auth::user();
         $company = app('current_company');
 
         $query = Application::where('mentor_user_id', $user->id)

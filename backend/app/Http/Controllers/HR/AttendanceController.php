@@ -69,7 +69,7 @@ class AttendanceController extends Controller
         }
 
         /** @var \App\Models\User $user */
-        $user = auth()->user();
+        $user = \Illuminate\Support\Facades\Auth::user();
 
         $correction->update([
             'status' => 'approved',

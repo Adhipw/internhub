@@ -312,7 +312,7 @@ onUnmounted(() => {
                 <!-- Super Admin Sidebar -->
                 <div class="space-y-12">
                     <!-- Master Control Center -->
-                    <Card class="!p-10 !rounded-[4rem] !bg-slate-950 text-white border-none shadow-2xl relative overflow-hidden group">
+                    <Card class="!p-10 !rounded-[4rem] bg-white dark:!bg-slate-950 text-slate-900 dark:text-white border-none shadow-2xl relative overflow-hidden group">
                         <Database class="w-24 h-24 absolute -right-6 -bottom-6 opacity-10 group-hover:scale-110 transition-transform" />
                         <h3 class="text-2xl font-black mb-8 relative z-10 leading-tight">{{ t('sidebar.system_integration') || 'Control Center' }}</h3>
                         
@@ -323,8 +323,8 @@ v-for="link in [
                                 { label: t('sidebar.system_integration'), icon: Zap, to: '/super-admin/integrations' },
                                 { label: t('sidebar.global_users'), icon: Users, to: '/super-admin/users' },
                                 { label: t('sidebar.audit_logs'), icon: History, to: '/super-admin/audit-logs' }
-                            ]" :key="link.label" :href="link.to" class="bg-white/10 hover:bg-white/20 p-6 rounded-[2.5rem] flex flex-col items-center gap-3 transition-all active-press">
-                                <component :is="link.icon" class="w-6 h-6 text-indigo-400" />
+                            ]" :key="link.label" :href="link.to" class="bg-slate-50 hover:bg-slate-100 dark:bg-white/10 dark:hover:bg-white/20 p-6 rounded-[2.5rem] flex flex-col items-center gap-3 transition-all active-press">
+                                <component :is="link.icon" class="w-6 h-6 text-indigo-500 dark:text-indigo-400" />
                                 <span class="text-[9px] font-black uppercase tracking-widest text-center">{{ link.label }}</span>
                             </Link>
                         </div>
@@ -337,12 +337,12 @@ v-for="link in [
                             <div class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
                         </div>
                         
-                        <div class="bg-slate-900 rounded-[3rem] p-8 space-y-6 max-h-[300px] overflow-y-auto custom-scrollbar border border-white/5 shadow-inner">
+                        <div class="bg-slate-50 dark:bg-slate-900 rounded-[3rem] p-8 space-y-6 max-h-[300px] overflow-y-auto custom-scrollbar border border-slate-200 dark:border-white/5 shadow-inner">
                             <template v-if="props?.audit_logs">
                                 <div v-for="log in props.audit_logs" :key="log.id" class="flex gap-4">
                                     <div class="text-[10px] font-mono text-indigo-500 shrink-0">{{ new Date(log.created_at).toLocaleTimeString() }}</div>
-                                    <div class="text-[10px] font-mono text-slate-400 break-all leading-relaxed">
-                                        <span class="text-emerald-500">[{{ log.user?.name || 'System' }}]</span> {{ log.action }} : {{ log.description }}
+                                    <div class="text-[10px] font-mono text-slate-600 dark:text-slate-400 break-all leading-relaxed">
+                                        <span class="text-emerald-500 dark:text-emerald-400">[{{ log.user?.name || 'System' }}]</span> {{ log.action }} : {{ log.description }}
                                     </div>
                                 </div>
                             </template>

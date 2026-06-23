@@ -245,19 +245,19 @@ const pendingApplications = computed(() =>
                     </div>
 
                     <div class="lg:col-span-4 space-y-10">
-                        <div class="p-8 bg-slate-900 dark:bg-slate-800 rounded-3xl text-white shadow-xl relative overflow-hidden group">
+                        <div class="p-8 bg-white dark:bg-slate-800 rounded-3xl text-slate-900 dark:text-white shadow-xl relative overflow-hidden group border border-slate-100 dark:border-slate-700">
                             <div class="relative z-10">
                                 <h4 class="text-lg font-bold mb-2">{{ t('hr.dashboard.public_profile') }}</h4>
-                                <p class="text-slate-400 text-xs leading-relaxed mb-8">{{ t('hr.dashboard.public_profile_desc') }}</p>
+                                <p class="text-slate-500 dark:text-slate-400 text-xs leading-relaxed mb-8">{{ t('hr.dashboard.public_profile_desc') }}</p>
                                 <Link
                                     :href="company.slug ? `/companies/${company.slug}` : '/companies'"
-                                    class="inline-flex items-center text-sm font-bold text-white hover:text-primary-400 transition-colors group"
+                                    class="inline-flex items-center text-sm font-bold text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 transition-colors group"
                                 >
                                     {{ t('hr.dashboard.open_profile') }}
                                     <ArrowRight class="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
                                 </Link>
                             </div>
-                            <div class="absolute top-[-20%] right-[-10%] w-40 h-40 bg-white/5 rounded-full blur-3xl group-hover:scale-125 transition-transform duration-700"></div>
+                            <div class="absolute top-[-20%] right-[-10%] w-40 h-40 bg-primary-500/5 dark:bg-white/5 rounded-full blur-3xl group-hover:scale-125 transition-transform duration-700"></div>
                         </div>
 
                         <section>

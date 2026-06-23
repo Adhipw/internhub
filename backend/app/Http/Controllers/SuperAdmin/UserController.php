@@ -8,7 +8,8 @@ use App\Models\User;
 use App\Services\AuditService;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
-use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\Auth;
+
 
 class UserController extends Controller
 {
@@ -72,7 +73,7 @@ class UserController extends Controller
         SecurityEvent::create([
             'event_type' => 'user_created_by_admin',
             'severity' => 'medium',
-            'user_id' => auth()->id(),
+            'user_id' => Auth::id(),
             'description' => "Created new account for {$user->email} with role {$request->role}",
             'ip_address' => $request->ip(),
             'user_agent' => $request->userAgent(),
@@ -85,7 +86,7 @@ class UserController extends Controller
     public function update(Request $request, User $user)
     {
         // Safety: Cannot edit other Super Admins unless specifically allowed (usually only self or specific rules)
-        if ($user->hasRole('super_admin') && $user->id !== auth()->id()) {
+        if ($user->hasRole('super_admin') && $user->id !== Auth::id()) {
             abort(403, 'Anda tidak memiliki akses untuk mengedit Super Admin lain.');
         }
 
@@ -93,7 +94,7 @@ class UserController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users,email,'.$user->id,
             'password' => 'nullable|string|min:8|confirmed',
-            'role' => 'required|string|in:admin,hr,mentor,user',
+            'role' => 'required|string|in:super_admin,admin,hr,mentor,user',
             'phone_number' => 'nullable|string|max:20',
             'is_active' => 'required|boolean',
         ]);
@@ -137,7 +138,7 @@ class UserController extends Controller
         SecurityEvent::create([
             'event_type' => 'role_changed',
             'severity' => 'medium',
-            'user_id' => auth()->id(),
+            'user_id' => Auth::id(),
             'description' => "Role changed for user {$user->email} from {$oldRole} to {$request->role}",
             'ip_address' => $request->ip(),
             'user_agent' => $request->userAgent(),
@@ -156,7 +157,7 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         // Safety: Cannot delete self
-        if ($user->id === auth()->id()) {
+        if ($user->id === Auth::id()) {
             abort(403, 'Anda tidak dapat menghapus akun Anda sendiri.');
         }
 
@@ -170,7 +171,7 @@ class UserController extends Controller
 
     public function ban(Request $request, User $user)
     {
-        if ($user->id === auth()->id()) {
+        if ($user->id === Auth::id()) {
             abort(403, 'Anda tidak dapat memblokir akun Anda sendiri.');
         }
 
@@ -186,7 +187,7 @@ class UserController extends Controller
         SecurityEvent::create([
             'event_type' => 'user_banned',
             'severity' => 'high',
-            'user_id' => auth()->id(),
+            'user_id' => Auth::id(),
             'description' => "Banned user {$user->email} for: {$request->reason}",
             'ip_address' => $request->ip(),
             'user_agent' => $request->userAgent(),
@@ -208,7 +209,7 @@ class UserController extends Controller
         SecurityEvent::create([
             'event_type' => 'user_unbanned',
             'severity' => 'medium',
-            'user_id' => auth()->id(),
+            'user_id' => Auth::id(),
             'description' => "Unbanned user {$user->email}",
             'ip_address' => $request->ip(),
             'user_agent' => $request->userAgent(),

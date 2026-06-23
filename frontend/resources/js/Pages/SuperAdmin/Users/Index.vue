@@ -694,26 +694,31 @@ const getObjectURL = (file: File | null) => {
             <div class="space-y-2">
               <label class="text-xs font-black uppercase tracking-widest text-slate-500 dark:text-slate-400">Nama Lengkap</label>
               <input v-model="editForm.name" type="text" class="w-full px-6 py-3.5 bg-slate-50 dark:bg-slate-800 dark:text-white border-none rounded-2xl focus:ring-2 focus:ring-primary-500/20" />
+              <div v-if="editForm.errors.name" class="text-xs text-red-500 font-bold mt-1">{{ editForm.errors.name[0] }}</div>
             </div>
 
             <div class="space-y-2">
               <label class="text-xs font-black uppercase tracking-widest text-slate-500 dark:text-slate-400">Alamat Email</label>
               <input v-model="editForm.email" type="email" class="w-full px-6 py-3.5 bg-slate-50 dark:bg-slate-800 dark:text-white border-none rounded-2xl focus:ring-2 focus:ring-primary-500/20" />
+              <div v-if="editForm.errors.email" class="text-xs text-red-500 font-bold mt-1">{{ editForm.errors.email[0] }}</div>
             </div>
 
             <div class="space-y-2">
               <label class="text-xs font-black uppercase tracking-widest text-slate-500 dark:text-slate-400">Nomor Telepon</label>
               <input v-model="editForm.phone_number" type="text" class="w-full px-6 py-3.5 bg-slate-50 dark:bg-slate-800 dark:text-white border-none rounded-2xl focus:ring-2 focus:ring-primary-500/20" />
+              <div v-if="editForm.errors.phone_number" class="text-xs text-red-500 font-bold mt-1">{{ editForm.errors.phone_number[0] }}</div>
             </div>
 
             <div class="space-y-2">
               <label class="text-xs font-black uppercase tracking-widest text-slate-500 dark:text-slate-400">Role</label>
               <select v-model="editForm.role" class="w-full px-6 py-3.5 bg-slate-50 dark:bg-slate-800 dark:text-white border-none rounded-2xl focus:ring-2 focus:ring-primary-500/20 appearance-none">
+                <option value="super_admin" v-if="editingUser?.role === 'super_admin'">SUPER ADMIN</option>
                 <option value="admin">ADMIN</option>
                 <option value="hr">HR</option>
                 <option value="mentor">MENTOR</option>
                 <option value="user">USER (STUDENT)</option>
               </select>
+              <div v-if="editForm.errors.role" class="text-xs text-red-500 font-bold mt-1">{{ editForm.errors.role[0] }}</div>
             </div>
           </div>
 
@@ -722,9 +727,18 @@ const getObjectURL = (file: File | null) => {
               <Lock class="w-3 h-3" /> Ubah Password (Kosongkan jika tidak ingin diubah)
             </p>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <input v-model="editForm.password" type="password" class="w-full px-6 py-3.5 bg-white dark:bg-slate-900 dark:text-white border-none rounded-2xl focus:ring-2 focus:ring-primary-500/20" placeholder="Password Baru" />
-              <input v-model="editForm.password_confirmation" type="password" class="w-full px-6 py-3.5 bg-white dark:bg-slate-900 dark:text-white border-none rounded-2xl focus:ring-2 focus:ring-primary-500/20" placeholder="Konfirmasi Password" />
+              <div class="relative group">
+                <input v-model="editForm.password" :type="showPassword ? 'text' : 'password'" class="w-full px-6 pr-12 py-3.5 bg-white dark:bg-slate-900 dark:text-white border-none rounded-2xl focus:ring-2 focus:ring-primary-500/20" placeholder="Password Baru" />
+                <button type="button" class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600" @click="showPassword = !showPassword">
+                  <Eye v-if="!showPassword" class="w-4 h-4" />
+                  <EyeOff v-else class="w-4 h-4" />
+                </button>
+              </div>
+              <div class="relative group">
+                <input v-model="editForm.password_confirmation" :type="showPassword ? 'text' : 'password'" class="w-full px-6 py-3.5 bg-white dark:bg-slate-900 dark:text-white border-none rounded-2xl focus:ring-2 focus:ring-primary-500/20" placeholder="Konfirmasi Password" />
+              </div>
             </div>
+            <div v-if="editForm.errors.password" class="text-xs text-red-500 font-bold mt-2">{{ editForm.errors.password[0] }}</div>
           </div>
 
           <div class="flex items-center justify-between p-4 bg-slate-50 dark:bg-slate-900 rounded-2xl">

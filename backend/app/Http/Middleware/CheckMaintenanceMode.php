@@ -39,8 +39,19 @@ class CheckMaintenanceMode
             }
             
             // Allow logging out so users aren't stuck if they were logged in
-            if ($request->is('logout') || $request->is('api/*/logout')) {
-                 return $next($request);
+            // Allow login and CSRF routes so super_admins can log back in
+            $bypassedRoutes = [
+                'login',
+                'api/*/login',
+                'logout',
+                'api/*/logout',
+                'sanctum/csrf-cookie'
+            ];
+
+            foreach ($bypassedRoutes as $route) {
+                if ($request->is($route)) {
+                    return $next($request);
+                }
             }
 
             // Abort with 503 Maintenance

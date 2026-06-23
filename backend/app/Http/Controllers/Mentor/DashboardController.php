@@ -13,6 +13,7 @@ class DashboardController extends Controller
 {
     public function index()
     {
+        /** @var \App\Models\User $user */
         $user = auth()->user();
         $company = app('current_company');
 

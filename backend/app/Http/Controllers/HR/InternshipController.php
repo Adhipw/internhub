@@ -5,7 +5,7 @@ namespace App\Http\Controllers\HR;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\HR\StoreInternshipRequest;
 use App\Http\Requests\HR\UpdateInternshipRequest;
-use App\Models\Industry;
+
 use App\Models\Internship;
 use App\Services\AuditService;
 use Illuminate\Support\Str;
@@ -28,7 +28,7 @@ class InternshipController extends Controller
 
     public function create()
     {
-        $industries = Industry::orderBy('name')->get();
+        $industries = \Illuminate\Support\Facades\DB::table('industries')->orderBy('name')->get();
 
         return Inertia::render('HR/Internships/Create', [
             'industries' => $industries,

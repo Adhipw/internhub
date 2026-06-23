@@ -179,7 +179,9 @@ Route::middleware('auth')->group(function () {
         Route::get('/my-applications', [ApplicationController::class, 'index'])->name('applications.index');
         Route::get('/my-applications/{application}', [ApplicationController::class, 'show'])->name('applications.show');
         Route::get('/my-applications/{application}/onboarding', function (Application $application) {
-            abort_unless($application->user_id === auth()->id(), 403);
+            /** @var \App\Models\User|null $user */
+            $user = auth()->user();
+            abort_unless($application->user_id === $user?->id, 403);
 
             return Inertia::render('Applications/Onboarding', [
                 'application' => $application->load(['internship.company', 'onboardingDocuments.verifier']),

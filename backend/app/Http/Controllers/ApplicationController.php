@@ -15,8 +15,11 @@ class ApplicationController extends Controller
 {
     public function index()
     {
+        /** @var \App\Models\User $user */
+        $user = Auth::user();
+
         return Inertia::render('Applications/Index', [
-            'applications' => Auth::user()->applications()
+            'applications' => $user->applications()
                 ->with(['internship.company'])
                 ->latest()
                 ->paginate(10),
@@ -35,6 +38,7 @@ class ApplicationController extends Controller
 
     public function store(Request $request, Internship $internship)
     {
+        /** @var \App\Models\User $user */
         $user = Auth::user();
 
         if ($user->applications()->where('internship_id', $internship->id)->exists()) {

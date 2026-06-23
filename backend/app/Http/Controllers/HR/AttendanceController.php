@@ -68,9 +68,12 @@ class AttendanceController extends Controller
             abort(403);
         }
 
+        /** @var \App\Models\User $user */
+        $user = auth()->user();
+
         $correction->update([
             'status' => 'approved',
-            'reviewed_by' => auth()->id(),
+            'reviewed_by' => $user->id,
             'reviewer_notes' => $request->notes,
         ]);
 

@@ -28,7 +28,7 @@ class ApiSuperAdminDashboardController extends ApiBaseController
                 'total_users' => User::count(),
                 'total_admins' => User::role('admin')->count(),
                 'total_super_admins' => User::role('super_admin')->count(),
-                'active_sessions' => DB::table('personal_access_tokens')->where('last_used_at', '>', now()->subHours(24))->count(),
+                'active_sessions' => DB::table('sessions')->whereNotNull('user_id')->where('last_activity', '>', now()->subHours(24)->getTimestamp())->count(),
                 'server_load' => $load,
                 'storage_used' => $storageUsedPercent,
                 'total_internships' => Internship::count(),

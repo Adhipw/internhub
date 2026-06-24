@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Link } from '@inertiajs/vue3';
+import { Link, usePage } from '@inertiajs/vue3';
 import PublicLayout from '@/Layouts/PublicLayout.vue';
 import { ref, computed, onMounted, watch } from 'vue';
 import { useLangStore } from '@/Stores/lang';
@@ -8,6 +8,11 @@ import {
     BookOpen, Briefcase, Building2, Rocket, Users, 
     GraduationCap, Lightbulb, MapPin, Phone, Globe
 } from 'lucide-vue-next';
+
+const page = usePage();
+const supportEmail = computed(() => (page.props.public_settings as any)?.support_email || 'support@InternHub.my.id');
+const supportPhone = computed(() => (page.props.public_settings as any)?.support_phone || '+62 812 3456 7890');
+const officeAddress = computed(() => (page.props.public_settings as any)?.office_address || t('info.office_address'));
 
 const props = defineProps<{
     initialSection: string;
@@ -184,12 +189,12 @@ onMounted(() => {
                                         <div class="p-8 rounded-[2rem] bg-slate-50 dark:bg-neutral-800/50 border border-slate-100 dark:border-neutral-700 flex flex-col items-center text-center">
                                             <Mail class="w-10 h-10 text-primary-600 mb-4" />
                                             <h4 class="font-bold text-slate-900 dark:text-white">{{ t('info.email_support') }}</h4>
-                                            <p class="text-sm text-slate-500 dark:text-neutral-400 mt-2">support@InternHub.my.id</p>
+                                            <p class="text-sm text-slate-500 dark:text-neutral-400 mt-2">{{ supportEmail }}</p>
                                         </div>
                                         <div class="p-8 rounded-[2rem] bg-slate-50 dark:bg-neutral-800/50 border border-slate-100 dark:border-neutral-700 flex flex-col items-center text-center">
                                             <Phone class="w-10 h-10 text-emerald-600 mb-4" />
                                             <h4 class="font-bold text-slate-900 dark:text-white">{{ t('info.whatsapp') }}</h4>
-                                            <p class="text-sm text-slate-500 dark:text-neutral-400 mt-2">+62 812 3456 7890</p>
+                                            <p class="text-sm text-slate-500 dark:text-neutral-400 mt-2">{{ supportPhone }}</p>
                                         </div>
                                     </div>
 
@@ -197,7 +202,7 @@ onMounted(() => {
                                         <h3 class="text-2xl font-bold mb-4">{{ t('info.office_title') }}</h3>
                                         <div class="flex items-start gap-4">
                                             <MapPin class="w-6 h-6 mt-1" />
-                                            <p class="font-medium leading-relaxed" v-html="t('info.office_address').replace('\n', '<br />')"></p>
+                                            <p class="font-medium leading-relaxed" v-html="officeAddress.replace(/\\n/g, '<br />')"></p>
                                         </div>
                                     </div>
                                 </template>

@@ -13,6 +13,7 @@ import Button from '@/Components/Button.vue';
 import Badge from '@/Components/Badge.vue';
 import { useAuthStore } from '@/Stores/auth';
 import type { Internship } from '@/Types/internship';
+import DOMPurify from 'dompurify';
 
 interface InternshipShowProps {
     internship: Internship;
@@ -91,7 +92,8 @@ const goBack = () => {
 const cleanHtml = (html?: string | null) => {
     if (!html) return '';
     // Hapus tag komentar Google Translate/Kalibrr
-    return html.replace(/<!--TgQPHd\|?\[\]-->/g, '');
+    const noComments = html.replace(/<!--TgQPHd\|?\[\]-->/g, '');
+    return DOMPurify.sanitize(noComments);
 };
 
 updateSeo();

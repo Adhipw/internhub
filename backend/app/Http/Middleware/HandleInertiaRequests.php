@@ -62,6 +62,13 @@ class HandleInertiaRequests extends Middleware
                     return [];
                 }
             }),
+            'public_settings' => fn () => Cache::remember('global_public_settings', 60, function () {
+                try {
+                    return \App\Models\SystemSetting::where('is_sensitive', false)->pluck('value', 'key')->toArray();
+                } catch (\Exception $e) {
+                    return [];
+                }
+            }),
             'ziggy' => fn () => [
                 ...(new Ziggy)->toArray(),
                 'location' => $request->url(),

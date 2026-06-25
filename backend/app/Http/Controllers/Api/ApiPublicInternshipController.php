@@ -80,8 +80,8 @@ class ApiPublicInternshipController extends Controller
     public function stats()
     {
         return response()->json([
-            'total_internships' => Internship::published()->count(),
-            'total_companies' => Company::where('is_verified', true)->count(),
+            'total_internships' => Internship::count(),
+            'total_companies' => Company::count(),
             'total_placements' => Application::count(),
             'total_students' => User::where('role', 'user')->count(),
         ]);

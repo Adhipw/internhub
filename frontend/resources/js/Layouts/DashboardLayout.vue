@@ -103,6 +103,10 @@ const currentPath = computed(() => new window.URL(page.url, window.location.orig
 
 const isSidebarOpen = ref(true);
 const searchQuery = ref('');
+const isMobileSheetOpen = ref(false);
+
+const mobileNavItems = computed(() => navigation.value.slice(0, 4));
+const extraNavItems = computed(() => navigation.value.slice(4));
 
 const handleSearch = () => {
     const query = searchQuery.value.trim();
@@ -293,7 +297,7 @@ const navigation = computed(() => {
 
         <!-- Modern Sidebar -->
         <aside 
-            class="sidebar flex flex-col fixed inset-y-0 left-0 z-50 bg-white dark:bg-neutral-900 border-r border-neutral-100 dark:border-neutral-800 transition-all duration-500"
+            class="sidebar hidden lg:flex flex-col fixed inset-y-0 left-0 z-50 bg-white dark:bg-neutral-900 border-r border-neutral-100 dark:border-neutral-800 transition-all duration-500"
             :class="[
                 isSidebarOpen ? 'w-80 translate-x-0' : 'w-80 -translate-x-full lg:w-24 lg:translate-x-0'
             ]"
@@ -359,19 +363,23 @@ const navigation = computed(() => {
 
         <!-- Main Content Area -->
         <main 
-            class="flex-1 flex flex-col transition-all duration-500"
+            class="flex-1 flex flex-col transition-all duration-500 pb-32 lg:pb-0"
             :class="[isSidebarOpen ? 'lg:pl-80' : 'lg:pl-24']"
         >
             <!-- Modern Topbar -->
             <header class="main-header h-24 flex items-center justify-between px-8 bg-white/80 dark:bg-neutral-950/80 backdrop-blur-md sticky top-0 z-40 border-b border-neutral-100 dark:border-neutral-800">
                 <div class="flex items-center gap-6">
                     <button 
-                        class="flex w-10 h-10 items-center justify-center text-neutral-400 hover:text-neutral-900 dark:hover:text-white transition-colors"
+                        class="hidden lg:flex w-10 h-10 items-center justify-center text-neutral-400 hover:text-neutral-900 dark:hover:text-white transition-colors"
                         @click="toggleSidebar"
                     >
                         <Menu v-if="!isSidebarOpen" class="w-6 h-6" />
                         <X v-else class="w-6 h-6" />
                     </button>
+
+                    <div class="lg:hidden flex items-center h-10">
+                        <AppLogo variant="compact" :show-text="true" size="sm" :is-dark-mode="isDarkMode" :role-label="roleLabel" />
+                    </div>
                     
                     <div class="relative group hidden md:block">
                         <Search class="absolute left-5 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-400 group-focus-within:text-primary-600 transition-colors" />
@@ -490,6 +498,88 @@ const navigation = computed(() => {
             </div>
         </main>
 
+        <!-- Mobile Bottom Nav -->
+        <nav class="fixed bottom-6 left-1/2 -translate-x-1/2 w-[90%] max-w-sm bg-white/80 dark:bg-neutral-900/80 backdrop-blur-xl rounded-[2.5rem] shadow-[0_20px_50px_rgba(8,112,184,0.15)] dark:shadow-2xl border border-white/50 dark:border-neutral-800/50 z-50 flex items-center justify-around p-2 lg:hidden">
+            <Link 
+                v-for="item in mobileNavItems" 
+                :key="item.name" 
+                :href="item.href"
+                class="flex flex-col items-center gap-1 p-2 rounded-2xl transition-all"
+                :class="[currentPath === item.href ? 'text-primary-600' : 'text-neutral-400 hover:text-neutral-900 dark:hover:text-white']"
+            >
+                <div :class="[currentPath === item.href ? 'bg-primary-50 dark:bg-primary-900/20 p-2 rounded-xl' : '']">
+                    <component :is="item.icon" class="w-6 h-6" />
+                </div>
+                <span v-if="currentPath === item.href" class="text-[9px] font-black tracking-tight mt-1 truncate">{{ item.name }}</span>
+            </Link>
+            
+            <button 
+                class="flex flex-col items-center gap-1 p-2 rounded-2xl transition-all text-neutral-400 hover:text-neutral-900 dark:hover:text-white"
+                @click="isMobileSheetOpen = true"
+            >
+                <div :class="[isMobileSheetOpen ? 'bg-primary-50 dark:bg-primary-900/20 p-2 rounded-xl text-primary-600' : '']">
+                    <Menu class="w-6 h-6" />
+                </div>
+                <span v-if="isMobileSheetOpen" class="text-[9px] font-black tracking-tight mt-1 truncate text-primary-600">{{ t('nav.more') || 'Menu' }}</span>
+            </button>
+        </nav>
+
+        <!-- Mobile Bottom Sheet -->
+        <div v-if="isMobileSheetOpen" class="fixed inset-0 z-[60] lg:hidden flex items-end">
+            <div class="absolute inset-0 bg-neutral-900/60 backdrop-blur-sm transition-opacity" @click="isMobileSheetOpen = false"></div>
+            <div class="bg-white dark:bg-neutral-900 w-full rounded-t-[3rem] p-8 pb-32 shadow-2xl transform transition-transform border-t border-neutral-100 dark:border-neutral-800 relative z-10 animate-slide-up max-h-[85vh] overflow-y-auto custom-scrollbar">
+                
+                <div class="w-16 h-1.5 bg-neutral-200 dark:bg-neutral-800 rounded-full mx-auto mb-8"></div>
+                
+                <div class="flex items-center gap-4 p-4 bg-neutral-50 dark:bg-neutral-800/50 rounded-3xl mb-8">
+                    <div class="w-12 h-12 rounded-2xl overflow-hidden bg-neutral-200 dark:bg-neutral-800 flex items-center justify-center border border-neutral-300 dark:border-neutral-700">
+                        <img v-if="user.avatar_url" :src="user.avatar_url" class="w-full h-full object-cover" />
+                        <User v-else class="w-6 h-6 text-neutral-400" />
+                    </div>
+                    <div>
+                        <h4 class="text-sm font-black text-neutral-900 dark:text-white">{{ user.name }}</h4>
+                        <p class="text-[10px] font-bold text-primary-600 uppercase tracking-widest">{{ roleLabel }}</p>
+                    </div>
+                </div>
+
+                <div v-if="extraNavItems.length > 0" class="space-y-2 mb-8">
+                    <h5 class="text-xs font-black text-neutral-400 uppercase tracking-widest mb-4 px-2">Menu Lainnya</h5>
+                    <Link 
+                        v-for="item in extraNavItems" 
+                        :key="item.name" 
+                        :href="item.href"
+                        class="flex items-center gap-4 p-4 rounded-2xl hover:bg-neutral-50 dark:hover:bg-neutral-800 transition-colors"
+                        :class="[currentPath === item.href ? 'bg-primary-50 dark:bg-primary-900/20 text-primary-600' : 'text-neutral-500 dark:text-neutral-400']"
+                        @click="isMobileSheetOpen = false"
+                    >
+                        <component :is="item.icon" class="w-5 h-5" />
+                        <span class="text-xs font-bold">{{ item.name }}</span>
+                    </Link>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4 mb-8">
+                    <button class="p-4 rounded-3xl bg-neutral-50 dark:bg-neutral-800/50 flex flex-col items-center gap-3 text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white transition-colors" @click="toggleDarkMode">
+                        <Sun v-if="isDarkMode" class="w-6 h-6" />
+                        <Moon v-else class="w-6 h-6" />
+                        <span class="text-[10px] font-bold uppercase tracking-widest">{{ isDarkMode ? 'Mode Terang' : 'Mode Gelap' }}</span>
+                    </button>
+                    <div class="p-4 rounded-3xl bg-neutral-50 dark:bg-neutral-800/50 flex flex-col items-center justify-center gap-3">
+                        <div class="flex gap-2 bg-white dark:bg-neutral-900 p-1 rounded-xl shadow-sm">
+                            <button class="px-3 py-1.5 rounded-lg text-xs font-black transition-all" :class="langStore.locale === 'id' ? 'bg-primary-50 dark:bg-primary-900/20 text-primary-600' : 'text-neutral-400 hover:text-neutral-600'" @click="langStore.setLocale('id')">ID</button>
+                            <button class="px-3 py-1.5 rounded-lg text-xs font-black transition-all" :class="langStore.locale === 'en' ? 'bg-primary-50 dark:bg-primary-900/20 text-primary-600' : 'text-neutral-400 hover:text-neutral-600'" @click="langStore.setLocale('en')">EN</button>
+                        </div>
+                        <span class="text-[10px] font-bold text-neutral-500 dark:text-neutral-400 uppercase tracking-widest">Bahasa</span>
+                    </div>
+                </div>
+
+                <button class="w-full p-4 rounded-2xl bg-rose-50 dark:bg-rose-900/10 text-rose-600 flex items-center justify-center gap-3 hover:bg-rose-100 dark:hover:bg-rose-900/20 transition-colors font-bold text-xs" @click="logout">
+                    <LogOut class="w-5 h-5" />
+                    {{ langStore.t('nav.logout') || 'Keluar' }}
+                </button>
+
+            </div>
+        </div>
+
         <!-- Live Toast Notification Container -->
         <div class="fixed bottom-10 right-10 z-[99999] flex flex-col gap-4 pointer-events-none max-w-sm w-full">
             <TransitionGroup name="toast">
@@ -523,6 +613,15 @@ const navigation = computed(() => {
 
 .animate-reveal {
     animation: reveal 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes slide-up {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
+}
+
+.animate-slide-up {
+    animation: slide-up 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 /* Custom Premium Scrollbar */

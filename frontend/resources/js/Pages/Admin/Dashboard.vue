@@ -223,8 +223,8 @@ v-for="(stat, i) in [
                         <AlertTriangle class="w-20 h-20 absolute -right-4 -top-4 opacity-10 group-hover:scale-110 transition-transform" />
                         <h3 class="text-xl font-black mb-4 relative z-10">Security Note</h3>
                         <p class="text-sm font-medium text-white/80 mb-8 relative z-10">Selalu verifikasi legalitas perusahaan sebelum menyetujui akses ke data mahasiswa.</p>
-                        <Link href="/admin/security-guide" class="inline-flex items-center gap-2 bg-white text-red-600 px-6 py-3 rounded-2xl font-black text-[10px] uppercase tracking-widest hover:bg-red-50 transition-all">
-                            Learn More
+                        <Link href="/admin/companies" class="inline-flex items-center gap-2 bg-white text-red-600 px-6 py-3 rounded-2xl font-black text-[10px] uppercase tracking-widest hover:bg-red-50 transition-all">
+                            Verifikasi Sekarang
                         </Link>
                     </div>
                 </div>

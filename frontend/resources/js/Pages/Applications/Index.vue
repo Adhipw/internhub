@@ -94,13 +94,30 @@ const loading = computed(() => !props.applications);
                                 </div>
                             </div>
 
+                            <div class="mt-6 border-t border-slate-100 pt-6 w-full">
+                                <div class="relative">
+                                    <div class="overflow-hidden h-2 mb-4 text-xs flex rounded-full bg-slate-100">
+                                        <div :style="{ width: app.status === 'withdrawn' ? '100%' : (app.status === 'rejected' ? '100%' : (app.status === 'accepted' ? '100%' : (app.status === 'interview' ? '66%' : (app.status === 'reviewed' ? '33%' : '10%')))) }" 
+                                             class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center transition-all duration-500"
+                                             :class="app.status === 'withdrawn' ? 'bg-slate-400' : (app.status === 'rejected' ? 'bg-rose-500' : (app.status === 'accepted' ? 'bg-emerald-500' : 'bg-primary-500'))">
+                                        </div>
+                                    </div>
+                                    <div class="flex justify-between text-xs font-bold text-slate-400">
+                                        <span :class="{'text-primary-600': app.status !== 'withdrawn' && app.status !== 'rejected'}">Terkirim</span>
+                                        <span :class="{'text-primary-600': ['reviewed', 'interview', 'accepted'].includes(app.status)}">Direview HRD</span>
+                                        <span :class="{'text-primary-600': ['interview', 'accepted'].includes(app.status)}">Wawancara</span>
+                                        <span :class="{'text-emerald-600': app.status === 'accepted', 'text-rose-600': app.status === 'rejected', 'text-slate-600': app.status === 'withdrawn'}">{{ app.status === 'rejected' ? 'Ditolak' : (app.status === 'withdrawn' ? 'Ditarik' : 'Diterima') }}</span>
+                                    </div>
+                                </div>
+                            </div>
+
                             <!-- Actions -->
-                            <div class="flex items-center gap-4">
+                            <div class="flex items-center justify-end mt-6 w-full">
                                 <Link 
                                     :href="'/my-applications/' + app.id"
                                     class="bg-slate-900 text-white px-8 py-3.5 rounded-2xl font-bold text-sm hover:bg-slate-800 transition-all flex items-center gap-2 shadow-lg shadow-slate-200"
                                 >
-                                    Lihat Detail
+                                    Lihat Detail & Timeline
                                     <ChevronRight class="w-4 h-4" />
                                 </Link>
                             </div>

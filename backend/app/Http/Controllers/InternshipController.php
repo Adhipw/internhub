@@ -98,6 +98,32 @@ class InternshipController extends Controller
             'type' => 'website',
         ]);
 
+        $matchScore = null;
+        $missingSkills = [];
+
+        if (Auth::check() && Auth::user()->role === 'user') {
+            $user = Auth::user();
+            $user->load('detail');
+            
+            $userSkills = $user->detail->skills ?? [];
+            $userSkillsLower = array_map('strtolower', $userSkills);
+            
+            $internshipTags = $internship->tags ?? [];
+            if (empty($internshipTags)) {
+                $matchScore = 100;
+            } else {
+                $matchedCount = 0;
+                foreach ($internshipTags as $tag) {
+                    if (in_array(strtolower($tag), $userSkillsLower)) {
+                        $matchedCount++;
+                    } else {
+                        $missingSkills[] = $tag;
+                    }
+                }
+                $matchScore = round(($matchedCount / count($internshipTags)) * 100);
+            }
+        }
+
         return Inertia::render('Internships/Show', [
             'internship' => $internship->load('company'),
             'relatedInternships' => Internship::published()
@@ -108,6 +134,8 @@ class InternshipController extends Controller
             'hasApplied' => Auth::check()
                 ? Application::where('user_id', Auth::id())->where('internship_id', $internship->id)->exists()
                 : false,
+            'matchScore' => $matchScore,
+            'missingSkills' => $missingSkills,
         ]);
     }
 }

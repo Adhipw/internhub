@@ -17,6 +17,10 @@ import DOMPurify from 'dompurify';
 
 interface InternshipShowProps {
     internship: Internship;
+    relatedInternships?: Internship[];
+    hasApplied?: boolean;
+    matchScore?: number | null;
+    missingSkills?: string[];
 }
 
 const props = defineProps<InternshipShowProps>();
@@ -126,6 +130,18 @@ updateSeo();
                                         </div>
                                         <div>
                                             <Badge variant="primary" size="lg" class="mb-4">{{ internship.type }}</Badge>
+                                            
+                                            <div v-if="matchScore !== undefined && matchScore !== null" class="mb-6 p-4 rounded-3xl flex items-center gap-4 border" :class="matchScore >= 80 ? 'bg-emerald-50 border-emerald-100 text-emerald-700 dark:bg-emerald-900/20 dark:border-emerald-800/50 dark:text-emerald-400' : 'bg-amber-50 border-amber-100 text-amber-700 dark:bg-amber-900/20 dark:border-amber-800/50 dark:text-amber-400'">
+                                                <div class="w-12 h-12 rounded-2xl flex items-center justify-center font-black text-lg shrink-0" :class="matchScore >= 80 ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-800/50 dark:text-emerald-400' : 'bg-amber-100 text-amber-700 dark:bg-amber-800/50 dark:text-amber-400'">
+                                                    {{ matchScore }}%
+                                                </div>
+                                                <div>
+                                                    <h4 class="font-black text-[10px] uppercase tracking-[0.2em] mb-1">Match Score</h4>
+                                                    <p class="text-xs font-bold opacity-80" v-if="matchScore >= 80">🔥 Sangat Cocok! Profil Anda sesuai kriteria.</p>
+                                                    <p class="text-xs font-bold opacity-80" v-else-if="missingSkills && missingSkills.length">💡 Pelajari keahlian berikut: <span class="font-medium opacity-90">{{ missingSkills.slice(0, 3).join(', ') }}{{ missingSkills.length > 3 ? '...' : '' }}</span></p>
+                                                </div>
+                                            </div>
+
                                             <h1 class="text-4xl font-extrabold text-neutral-900 dark:text-white tracking-tight leading-tight mb-2">{{ internship.title }}</h1>
                                             <p class="text-lg font-bold text-neutral-500 dark:text-neutral-400 flex items-center gap-2">
                                                 <Building2 class="w-5 h-5" />

@@ -296,13 +296,13 @@ const faqs = computed(() => [
 
         <!-- 2. Trust/Statistic Strip -->
         <section class="py-12 border-y transition-colors duration-300" :class="isDarkMode ? 'bg-slate-950 border-slate-800' : 'bg-slate-50 border-slate-100'">
-            <div v-reveal class="max-w-7xl mx-auto px-6">
+            <div class="max-w-7xl mx-auto px-6">
                 <div v-if="loading.stats" class="grid grid-cols-2 lg:grid-cols-4 gap-8">
                     <div v-for="i in 4" :key="i" class="h-16 rounded-2xl " :class="isDarkMode ? 'bg-slate-900' : 'bg-white'"></div>
                 </div>
                 <div v-else-if="stats" class="grid grid-cols-2 lg:grid-cols-4 gap-8">
-                    <div
-v-for="item in [
+                    <div v-reveal :style="`transition-delay: ${index * 100}ms`"
+v-for="(item, index) in [
                         { label: t('stats.internships'), val: stats.total_internships, icon: 'briefcase', color: 'text-blue-500' },
                         { label: t('stats.companies'), val: stats.total_companies, icon: 'building', color: 'text-emerald-500' },
                         { label: t('stats.students'), val: stats.total_students, icon: 'users', color: 'text-amber-500' },
@@ -342,8 +342,8 @@ v-for="item in [
                     <div v-for="i in 6" :key="i" class="h-[400px] rounded-2xl " :class="isDarkMode ? 'bg-slate-900' : 'bg-slate-100'"></div>
                 </div>
                 
-                <div v-reveal v-else-if="featuredInternships.length > 0" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    <div v-for="job in featuredInternships" :key="job.id" class="group relative p-6 md:p-8 rounded-2xl border transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 flex flex-col" :class="isDarkMode ? 'bg-slate-900 border-slate-800 hover:border-blue-900 shadow-slate-950' : 'bg-white border-slate-200 hover:border-blue-100 shadow-slate-100'">
+                <div v-else-if="featuredInternships.length > 0" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div v-reveal :style="`transition-delay: ${index * 100}ms`" v-for="(job, index) in featuredInternships" :key="job.id" class="group relative p-6 md:p-8 rounded-2xl border transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 flex flex-col" :class="isDarkMode ? 'bg-slate-900 border-slate-800 hover:border-blue-900 shadow-slate-950' : 'bg-white border-slate-200 hover:border-blue-100 shadow-slate-100'">
                         <div class="flex items-start justify-between mb-8">
                              <div class="w-14 h-14 rounded-2xl flex items-center justify-center border font-bold text-xl overflow-hidden shadow-sm" :class="isDarkMode ? 'bg-slate-800 border-slate-700 text-blue-500' : 'bg-blue-50 border-blue-50 text-blue-600'">
                                 <img v-if="job.company?.logo_url" loading="lazy" decoding="async" :src="job.company.logo_url" class="w-full h-full object-cover p-2" />
@@ -399,8 +399,8 @@ v-for="item in [
                     <p class="text-lg font-medium max-w-2xl mx-auto" :class="isDarkMode ? 'text-slate-400' : 'text-slate-600'">{{ t('categories.subtitle') }}</p>
                 </div>
 
-                <div v-reveal class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                    <button v-for="cat in categories" :key="cat.id" class="p-8 rounded-2xl border transition-all duration-300 group text-left" :class="isDarkMode ? 'bg-slate-950 border-slate-800 hover:border-blue-900' : 'bg-white border-slate-200 hover:border-blue-200 hover:shadow-xl'" @click="searchQuery = cat.label; submitSearch()">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <button v-reveal :style="`transition-delay: ${index * 75}ms`" v-for="(cat, index) in categories" :key="cat.id" class="p-8 rounded-2xl border transition-all duration-300 group text-left" :class="isDarkMode ? 'bg-slate-950 border-slate-800 hover:border-blue-900' : 'bg-white border-slate-200 hover:border-blue-200 hover:shadow-xl'" @click="searchQuery = cat.label; submitSearch()">
                         <div class="w-12 h-12 rounded-2xl flex items-center justify-center mb-6 transition-transform group-hover:scale-110 group-hover:rotate-6" :class="isDarkMode ? 'bg-slate-900 text-blue-500 shadow-inner shadow-slate-950' : 'bg-blue-50 text-blue-600 shadow-inner shadow-blue-100/50'">
                             <Icon :name="cat.icon" class-name="w-6 h-6" />
                         </div>
@@ -418,8 +418,8 @@ v-for="item in [
 
         <!-- 5. Perusahaan Terverifikasi -->
         <section class="py-24 transition-colors duration-300" :class="isDarkMode ? 'bg-slate-950' : 'bg-white'">
-            <div v-reveal class="max-w-7xl mx-auto px-6">
-                <div class="text-center mb-16">
+            <div class="max-w-7xl mx-auto px-6">
+                <div v-reveal class="text-center mb-16">
                     <h2 class="text-3xl font-bold mb-4 tracking-tight" :class="isDarkMode ? 'text-white' : 'text-slate-950'">{{ t('companies.title') }}</h2>
                     <p class="text-lg font-medium max-w-2xl mx-auto" :class="isDarkMode ? 'text-slate-400' : 'text-slate-600'">{{ t('companies.subtitle') }}</p>
                 </div>
@@ -428,7 +428,7 @@ v-for="item in [
                     <div v-for="i in 8" :key="i" class="w-32 h-12 rounded-lg bg-slate-500 "></div>
                 </div>
                 <div v-else-if="companiesRes.length > 0" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6">
-                    <div v-for="comp in companiesRes" :key="comp.id" class="p-6 rounded-2xl border transition-all duration-300 flex flex-col items-center gap-4 group" :class="isDarkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-100 shadow-sm'">
+                    <div v-reveal :style="`transition-delay: ${index * 50}ms`" v-for="(comp, index) in companiesRes" :key="comp.id" class="p-6 rounded-2xl border transition-all duration-300 flex flex-col items-center gap-4 group" :class="isDarkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-100 shadow-sm'">
                         <div class="w-16 h-16 rounded-2xl flex items-center justify-center border font-bold text-xl overflow-hidden grayscale group-hover:grayscale-0 transition-all group-hover:scale-110" :class="isDarkMode ? 'bg-slate-800 border-slate-700 text-blue-500' : 'bg-slate-50 border-slate-200 text-slate-400'">
                             <img v-if="comp.logo_url" loading="lazy" decoding="async" :src="comp.logo_url" class="w-full h-full object-cover" />
                             <span v-else>{{ comp.name?.charAt(0) }}</span>
@@ -457,7 +457,7 @@ v-for="item in [
                     <!-- Decor Line -->
                     <div class="hidden md:block absolute top-12 left-0 w-full h-[2px] -z-0" :class="isDarkMode ? 'bg-slate-800' : 'bg-slate-200'"></div>
                     
-                    <div v-for="(step, i) in ['register', 'profile', 'find', 'apply', 'monitor']" :key="step" class="relative z-10 flex flex-col items-center">
+                    <div v-reveal :style="`transition-delay: ${i * 100}ms`" v-for="(step, i) in ['register', 'profile', 'find', 'apply', 'monitor']" :key="step" class="relative z-10 flex flex-col items-center">
                         <div class="w-24 h-24 rounded-full flex items-center justify-center border-4 mb-6 transition-all duration-500 hover:scale-110" :class="isDarkMode ? 'bg-slate-900 border-slate-800 text-blue-500' : 'bg-white border-white text-blue-600 shadow-xl'">
                             <span class="text-3xl font-bold">{{ i + 1 }}</span>
                         </div>
@@ -475,9 +475,9 @@ v-for="item in [
                     <h2 class="text-3xl lg:text-4xl font-bold mb-4 tracking-tight" :class="isDarkMode ? 'text-white' : 'text-slate-950'">{{ t('advantages.title') }}</h2>
                 </div>
 
-                <div v-reveal class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    <div
-v-for="item in [
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div v-reveal :style="`transition-delay: ${index * 100}ms`"
+v-for="(item, index) in [
                         { icon: 'shield', title: t('advantages.v1_title'), desc: t('advantages.v1_desc') },
                         { icon: 'briefcase', title: t('advantages.v2_title'), desc: t('advantages.v2_desc') },
                         { icon: 'money', title: t('advantages.v3_title'), desc: t('advantages.v3_desc') },
@@ -638,7 +638,7 @@ v-for="item in [
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    <div v-for="t in testimonials" :key="t.name" class="p-10 rounded-2xl border transition-all" :class="isDarkMode ? 'bg-slate-900 border-slate-800' : 'bg-slate-50 border-slate-100 hover:bg-white hover:shadow-xl'">
+                    <div v-reveal :style="`transition-delay: ${index * 150}ms`" v-for="(t, index) in testimonials" :key="t.name" class="p-10 rounded-2xl border transition-all" :class="isDarkMode ? 'bg-slate-900 border-slate-800' : 'bg-slate-50 border-slate-100 hover:bg-white hover:shadow-xl'">
                         <div class="flex items-center gap-6 mb-8">
                             <div class="w-16 h-16 rounded-2xl flex items-center justify-center font-bold text-xl text-white shadow-xl bg-blue-600">
                                 {{ t.initials }}

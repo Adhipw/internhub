@@ -22,14 +22,14 @@ const props = withDefaults(defineProps<Props>(), {
 const baseStyles = "inline-flex items-center justify-center font-bold tracking-tight transition-all duration-300 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100";
 
 const variants = {
-    primary: "bg-primary-600 text-white hover:bg-primary-700 shadow-lg shadow-primary-500/20",
-    secondary: "bg-neutral-100 text-neutral-900 hover:bg-neutral-200 dark:bg-neutral-800 dark:text-white dark:hover:bg-neutral-700",
-    outline: "bg-transparent border-2 border-neutral-200 text-neutral-900 hover:border-primary-500 hover:text-primary-600 dark:border-neutral-800 dark:text-white dark:hover:border-primary-400",
+    primary: "bg-primary-600 text-white hover:bg-primary-700 shadow-sm border border-transparent hover:border-primary-800",
+    secondary: "bg-neutral-100 text-neutral-900 hover:bg-neutral-200 dark:bg-neutral-800 dark:text-white dark:hover:bg-neutral-700 border border-transparent",
+    outline: "bg-transparent border border-neutral-200 text-neutral-900 hover:border-neutral-300 hover:bg-neutral-50 dark:border-neutral-800 dark:text-white dark:hover:border-neutral-700 dark:hover:bg-neutral-800/50",
     ghost: "bg-transparent text-neutral-600 hover:bg-neutral-100 dark:text-neutral-400 dark:hover:bg-neutral-800",
-    danger: "bg-rose-600 text-white hover:bg-rose-700 shadow-lg shadow-rose-500/20",
-    accent: "bg-accent-500 text-white hover:bg-accent-600 shadow-lg shadow-accent-500/20",
-    success: "bg-emerald-600 text-white hover:bg-emerald-700 shadow-lg shadow-emerald-500/20",
-    warning: "bg-amber-500 text-white hover:bg-amber-600 shadow-lg shadow-amber-500/20",
+    danger: "bg-rose-600 text-white hover:bg-rose-700 shadow-sm border border-transparent hover:border-rose-800",
+    accent: "bg-accent-500 text-white hover:bg-accent-600 shadow-sm border border-transparent hover:border-accent-700",
+    success: "bg-emerald-600 text-white hover:bg-emerald-700 shadow-sm border border-transparent hover:border-emerald-800",
+    warning: "bg-amber-500 text-white hover:bg-amber-600 shadow-sm border border-transparent hover:border-amber-700",
 };
 
 const sizes = {

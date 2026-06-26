@@ -26,23 +26,23 @@ const t = (key: string) => langStore.t(key);
 
             <Transition name="page" mode="out-in" appear>
                 <div :key="$page.url" class="w-full">
-                    <div class="bg-white dark:bg-neutral-900 rounded-xl p-6 md:p-8 shadow-sm border border-slate-200 dark:border-neutral-800">
-                        <div class="mb-8 text-center lg:text-left">
-                            <h1 class="text-xl font-bold text-slate-900 dark:text-white mb-2 tracking-tight">
+                    <div class="px-4 py-8 md:px-0">
+                        <div class="mb-10 text-center lg:text-left">
+                            <h1 class="text-3xl font-bold text-slate-900 dark:text-white mb-3 tracking-tight">
                                 <slot name="title">{{ props.title }}</slot>
                             </h1>
-                            <p class="text-slate-500 dark:text-neutral-400 text-sm font-medium leading-relaxed">
+                            <p class="text-slate-500 dark:text-neutral-400 text-base font-medium leading-relaxed">
                                 <slot name="subtitle">{{ props.subtitle }}</slot>
                             </p>
                         </div>
 
-                        <div class="space-y-5">
+                        <div class="space-y-6">
                             <slot />
                         </div>
 
-                        <div class="mt-8 pt-6 border-t border-slate-50 dark:border-neutral-800 flex items-center justify-center gap-2 text-slate-300 dark:text-neutral-600">
+                        <div class="mt-10 pt-8 flex items-center justify-center gap-2 text-slate-400 dark:text-neutral-600">
                             <ShieldCheck class="w-4 h-4" />
-                            <span class="text-xs font-semibold">{{ t('auth.secure_connection') }}</span>
+                            <span class="text-xs font-medium">{{ t('auth.secure_connection') }}</span>
                         </div>
                     </div>
                 </div>

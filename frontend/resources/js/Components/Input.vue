@@ -45,10 +45,10 @@ const firstError = computed(() => {
 
 const inputClasses = computed(() => {
     return [
-        "w-full px-5 py-3.5 bg-slate-50/50 dark:bg-neutral-950 border border-slate-200 dark:border-neutral-800 rounded-xl text-sm font-semibold text-slate-900 dark:text-white transition-all duration-300",
+        "w-full px-4 py-3 bg-white dark:bg-neutral-900 border border-slate-200 dark:border-neutral-700 rounded-xl text-sm font-medium text-slate-900 dark:text-white transition-all duration-200 shadow-sm",
         "placeholder:text-slate-400 dark:placeholder:text-neutral-500",
-        "focus:outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-600 focus:bg-white dark:focus:bg-neutral-900",
-        hasError.value ? "border-red-500 focus:ring-red-500/10" : "hover:border-slate-300 dark:hover:border-neutral-700",
+        "focus:outline-none focus:ring-0 focus:border-slate-900 dark:focus:border-slate-300",
+        hasError.value ? "border-red-500 focus:border-red-500" : "hover:border-slate-300 dark:hover:border-neutral-600",
         props.disabled ? "opacity-50 cursor-not-allowed bg-slate-100 dark:bg-neutral-800" : "",
         props.class
     ].join(' ');
@@ -56,8 +56,8 @@ const inputClasses = computed(() => {
 </script>
 
 <template>
-    <div class="space-y-2">
-        <label v-if="label" :for="inputId" class="block text-[11px] font-semibold text-sm tracking-[0.05em] text-slate-500 ml-1">
+    <div class="space-y-1">
+        <label v-if="label" :for="inputId" class="block text-sm font-medium text-slate-700 dark:text-slate-300">
             {{ label }}
         </label>
         <div class="relative">

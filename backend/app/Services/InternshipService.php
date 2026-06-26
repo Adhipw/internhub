@@ -9,6 +9,10 @@ use Illuminate\Support\Str;
 
 class InternshipService
 {
+    public function __construct(protected GeocodingService $geocodingService)
+    {
+    }
+
     /**
      * Get internships for a specific company with pagination.
      */
@@ -27,6 +31,14 @@ class InternshipService
         $data['company_id'] = $company->id;
         $data['slug'] = $this->generateSlug($data['title']);
 
+        if (empty($data['latitude']) && empty($data['longitude']) && !empty($data['location'])) {
+            $coords = $this->geocodingService->geocode($data['location']);
+            if ($coords) {
+                $data['latitude'] = $coords['latitude'];
+                $data['longitude'] = $coords['longitude'];
+            }
+        }
+
         return Internship::create($data);
     }
 
@@ -37,6 +49,17 @@ class InternshipService
     {
         if (isset($data['title']) && $data['title'] !== $internship->title) {
             $data['slug'] = $this->generateSlug($data['title']);
+        }
+
+        // Auto geocode if location is updated and coords are not explicitly provided
+        if (isset($data['location']) && empty($data['latitude']) && empty($data['longitude'])) {
+            if ($data['location'] !== $internship->location || empty($internship->latitude)) {
+                $coords = $this->geocodingService->geocode($data['location']);
+                if ($coords) {
+                    $data['latitude'] = $coords['latitude'];
+                    $data['longitude'] = $coords['longitude'];
+                }
+            }
         }
 
         $internship->update($data);

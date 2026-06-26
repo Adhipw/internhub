@@ -128,7 +128,7 @@ onMounted(() => {
           </div>
         </Card>
 
-        <div v-if="events.data.length === 0" class="py-20 text-center bg-slate-50/50 dark:bg-slate-900/20 rounded-[2.5rem] border border-dashed border-slate-200 dark:border-slate-800">
+        <div v-if="events.data.length === 0" class="py-20 text-center bg-slate-50/50 dark:bg-slate-900/20 rounded-2xl border border-dashed border-slate-200 dark:border-slate-800">
            <ShieldAlert class="w-16 h-16 text-slate-200 mx-auto mb-4" />
            <p class="font-bold text-slate-900 dark:text-white">{{ t('admin.security.no_events') }}</p>
         </div>

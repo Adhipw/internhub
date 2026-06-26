@@ -41,8 +41,8 @@ const resendOtp = () => {
         </template>
 
         <div v-if="devOtp" class="mb-6 rounded-xl border border-blue-100 bg-blue-50 px-4 py-3 text-center">
-            <p class="text-[11px] font-black uppercase tracking-widest text-blue-500">Local OTP</p>
-            <p class="mt-1 text-2xl font-black tracking-[0.4em] text-blue-700">{{ devOtp }}</p>
+            <p class="text-[11px] font-semibold text-xs tracking-wide text-blue-500">Local OTP</p>
+            <p class="mt-1 text-2xl font-bold tracking-[0.4em] text-blue-700">{{ devOtp }}</p>
         </div>
 
         <div v-if="deliveryError" class="mb-6 rounded-xl border border-red-100 bg-red-50 px-4 py-3 text-center text-sm font-semibold text-red-600">

@@ -178,12 +178,12 @@ const submit = async () => {
                 </div>
 
                 <!-- Content Area -->
-                <div class="lg:col-span-3 bg-white dark:bg-slate-900 rounded-[2.5rem] p-10 border border-slate-100 dark:border-slate-800 shadow-sm">
+                <div class="lg:col-span-3 bg-white dark:bg-slate-900 rounded-2xl p-10 border border-slate-100 dark:border-slate-800 shadow-sm">
                     
                     <!-- Biodata Tab -->
                     <div v-if="activeTab === 'biodata'" class="space-y-8">
                         <!-- Avatar Upload -->
-                        <div class="flex flex-col md:flex-row items-center gap-8 bg-slate-50 dark:bg-slate-800/50 p-8 rounded-3xl border border-slate-100 dark:border-slate-700">
+                        <div class="flex flex-col md:flex-row items-center gap-8 bg-slate-50 dark:bg-slate-800/50 p-8 rounded-2xl border border-slate-100 dark:border-slate-700">
                             <div class="relative group">
                                 <div class="w-32 h-32 bg-white dark:bg-slate-800 rounded-full border-4 border-white dark:border-slate-700 shadow-xl overflow-hidden flex items-center justify-center text-slate-200 dark:text-slate-600">
                                     <img v-if="form.avatar_preview || authStore.user?.avatar_url" loading="lazy" decoding="async" :src="form.avatar_preview || authStore.user?.avatar_url" class="w-full h-full object-cover" />
@@ -328,7 +328,7 @@ type="file" class="hidden" accept="image/*" @change="(e: Event) => {
                             <p class="text-sm text-slate-500 dark:text-slate-400 mb-6">Tambahkan latar belakang pendidikanmu di sini.</p>
                         </div>
 
-                        <div v-for="(edu, index) in form.education" :key="index" class="p-8 bg-slate-50 dark:bg-slate-800/50 rounded-3xl relative group border border-slate-100 dark:border-slate-700">
+                        <div v-for="(edu, index) in form.education" :key="index" class="p-8 bg-slate-50 dark:bg-slate-800/50 rounded-2xl relative group border border-slate-100 dark:border-slate-700">
                             <button class="absolute top-6 right-6 p-2 text-slate-300 hover:text-red-500 transition-colors" @click="removeEducation(index)">
                                 <Trash2 class="w-5 h-5" />
                             </button>
@@ -353,7 +353,7 @@ type="file" class="hidden" accept="image/*" @change="(e: Event) => {
                             </div>
                         </div>
 
-                        <button type="button" class="w-full py-6 border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-3xl text-slate-400 dark:text-slate-500 font-bold text-sm hover:border-primary-500 hover:text-primary-600 transition-all flex items-center justify-center gap-2" @click="addEducation">
+                        <button type="button" class="w-full py-6 border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-2xl text-slate-400 dark:text-slate-500 font-bold text-sm hover:border-primary-500 hover:text-primary-600 transition-all flex items-center justify-center gap-2" @click="addEducation">
                             <Plus class="w-5 h-5" />
                             Tambah Pendidikan
                         </button>

@@ -37,7 +37,7 @@ const ask = async (q) => {
 </script>
 
 <template>
-    <div class="bg-neutral-900 rounded-[3rem] border border-white/10 overflow-hidden shadow-2xl flex flex-col h-[600px] group transition-all duration-500 hover:border-indigo-500/30">
+    <div class="bg-neutral-900 rounded-2xl border border-white/10 overflow-hidden shadow-2xl flex flex-col h-[600px] group transition-all duration-500 hover:border-indigo-500/30">
         <!-- Header -->
         <div class="p-8 border-b border-white/10 bg-gradient-to-r from-indigo-600/20 to-transparent flex items-center justify-between">
             <div class="flex items-center gap-4">
@@ -45,8 +45,8 @@ const ask = async (q) => {
                     <Bot class="w-6 h-6 text-white" />
                 </div>
                 <div>
-                    <h3 class="text-xl font-black text-white tracking-tight">AI FAQ Support</h3>
-                    <p class="text-[10px] font-black text-indigo-400 uppercase tracking-widest flex items-center gap-1">
+                    <h3 class="text-xl font-bold text-white tracking-tight">AI FAQ Support</h3>
+                    <p class="text-[10px] font-bold text-indigo-400 uppercase tracking-widest flex items-center gap-1">
                         <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-ping"></span>
                         Online Sekarang
                     </p>
@@ -68,7 +68,7 @@ v-for="(msg, i) in conversation" :key="i"
                  class="animate-slide-up">
                 <div
 :class="[
-                    'max-w-[85%] p-5 rounded-3xl text-sm font-medium leading-relaxed',
+                    'max-w-[85%] p-5 rounded-2xl text-sm font-medium leading-relaxed',
                     msg.role === 'user' 
                         ? 'bg-indigo-600 text-white rounded-tr-none' 
                         : 'bg-white/5 text-neutral-300 border border-white/10 rounded-tl-none'
@@ -77,8 +77,8 @@ v-for="(msg, i) in conversation" :key="i"
                 </div>
             </div>
 
-            <div v-if="isLoading" class="flex justify-start animate-pulse">
-                <div class="bg-white/5 border border-white/10 p-5 rounded-3xl rounded-tl-none flex gap-2">
+            <div v-if="isLoading" class="flex justify-start ">
+                <div class="bg-white/5 border border-white/10 p-5 rounded-2xl rounded-tl-none flex gap-2">
                     <span class="w-1.5 h-1.5 bg-indigo-500 rounded-full animate-bounce"></span>
                     <span class="w-1.5 h-1.5 bg-indigo-500 rounded-full animate-bounce [animation-delay:0.2s]"></span>
                     <span class="w-1.5 h-1.5 bg-indigo-500 rounded-full animate-bounce [animation-delay:0.4s]"></span>
@@ -92,7 +92,7 @@ v-for="(msg, i) in conversation" :key="i"
                 <button 
                     v-for="q in quickQuestions" 
                     :key="q"
-                    class="px-4 py-2 bg-white/5 hover:bg-white/10 border border-white/10 rounded-full text-[10px] font-black text-neutral-400 hover:text-white transition-all uppercase tracking-widest"
+                    class="px-4 py-2 bg-white/5 hover:bg-white/10 border border-white/10 rounded-full text-[10px] font-bold text-neutral-400 hover:text-white transition-all uppercase tracking-widest"
                     @click="ask(q)"
                 >
                     {{ q }}

@@ -93,7 +93,7 @@ onMounted(() => {
                         <div class="sticky top-32 space-y-8">
                             <!-- Category: Bantuan -->
                             <div>
-                                <h4 class="text-xs font-black text-slate-400 dark:text-neutral-500 uppercase tracking-[0.2em] mb-4 px-4">{{ t('info.help_center') }}</h4>
+                                <h4 class="text-xs font-bold text-slate-400 dark:text-neutral-500 uppercase tracking-[0.2em] mb-4 px-4">{{ t('info.help_center') }}</h4>
                                 <div class="space-y-1">
                                     <button 
                                         v-for="s in sections.filter(s => s.category === 'bantuan')" 
@@ -111,7 +111,7 @@ onMounted(() => {
 
                             <!-- Category: Perusahaan -->
                             <div>
-                                <h4 class="text-xs font-black text-slate-400 dark:text-neutral-500 uppercase tracking-[0.2em] mb-4 px-4">{{ t('info.for_companies') }}</h4>
+                                <h4 class="text-xs font-bold text-slate-400 dark:text-neutral-500 uppercase tracking-[0.2em] mb-4 px-4">{{ t('info.for_companies') }}</h4>
                                 <div class="space-y-1">
                                     <button 
                                         v-for="s in sections.filter(s => s.category === 'perusahaan')" 
@@ -129,7 +129,7 @@ onMounted(() => {
 
                             <!-- Category: Mahasiswa -->
                             <div>
-                                <h4 class="text-xs font-black text-slate-400 dark:text-neutral-500 uppercase tracking-[0.2em] mb-4 px-4">{{ t('info.for_students') }}</h4>
+                                <h4 class="text-xs font-bold text-slate-400 dark:text-neutral-500 uppercase tracking-[0.2em] mb-4 px-4">{{ t('info.for_students') }}</h4>
                                 <div class="space-y-1">
                                     <button 
                                         v-for="s in sections.filter(s => s.category === 'mahasiswa')" 
@@ -149,7 +149,7 @@ onMounted(() => {
 
                     <!-- Main Content Area -->
                     <main class="flex-1 max-w-4xl">
-                        <div class="bg-white dark:bg-neutral-900 rounded-[2.5rem] p-8 md:p-16 shadow-sm border border-slate-100 dark:border-neutral-800 transition-all duration-500 animate-in fade-in slide-in-from-bottom-4">
+                        <div class="bg-white dark:bg-neutral-900 rounded-2xl p-8 md:p-16 shadow-sm border border-slate-100 dark:border-neutral-800 transition-all duration-500 animate-in fade-in slide-in-from-bottom-4">
                             
                             <!-- Header -->
                             <div class="flex items-center gap-4 mb-10">
@@ -157,7 +157,7 @@ onMounted(() => {
                                     <component :is="currentSection?.icon" class="w-7 h-7" />
                                 </div>
                                 <div>
-                                    <h1 class="text-3xl md:text-4xl font-black text-slate-900 dark:text-white tracking-tight">{{ currentSection?.label }}</h1>
+                                    <h1 class="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white tracking-tight">{{ currentSection?.label }}</h1>
                                     <p class="text-slate-500 dark:text-neutral-500 font-medium mt-1">{{ t('info.last_updated') }}: {{ lastUpdatedDate }}</p>
                                 </div>
                             </div>
@@ -198,7 +198,7 @@ onMounted(() => {
                                         </div>
                                     </div>
 
-                                    <div class="mt-12 p-10 rounded-[2.5rem] bg-primary-600 text-white shadow-xl shadow-primary-600/20">
+                                    <div class="mt-12 p-10 rounded-2xl bg-primary-600 text-white shadow-xl shadow-primary-600/20">
                                         <h3 class="text-2xl font-bold mb-4">{{ t('info.office_title') }}</h3>
                                         <div class="flex items-start gap-4">
                                             <MapPin class="w-6 h-6 mt-1" />
@@ -318,7 +318,7 @@ v-for="item in [
 }
 
 .prose h3 {
-    @apply text-2xl font-black text-slate-900 dark:text-white mt-12 mb-6 tracking-tight;
+    @apply text-2xl font-bold text-slate-900 dark:text-white mt-12 mb-6 tracking-tight;
 }
 
 .prose p {

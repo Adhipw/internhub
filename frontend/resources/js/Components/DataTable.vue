@@ -9,14 +9,14 @@ defineProps<Props>();
 </script>
 
 <template>
-    <div class="overflow-x-auto bg-white dark:bg-neutral-900 rounded-[2.5rem] border border-neutral-100 dark:border-neutral-800 shadow-premium-sm">
+    <div class="overflow-x-auto bg-white dark:bg-neutral-900 rounded-2xl border border-neutral-100 dark:border-neutral-800 shadow-premium-sm">
         <table class="w-full text-left border-collapse">
             <thead>
                 <tr class="border-b border-neutral-50 dark:border-neutral-800">
                     <th 
                         v-for="header in headers" 
                         :key="header.key"
-                        class="px-8 py-6 text-[10px] font-black uppercase tracking-[0.2em] text-neutral-400 dark:text-neutral-500"
+                        class="px-8 py-6 text-[10px] font-semibold text-sm tracking-wide text-neutral-400 dark:text-neutral-500"
                         :class="[`text-${header.align || 'left'}`]"
                     >
                         {{ header.label }}
@@ -24,7 +24,7 @@ defineProps<Props>();
                 </tr>
             </thead>
             <tbody class="divide-y divide-neutral-50 dark:divide-neutral-800">
-                <tr v-for="i in 5" v-if="loading" :key="i" class="animate-pulse">
+                <tr v-for="i in 5" v-if="loading" :key="i" class="">
                     <td v-for="h in headers" :key="h.key" class="px-8 py-6">
                         <div class="h-4 bg-neutral-100 dark:bg-neutral-800 rounded-lg w-full"></div>
                     </td>

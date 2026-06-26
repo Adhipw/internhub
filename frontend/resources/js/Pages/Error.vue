@@ -26,11 +26,11 @@ const goBack = () => {
             <div class="max-w-2xl w-full text-center space-y-10">
                 <!-- 404 Visual -->
                 <div class="relative inline-block">
-                    <h1 class="text-[12rem] md:text-[18rem] font-black text-slate-100 leading-none select-none">
+                    <h1 class="text-[12rem] md:text-[18rem] font-bold text-slate-100 leading-none select-none">
                         {{ status }}
                     </h1>
                     <div class="absolute inset-0 flex items-center justify-center">
-                        <div class="w-32 h-32 md:w-48 md:h-48 bg-primary-600 rounded-[3rem] rotate-12 flex items-center justify-center shadow-2xl shadow-primary-200 animate-bounce-slow">
+                        <div class="w-32 h-32 md:w-48 md:h-48 bg-primary-600 rounded-2xl rotate-12 flex items-center justify-center shadow-2xl shadow-primary-200 animate-bounce-slow">
                             <Search class="w-16 h-16 md:w-24 md:h-24 text-white" />
                         </div>
                     </div>

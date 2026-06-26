@@ -59,13 +59,13 @@ const handleReset = () => {
         <template #header>
             <div class="flex items-center justify-between">
                 <div>
-                    <h2 class="text-3xl font-black text-slate-900 dark:text-white tracking-tight">{{ t('admin.audit.title') }}</h2>
+                    <h2 class="text-3xl font-bold text-slate-900 dark:text-white tracking-tight">{{ t('admin.audit.title') }}</h2>
                     <div class="flex items-center gap-3 mt-2">
-                        <span class="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-slate-400">
+                        <span class="flex items-center gap-1.5 text-[10px] font-semibold text-xs tracking-wide text-slate-400">
                             <Activity class="w-3 h-3 text-primary-500" /> {{ t('admin.audit.operational_history') }}
                         </span>
                         <span class="w-1 h-1 rounded-full bg-slate-300"></span>
-                        <span class="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-slate-400">
+                        <span class="flex items-center gap-1.5 text-[10px] font-semibold text-xs tracking-wide text-slate-400">
                             <ShieldCheck class="w-3 h-3 text-emerald-500" /> {{ t('admin.audit.compliance_ready') }}
                         </span>
                     </div>
@@ -74,7 +74,7 @@ const handleReset = () => {
                     <div class="flex items-center gap-2 bg-slate-900 text-white px-4 py-2 rounded-xl text-xs font-bold shadow-xl">
                         <Terminal class="w-4 h-4 text-primary-400" />
                         <span>{{ t('admin.audit.live_stream') }}</span>
-                        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse ml-2"></span>
+                        <span class="w-2 h-2 rounded-full bg-emerald-500  ml-2"></span>
                     </div>
                 </div>
             </div>

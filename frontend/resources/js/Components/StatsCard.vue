@@ -41,7 +41,7 @@ const trendClass = computed(() => {
       :class="[color === 'primary' ? 'from-primary-500/20' : '']"
     ></div>
 
-    <div class="card-premium p-10 !rounded-[3.5rem] relative overflow-hidden h-full flex flex-col justify-between">
+    <div class="card-premium p-10 !rounded-2xl relative overflow-hidden h-full flex flex-col justify-between">
       <!-- Background Abstract Pattern -->
       <div class="absolute -right-10 -bottom-10 w-40 h-40 opacity-[0.03] group-hover:opacity-[0.08] group-hover:scale-125 transition-all duration-700">
         <component :is="icon" class="w-full h-full rotate-12" />
@@ -53,14 +53,14 @@ const trendClass = computed(() => {
         </div>
 
         <div class="space-y-1">
-          <p class="text-[11px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-[0.25em]">{{ label }}</p>
+          <p class="text-[11px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-[0.25em]">{{ label }}</p>
           <div class="flex items-end gap-3">
-            <h3 class="text-5xl font-black text-slate-900 dark:text-white tracking-tighter leading-none">
+            <h3 class="text-5xl font-bold text-slate-900 dark:text-white tracking-tighter leading-none">
               <template v-if="loading">---</template>
               <template v-else>{{ value }}</template>
             </h3>
             
-            <div v-if="trend && !loading" :class="['px-2.5 py-1 rounded-full text-[10px] font-black flex items-center gap-1 mb-1', trendClass]">
+            <div v-if="trend && !loading" :class="['px-2.5 py-1 rounded-full text-[10px] font-bold flex items-center gap-1 mb-1', trendClass]">
               <span v-if="trend.isUp">↑</span>
               <span v-else>↓</span>
               {{ trend.value }}
@@ -72,7 +72,7 @@ const trendClass = computed(() => {
       <!-- Action Indicator (Subtle) -->
       <div class="mt-8 flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
         <div class="w-1.5 h-1.5 rounded-full bg-primary-600"></div>
-        <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Detail Insight</span>
+        <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Detail Insight</span>
       </div>
     </div>
   </div>

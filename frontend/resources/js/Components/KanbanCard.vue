@@ -35,7 +35,7 @@ const initials = computed(() => {
 
 <template>
   <div 
-    class="group relative p-6 rounded-[2.5rem] border transition-all duration-500 hover:shadow-premium-xl active-press"
+    class="group relative p-6 rounded-2xl border transition-all duration-500 hover:shadow-premium-xl active-press"
     :class="statusBorderClass"
   >
     <div class="flex items-start gap-5">
@@ -43,7 +43,7 @@ const initials = computed(() => {
       <div class="relative shrink-0">
         <div class="w-16 h-16 rounded-2xl overflow-hidden bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 shadow-sm flex items-center justify-center group-hover:scale-105 transition-transform duration-500">
           <img v-if="image" loading="lazy" decoding="async" :src="image" class="w-full h-full object-cover p-1" />
-          <div v-else class="text-lg font-black text-slate-300">{{ initials }}</div>
+          <div v-else class="text-lg font-bold text-slate-300">{{ initials }}</div>
         </div>
         <!-- Online/Status Indicator -->
         <div 
@@ -55,7 +55,7 @@ const initials = computed(() => {
 
       <div class="flex-1 min-w-0">
         <div class="flex items-center justify-between gap-2 mb-1">
-          <h4 class="text-base font-black text-slate-900 dark:text-white truncate group-hover:text-primary-600 transition-colors">
+          <h4 class="text-base font-bold text-slate-900 dark:text-white truncate group-hover:text-primary-600 transition-colors">
             {{ title }}
           </h4>
           <Link v-if="href" :href="href" class="p-2 rounded-full bg-slate-50 dark:bg-slate-800 text-slate-400 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 group-hover:-translate-y-1 transition-all">
@@ -71,7 +71,7 @@ const initials = computed(() => {
         <div class="flex items-center justify-between pt-4 border-t border-slate-100 dark:border-white/5">
           <div class="flex items-center gap-3">
              <StatusBadge :status="status" size="sm" />
-             <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-1">
+             <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest flex items-center gap-1">
                <Clock class="w-3 h-3" />
                {{ date }}
              </span>

@@ -90,8 +90,8 @@ const submit = async () => {
         <template #title>{{ t('auth.login_title') }}</template>
         <template #subtitle>
             <div v-if="requestedRole" class="flex items-center gap-2 mb-2">
-                <span class="w-1.5 h-1.5 rounded-full bg-blue-600 animate-pulse"></span>
-                <span class="text-[10px] font-black tracking-widest text-blue-600 uppercase">
+                <span class="w-1.5 h-1.5 rounded-full bg-blue-600 "></span>
+                <span class="text-[10px] font-bold tracking-widest text-blue-600 uppercase">
                     {{ t('auth.portal_access') }} {{ roleLabel }}
                 </span>
             </div>

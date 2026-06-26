@@ -25,7 +25,7 @@ const t = (key: string) => key;
             <div class="absolute inset-0 bg-gradient-to-b from-primary-50/50 to-transparent dark:from-primary-950/20 pointer-events-none"></div>
             <div class="container mx-auto px-6 relative z-10">
                 <div class="max-w-3xl">
-                    <h1 class="text-4xl md:text-5xl font-black text-neutral-900 dark:text-white leading-tight mb-6">
+                    <h1 class="text-4xl md:text-5xl font-bold text-neutral-900 dark:text-white leading-tight mb-6">
                         Bekerja di Perusahaan <br/>
                         <span class="text-primary-600">Terbaik di Indonesia.</span>
                     </h1>
@@ -47,7 +47,7 @@ const t = (key: string) => key;
                     <div 
                         v-for="company in companies.data" 
                         :key="company.id"
-                        class="group bg-white dark:bg-neutral-900 rounded-[2.5rem] p-8 border border-neutral-100 dark:border-white/5 hover:border-primary-200 dark:hover:border-primary-900/30 transition-all duration-500 hover:shadow-2xl hover:shadow-primary-600/5 relative overflow-hidden"
+                        class="group bg-white dark:bg-neutral-900 rounded-2xl p-8 border border-neutral-100 dark:border-white/5 hover:border-primary-200 dark:hover:border-primary-900/30 transition-all duration-500 hover:shadow-2xl hover:shadow-primary-600/5 relative overflow-hidden"
                     >
                         <!-- Hover Decoration -->
                         <div class="absolute -right-4 -top-4 w-24 h-24 bg-primary-600/5 rounded-full blur-2xl group-hover:bg-primary-600/10 transition-all"></div>
@@ -57,7 +57,7 @@ const t = (key: string) => key;
                                 <img v-if="company.logo_url" loading="lazy" decoding="async" :src="company.logo_url" :alt="company.name" class="w-full h-full object-contain" />
                                 <Building2 v-else class="w-8 h-8 text-neutral-300" />
                             </div>
-                            <div v-if="company.is_verified" class="flex items-center gap-1.5 px-3 py-1.2 rounded-full bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 text-[10px] font-black uppercase tracking-widest border border-blue-100 dark:border-blue-900/30">
+                            <div v-if="company.is_verified" class="flex items-center gap-1.5 px-3 py-1.2 rounded-full bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 text-[10px] font-semibold text-xs tracking-wide border border-blue-100 dark:border-blue-900/30">
                                 <CheckCircle2 class="w-3 h-3" />
                                 Verified
                             </div>
@@ -93,7 +93,7 @@ const t = (key: string) => key;
                 </div>
 
                 <!-- Empty State -->
-                <div v-else class="text-center py-20 bg-white dark:bg-neutral-900 rounded-[3rem] border border-dashed border-neutral-200 dark:border-white/10">
+                <div v-else class="text-center py-20 bg-white dark:bg-neutral-900 rounded-2xl border border-dashed border-neutral-200 dark:border-white/10">
                     <div class="w-20 h-20 bg-neutral-50 dark:bg-neutral-800 rounded-full flex items-center justify-center mx-auto mb-6">
                         <Building2 class="w-10 h-10 text-neutral-300" />
                     </div>

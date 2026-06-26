@@ -16,7 +16,7 @@ defineProps<Props>();
 
 <template>
     <section class="py-20">
-        <div class="bg-primary-600 rounded-[3rem] p-12 md:p-24 text-center text-white relative overflow-hidden shadow-2xl shadow-primary-600/20">
+        <div class="bg-primary-600 rounded-2xl p-12 md:p-24 text-center text-white relative overflow-hidden shadow-2xl shadow-primary-600/20">
             <div class="relative z-10 max-w-3xl mx-auto">
                 <h2 class="text-3xl md:text-6xl font-extrabold mb-8 tracking-tight" v-html="title"></h2>
                 <p class="text-xl text-primary-100 mb-12 font-medium opacity-90 leading-relaxed">{{ description }}</p>
@@ -34,8 +34,8 @@ defineProps<Props>();
                 </div>
             </div>
             <!-- Decorative Elements -->
-            <div class="absolute top-0 right-0 w-[500px] h-[500px] bg-white/10 rounded-full blur-3xl -mr-64 -mt-64"></div>
-            <div class="absolute bottom-0 left-0 w-[400px] h-[400px] bg-black/10 rounded-full blur-3xl -ml-48 -mb-48"></div>
+            <div class="absolute top-0 right-0 w-[500px] h-[500px] bg-white/10 rounded-full blur-2xl opacity-50 -mr-64 -mt-64"></div>
+            <div class="absolute bottom-0 left-0 w-[400px] h-[400px] bg-black/10 rounded-full blur-2xl opacity-50 -ml-48 -mb-48"></div>
         </div>
     </section>
 </template>

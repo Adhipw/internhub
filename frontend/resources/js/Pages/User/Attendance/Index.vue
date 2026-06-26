@@ -173,7 +173,7 @@ onUnmounted(() => {
                                 </p>
                             </div>
 
-                            <div v-if="isTracking" class="flex items-center gap-2 text-xs text-emerald-600 font-medium animate-pulse">
+                            <div v-if="isTracking" class="flex items-center gap-2 text-xs text-emerald-600 font-medium ">
                                 <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
                                 Realtime Tracking Aktif
                             </div>
@@ -209,7 +209,7 @@ onUnmounted(() => {
                     <Card class="overflow-hidden border-none shadow-2xl shadow-slate-200/50 dark:shadow-none">
                         <div class="p-6 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between bg-white dark:bg-neutral-900">
                             <div>
-                                <h3 class="font-black text-xl text-slate-900 dark:text-white tracking-tight">Riwayat Kehadiran</h3>
+                                <h3 class="font-bold text-xl text-slate-900 dark:text-white tracking-tight">Riwayat Kehadiran</h3>
                                 <p class="text-xs text-slate-500 mt-1">Data absensi 30 hari terakhir.</p>
                             </div>
                             <Button variant="ghost" size="sm" class="font-bold">
@@ -220,7 +220,7 @@ onUnmounted(() => {
                         <div v-if="history.data.length > 0" class="overflow-x-auto">
                             <table class="w-full text-left">
                                 <thead>
-                                    <tr class="bg-slate-50 dark:bg-slate-800/50 text-[10px] text-slate-400 uppercase font-black tracking-[0.2em]">
+                                    <tr class="bg-slate-50 dark:bg-slate-800/50 text-[10px] text-slate-400 uppercase font-bold tracking-[0.2em]">
                                         <th class="px-6 py-5">Tanggal</th>
                                         <th class="px-6 py-5">Check-in</th>
                                         <th class="px-6 py-5">Check-out</th>
@@ -246,7 +246,7 @@ onUnmounted(() => {
                                             </Badge>
                                         </td>
                                         <td class="px-6 py-5 text-right">
-                                            <div class="flex items-center justify-end gap-2 text-[10px] font-black text-emerald-600 uppercase tracking-widest">
+                                            <div class="flex items-center justify-end gap-2 text-[10px] font-bold text-emerald-600 uppercase tracking-widest">
                                                 <CheckCircle2 class="w-4 h-4" /> Verified
                                             </div>
                                         </td>
@@ -264,7 +264,7 @@ onUnmounted(() => {
                 </div>
             </div>
             
-            <div v-else class="bg-white border border-slate-100 rounded-[3rem] p-20 text-center shadow-sm">
+            <div v-else class="bg-white border border-slate-100 rounded-2xl p-20 text-center shadow-sm">
                 <div class="w-24 h-24 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-8">
                     <Info class="w-10 h-10 text-slate-200" />
                 </div>

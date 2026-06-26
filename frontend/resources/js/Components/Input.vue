@@ -57,7 +57,7 @@ const inputClasses = computed(() => {
 
 <template>
     <div class="space-y-2">
-        <label v-if="label" :for="inputId" class="block text-[11px] font-black uppercase tracking-[0.05em] text-slate-500 ml-1">
+        <label v-if="label" :for="inputId" class="block text-[11px] font-semibold text-sm tracking-[0.05em] text-slate-500 ml-1">
             {{ label }}
         </label>
         <div class="relative">

@@ -239,24 +239,24 @@ const verifyDocument = async (id: number, status: string) => {
 
         <!-- AI Candidate Smart Summary Card -->
         <section class="animate-reveal">
-          <div class="p-8 bg-gradient-to-br from-primary-500/5 to-indigo-500/5 dark:from-primary-950/20 dark:to-indigo-950/20 border border-primary-100/50 dark:border-primary-900/30 rounded-3xl shadow-sm relative overflow-hidden">
+          <div class="p-8 bg-gradient-to-br from-primary-500/5 to-indigo-500/5 dark:from-primary-950/20 dark:to-indigo-950/20 border border-primary-100/50 dark:border-primary-900/30 rounded-2xl shadow-sm relative overflow-hidden">
             <!-- Glassmorphism decorative blur -->
-            <div class="absolute -right-16 -top-16 w-36 h-36 bg-primary-600/10 rounded-full blur-3xl"></div>
-            <div class="absolute -left-16 -bottom-16 w-36 h-36 bg-indigo-600/10 rounded-full blur-3xl"></div>
+            <div class="absolute -right-16 -top-16 w-36 h-36 bg-primary-600/10 rounded-full blur-2xl opacity-50"></div>
+            <div class="absolute -left-16 -bottom-16 w-36 h-36 bg-indigo-600/10 rounded-full blur-2xl opacity-50"></div>
 
             <div class="flex items-center justify-between mb-6 relative z-10">
               <div class="flex items-center space-x-3">
                 <div class="w-10 h-10 rounded-2xl bg-primary-600 flex items-center justify-center shadow-lg shadow-primary-500/20">
-                  <SparklesIcon class="w-5 h-5 text-white animate-pulse" />
+                  <SparklesIcon class="w-5 h-5 text-white " />
                 </div>
                 <div>
-                  <h3 class="text-xs font-black text-slate-900 dark:text-white uppercase tracking-widest">AI Candidate Smart Summary</h3>
+                  <h3 class="text-xs font-bold text-slate-900 dark:text-white uppercase tracking-widest">AI Candidate Smart Summary</h3>
                   <p class="text-[10px] text-slate-500 dark:text-neutral-400 font-medium">Analisis Resume & Portofolio Otomatis</p>
                 </div>
               </div>
               <button 
                 :disabled="aiSummaryLoading" 
-                class="px-4 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:text-primary-600 dark:hover:text-primary-400 hover:border-primary-200 text-xs font-black rounded-xl transition-all shadow-sm flex items-center gap-2"
+                class="px-4 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:text-primary-600 dark:hover:text-primary-400 hover:border-primary-200 text-xs font-bold rounded-xl transition-all shadow-sm flex items-center gap-2"
                 @click="generateAiSummary"
               >
                 <span v-if="aiSummaryLoading" class="animate-spin rounded-full h-3.5 w-3.5 border-b-2 border-primary-600 shrink-0"></span>
@@ -266,9 +266,9 @@ const verifyDocument = async (id: number, status: string) => {
 
             <div class="relative z-10">
               <div v-if="aiSummaryLoading" class="space-y-3 py-4">
-                <div class="h-4 bg-slate-100 dark:bg-slate-800 rounded-full w-3/4 animate-pulse"></div>
-                <div class="h-4 bg-slate-100 dark:bg-slate-800 rounded-full w-5/6 animate-pulse"></div>
-                <div class="h-4 bg-slate-100 dark:bg-slate-800 rounded-full w-2/3 animate-pulse"></div>
+                <div class="h-4 bg-slate-100 dark:bg-slate-800 rounded-full w-3/4 "></div>
+                <div class="h-4 bg-slate-100 dark:bg-slate-800 rounded-full w-5/6 "></div>
+                <div class="h-4 bg-slate-100 dark:bg-slate-800 rounded-full w-2/3 "></div>
               </div>
               <div v-else-if="aiSummary" class="text-sm text-slate-700 dark:text-slate-300 space-y-4 leading-relaxed font-semibold">
                 <div class="prose prose-slate dark:prose-invert max-w-none text-xs leading-relaxed space-y-3 whitespace-pre-line">
@@ -285,7 +285,7 @@ const verifyDocument = async (id: number, status: string) => {
         <!-- Cover Letter / Intro -->
         <section>
           <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">Pesan Pengantar (Cover Letter)</h3>
-          <div class="p-8 bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 rounded-3xl shadow-sm italic leading-relaxed text-slate-700 dark:text-slate-300">
+          <div class="p-8 bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 rounded-2xl shadow-sm italic leading-relaxed text-slate-700 dark:text-slate-300">
             <p v-if="application.cover_letter" class="whitespace-pre-wrap">{{ application.cover_letter }}</p>
             <p v-else class="text-slate-400 italic">Kandidat tidak menyertakan pesan pengantar.</p>
           </div>
@@ -320,18 +320,18 @@ const verifyDocument = async (id: number, status: string) => {
         <section v-if="application.status === 'accepted' || application.status === 'onboarding'">
           <div class="flex items-center justify-between mb-6">
             <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest">Dokumen Onboarding (Verifikasi)</h3>
-            <span class="px-2 py-0.5 bg-primary-50 text-primary-600 text-[10px] font-black rounded-lg">PROSES ONBOARDING</span>
+            <span class="px-2 py-0.5 bg-primary-50 text-primary-600 text-[10px] font-bold rounded-lg">PROSES ONBOARDING</span>
           </div>
 
           <div class="grid grid-cols-1 gap-4">
-            <div v-for="doc in application.onboarding_documents" :key="doc.id" class="p-6 bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 rounded-3xl shadow-sm">
+            <div v-for="doc in application.onboarding_documents" :key="doc.id" class="p-6 bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 rounded-2xl shadow-sm">
                 <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
                     <div class="flex gap-4">
                         <div class="w-12 h-12 bg-slate-50 dark:bg-slate-900 rounded-xl flex items-center justify-center text-slate-400">
                             <DocumentArrowDownIcon class="w-6 h-6" />
                         </div>
                         <div>
-                            <p class="text-sm font-black text-slate-900 dark:text-white capitalize">{{ doc.type.replace('_', ' ') }}</p>
+                            <p class="text-sm font-bold text-slate-900 dark:text-white capitalize">{{ doc.type.replace('_', ' ') }}</p>
                             <div class="flex items-center gap-2 mt-1">
                                 <StatusBadge :status="doc.status || 'pending'" size="xs" />
                                 <span class="text-[10px] text-slate-400 font-medium">Diunggah {{ doc.created_at_human }}</span>
@@ -354,7 +354,7 @@ const verifyDocument = async (id: number, status: string) => {
                     </div>
                 </div>
             </div>
-            <div v-if="!application.onboarding_documents || application.onboarding_documents.length === 0" class="p-10 bg-slate-50 dark:bg-slate-900/50 rounded-[2.5rem] border-2 border-dashed border-slate-100 dark:border-slate-800 text-center">
+            <div v-if="!application.onboarding_documents || application.onboarding_documents.length === 0" class="p-10 bg-slate-50 dark:bg-slate-900/50 rounded-2xl border-2 border-dashed border-slate-100 dark:border-slate-800 text-center">
                 <p class="text-sm text-slate-400 font-bold">Kandidat belum mengunggah dokumen onboarding.</p>
             </div>
           </div>
@@ -412,8 +412,8 @@ const verifyDocument = async (id: number, status: string) => {
             <XCircleIcon v-else class="w-8 h-8" />
           </div>
           <div class="space-y-1">
-            <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Keputusan untuk</p>
-            <h4 class="text-xl font-black text-slate-900 dark:text-white">{{ application.user.name }}</h4>
+            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Keputusan untuk</p>
+            <h4 class="text-xl font-bold text-slate-900 dark:text-white">{{ application.user.name }}</h4>
             <p class="text-sm text-slate-500 font-medium">Posisi: {{ application.internship.title }}</p>
           </div>
         </div>
@@ -450,8 +450,8 @@ const verifyDocument = async (id: number, status: string) => {
         </div>
 
         <div class="flex justify-end items-center gap-4 pt-4">
-          <button type="button" class="px-8 py-4 text-sm font-black text-slate-400 hover:text-slate-600 transition-colors" @click="showStatusModal = false">Batal</button>
-          <Button type="submit" :variant="selectedStatus === 'rejected' ? 'danger' : 'success'" :loading="statusForm.processing" class="!px-12 !h-14 !rounded-2xl !text-sm !font-black shadow-xl">
+          <button type="button" class="px-8 py-4 text-sm font-bold text-slate-400 hover:text-slate-600 transition-colors" @click="showStatusModal = false">Batal</button>
+          <Button type="submit" :variant="selectedStatus === 'rejected' ? 'danger' : 'success'" :loading="statusForm.processing" class="!px-12 !h-14 !rounded-2xl !text-sm !font-bold shadow-xl">
             {{ selectedStatus === 'accepted' ? 'Terima Sekarang' : 'Konfirmasi Penolakan' }}
           </Button>
         </div>

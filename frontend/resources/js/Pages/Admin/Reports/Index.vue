@@ -140,7 +140,7 @@ onUnmounted(() => {
                <span class="text-xs font-bold bg-white/20 px-2 py-1 rounded-lg">High Retention</span>
             </div>
             <p class="text-xs font-bold text-indigo-100 uppercase tracking-widest mb-1">Total Lamaran</p>
-            <p class="text-4xl font-black mb-6">{{ applicationStats.reduce((a, b) => a + b.total, 0) }}</p>
+            <p class="text-4xl font-bold mb-6">{{ applicationStats.reduce((a, b) => a + b.total, 0) }}</p>
             <div class="flex gap-2">
                <div v-for="stat in applicationStats.slice(0,3)" :key="stat.status" class="flex-1 bg-white/10 p-2 rounded-xl text-center">
                  <p class="text-[8px] font-bold uppercase opacity-60 truncate">{{ stat.status }}</p>
@@ -187,7 +187,7 @@ onUnmounted(() => {
                 <h3 class="text-xl font-bold mb-2">Platform Health Score</h3>
                 <p class="text-slate-400 text-sm mb-8">Berdasarkan rasio lamaran dan verifikasi perusahaan 30 hari terakhir.</p>
                 <div class="flex items-end gap-2">
-                  <span class="text-6xl font-black text-primary-500">94</span>
+                  <span class="text-6xl font-bold text-primary-500">94</span>
                   <span class="text-xl font-bold text-slate-500 mb-2">/100</span>
                 </div>
               </div>

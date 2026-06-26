@@ -79,7 +79,7 @@ const maxWidthClass = {
                 >
                     <div
                         v-show="show"
-                        class="mb-6 bg-white dark:bg-neutral-900 rounded-[2.5rem] overflow-hidden shadow-2xl transform transition-all sm:w-full sm:mx-auto border border-neutral-100 dark:border-neutral-800 relative z-[110]"
+                        class="mb-6 bg-white dark:bg-neutral-900 rounded-2xl overflow-hidden shadow-2xl transform transition-all sm:w-full sm:mx-auto border border-neutral-100 dark:border-neutral-800 relative z-[110]"
                         :class="maxWidthClass"
                         @click.stop
                     >

@@ -88,7 +88,7 @@ const close = () => {
                             <p class="text-xs font-bold text-primary-900 dark:text-primary-100 mb-2">{{ t('import.template_hint') }}</p>
                             <a 
                                 :href="templateUrl" 
-                                class="inline-flex items-center gap-2 text-xs font-black text-primary-600 hover:text-primary-700 uppercase tracking-widest"
+                                class="inline-flex items-center gap-2 text-xs font-bold text-primary-600 hover:text-primary-700 uppercase tracking-widest"
                                 target="_blank"
                             >
                                 <Download class="w-3.5 h-3.5" />
@@ -134,11 +134,11 @@ const close = () => {
                 
                 <div class="grid grid-cols-2 gap-4 mt-8">
                     <div class="bg-slate-50 dark:bg-slate-900 p-4 rounded-2xl border border-slate-100 dark:border-slate-800">
-                        <p class="text-2xl font-black text-slate-900 dark:text-white">{{ result.imported }}</p>
+                        <p class="text-2xl font-bold text-slate-900 dark:text-white">{{ result.imported }}</p>
                         <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">{{ t('import.success_count') }}</p>
                     </div>
                     <div class="bg-slate-50 dark:bg-slate-900 p-4 rounded-2xl border border-slate-100 dark:border-slate-800">
-                        <p class="text-2xl font-black" :class="result.errors.length > 0 ? 'text-red-500' : 'text-slate-400'">{{ result.errors.length }}</p>
+                        <p class="text-2xl font-bold" :class="result.errors.length > 0 ? 'text-red-500' : 'text-slate-400'">{{ result.errors.length }}</p>
                         <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">{{ t('import.error_count') }}</p>
                     </div>
                 </div>

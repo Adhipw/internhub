@@ -116,11 +116,11 @@ watch(statusFilter, () => {
               <tr v-for="app in applications.data" :key="app.id" class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-all duration-300 group cursor-pointer" @click="inertiaRouter.visit('/hr/applications/' + app.id)">
                 <td class="px-8 py-6">
                   <div class="flex items-center">
-                    <div class="h-12 w-12 flex-shrink-0 rounded-2xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-400 font-black group-hover:bg-primary-600 group-hover:text-white transition-all shadow-sm">
+                    <div class="h-12 w-12 flex-shrink-0 rounded-2xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-400 font-bold group-hover:bg-primary-600 group-hover:text-white transition-all shadow-sm">
                       {{ app.user.name.charAt(0) }}
                     </div>
                     <div class="ml-5">
-                      <div class="text-sm font-black text-slate-900 dark:text-white">{{ app.user.name }}</div>
+                      <div class="text-sm font-bold text-slate-900 dark:text-white">{{ app.user.name }}</div>
                       <div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-0.5">{{ app.user.email }}</div>
                     </div>
                   </div>
@@ -129,7 +129,7 @@ watch(statusFilter, () => {
                   <div class="text-sm text-slate-900 dark:text-white font-bold">{{ app.internship.title }}</div>
                 </td>
                 <td class="px-8 py-6">
-                  <div class="text-[10px] font-black text-slate-400 uppercase tracking-widest">{{ app.created_at_human }}</div>
+                  <div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{{ app.created_at_human }}</div>
                 </td>
                 <td class="px-8 py-6">
                   <StatusBadge :status="app.status" />

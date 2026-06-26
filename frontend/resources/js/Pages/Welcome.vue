@@ -229,24 +229,24 @@ const faqs = computed(() => [
         <section class="relative pt-16 pb-24 lg:pt-24 lg:pb-32 overflow-hidden transition-colors duration-500" :class="isDarkMode ? 'bg-slate-950' : 'bg-white'">
             <div class="absolute inset-0 -z-10 opacity-30" :class="isDarkMode ? 'bg-[radial-gradient(circle_at_top_right,rgba(37,99,235,0.1),transparent)]' : 'bg-[radial-gradient(circle_at_top_right,rgba(37,99,235,0.05),transparent)]'"></div>
             
-            <div v-reveal class="max-w-5xl mx-auto px-6 text-center">
+            <div class="max-w-5xl mx-auto px-6 text-center">
                 <!-- Badge -->
-                <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-8 transition-colors" :class="isDarkMode ? 'bg-blue-900/30 text-blue-400' : 'bg-blue-50 text-blue-600'">
-                    <span class="flex h-2 w-2 rounded-full bg-blue-600 animate-pulse"></span>
+                <div v-reveal class="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-8 transition-colors" :class="isDarkMode ? 'bg-blue-900/30 text-blue-400' : 'bg-blue-50 text-blue-600'">
+                    <span class="flex h-2 w-2 rounded-full bg-blue-600 "></span>
                     <span class="text-xs font-semibold text-xs tracking-wide">{{ t('hero.badge') }}</span>
                 </div>
 
                 <!-- Title & Subtitle -->
-                <h1 class="text-4xl lg:text-7xl font-bold mb-8 leading-tight mx-auto max-w-4xl" :class="isDarkMode ? 'text-white' : 'text-slate-950'">
+                <h1 v-reveal class="text-4xl lg:text-7xl font-bold mb-8 leading-tight mx-auto max-w-4xl delay-100" :class="isDarkMode ? 'text-white' : 'text-slate-950'">
                     {{ t('hero.title') }}
                 </h1>
                 
-                <p class="text-lg lg:text-xl mb-12 max-w-2xl mx-auto leading-relaxed" :class="isDarkMode ? 'text-slate-400' : 'text-slate-600'">
+                <p v-reveal class="text-lg lg:text-xl mb-12 max-w-2xl mx-auto leading-relaxed delay-200" :class="isDarkMode ? 'text-slate-400' : 'text-slate-600'">
                     {{ t('hero.subtitle') }}
                 </p>
 
                 <!-- Professional Search Box (Centered) -->
-                <div class="p-2 rounded-2xl shadow-2xl border transition-all duration-300 group focus-within:ring-4 focus-within:ring-blue-600/10 mb-12 max-w-4xl mx-auto" :class="isDarkMode ? 'bg-slate-900 border-slate-800 shadow-slate-950' : 'bg-white border-slate-200 shadow-slate-200/50'">
+                <div v-reveal class="p-2 rounded-2xl shadow-sm hover:shadow-md border transition-all duration-300 group focus-within:ring-4 focus-within:ring-blue-600/10 mb-12 max-w-4xl mx-auto delay-300" :class="isDarkMode ? 'bg-slate-900 border-slate-800 shadow-slate-950' : 'bg-white border-slate-200 shadow-slate-200/50'">
                     <form class="flex flex-col md:flex-row items-center gap-2" @submit.prevent="submitSearch">
                         <div class="flex-1 w-full flex items-center gap-3 px-6 py-4 border-b md:border-b-0 md:border-r" :class="isDarkMode ? 'border-slate-800' : 'border-slate-100'">
                             <Icon name="search" class-name="w-5 h-5 text-blue-600" />
@@ -268,7 +268,7 @@ const faqs = computed(() => [
                                 :class="isDarkMode ? 'text-white' : 'text-slate-950'"
                             />
                         </div>
-                        <button type="submit" class="w-full md:w-auto bg-blue-600 text-white px-12 py-4 rounded-3xl font-bold text-sm uppercase tracking-widest hover:bg-blue-700 hover:scale-[1.02] active:scale-95 transition-all shadow-sm hover:shadow-md">
+                        <button type="submit" class="w-full md:w-auto bg-slate-900 text-white px-12 py-4 rounded-2xl font-bold text-sm uppercase tracking-widest hover:bg-slate-800 hover:scale-[1.02] active:scale-95 transition-all shadow-sm hover:shadow-md">
                             {{ t('hero.btn_search') }}
                         </button>
                     </form>
@@ -298,7 +298,7 @@ const faqs = computed(() => [
         <section class="py-12 border-y transition-colors duration-300" :class="isDarkMode ? 'bg-slate-950 border-slate-800' : 'bg-slate-50 border-slate-100'">
             <div class="max-w-7xl mx-auto px-6">
                 <div v-if="loading.stats" class="grid grid-cols-2 lg:grid-cols-4 gap-8">
-                    <div v-for="i in 4" :key="i" class="h-16 rounded-2xl animate-pulse" :class="isDarkMode ? 'bg-slate-900' : 'bg-white'"></div>
+                    <div v-for="i in 4" :key="i" class="h-16 rounded-2xl " :class="isDarkMode ? 'bg-slate-900' : 'bg-white'"></div>
                 </div>
                 <div v-else-if="stats" class="grid grid-cols-2 lg:grid-cols-4 gap-8">
                     <div
@@ -331,7 +331,7 @@ v-for="item in [
                         <h2 class="text-3xl lg:text-5xl font-bold mb-4 tracking-tight" :class="isDarkMode ? 'text-white' : 'text-slate-950'">{{ t('jobs.title') }}</h2>
                         <p class="text-lg font-medium" :class="isDarkMode ? 'text-slate-400' : 'text-slate-600'">{{ t('jobs.subtitle') }}</p>
                     </div>
-                    <Link :href="route('internships.index')" class="group flex items-center justify-center md:justify-start gap-3 px-8 py-4 rounded-3xl font-bold text-xs uppercase tracking-widest transition-all shadow-xl hover:scale-105 active:scale-95" :class="isDarkMode ? 'bg-slate-900 text-blue-400 shadow-slate-950' : 'bg-blue-600 text-white shadow-blue-600/20'">
+                    <Link :href="route('internships.index')" class="group flex items-center justify-center md:justify-start gap-3 px-8 py-4 rounded-2xl font-bold text-xs uppercase tracking-widest transition-all shadow-xl hover:scale-105 active:scale-95" :class="isDarkMode ? 'bg-slate-900 text-blue-400 shadow-slate-950' : 'bg-slate-900 text-white shadow-blue-600/20'">
                         {{ t('jobs.btn_all') }}
                         <Icon name="chevron" class-name="w-4 h-4 transition-transform group-hover:translate-x-1" />
                     </Link>
@@ -339,7 +339,7 @@ v-for="item in [
 
                 <!-- Grid Lowongan -->
                 <div v-if="loading.jobs" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    <div v-for="i in 6" :key="i" class="h-[400px] rounded-2xl animate-pulse" :class="isDarkMode ? 'bg-slate-900' : 'bg-slate-100'"></div>
+                    <div v-for="i in 6" :key="i" class="h-[400px] rounded-2xl " :class="isDarkMode ? 'bg-slate-900' : 'bg-slate-100'"></div>
                 </div>
                 
                 <div v-reveal v-else-if="featuredInternships.length > 0" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -377,7 +377,7 @@ v-for="item in [
                                 <span class="text-[9px] font-semibold text-xs tracking-wide text-slate-500 mb-1">{{ t('job.stipend') }}</span>
                                 <span class="text-base font-bold" :class="isDarkMode ? 'text-blue-400' : 'text-blue-600'">{{ job.stipend || t('job.stipend_default') }}</span>
                             </div>
-                            <Link :href="route('internships.show', { slug: job.slug })" class="w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center transition-all hover:scale-110 active:scale-95 shadow-lg shadow-blue-600/20">
+                            <Link :href="route('internships.show', { slug: job.slug })" class="w-10 h-10 rounded-xl bg-slate-900 text-white flex items-center justify-center transition-all hover:scale-110 active:scale-95 shadow-sm hover:shadow-md">
                                 <Icon name="chevron" class-name="w-4 h-4" />
                             </Link>
                         </div>
@@ -425,10 +425,10 @@ v-for="item in [
                 </div>
 
                 <div v-if="loading.companies" class="flex flex-wrap justify-center gap-8 opacity-30">
-                    <div v-for="i in 8" :key="i" class="w-32 h-12 rounded-lg bg-slate-500 animate-pulse"></div>
+                    <div v-for="i in 8" :key="i" class="w-32 h-12 rounded-lg bg-slate-500 "></div>
                 </div>
                 <div v-else-if="companiesRes.length > 0" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6">
-                    <div v-for="comp in companiesRes" :key="comp.id" class="p-6 rounded-3xl border transition-all duration-300 flex flex-col items-center gap-4 group" :class="isDarkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-100 shadow-sm'">
+                    <div v-for="comp in companiesRes" :key="comp.id" class="p-6 rounded-2xl border transition-all duration-300 flex flex-col items-center gap-4 group" :class="isDarkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-100 shadow-sm'">
                         <div class="w-16 h-16 rounded-2xl flex items-center justify-center border font-bold text-xl overflow-hidden grayscale group-hover:grayscale-0 transition-all group-hover:scale-110" :class="isDarkMode ? 'bg-slate-800 border-slate-700 text-blue-500' : 'bg-slate-50 border-slate-200 text-slate-400'">
                             <img v-if="comp.logo_url" loading="lazy" decoding="async" :src="comp.logo_url" class="w-full h-full object-cover" />
                             <span v-else>{{ comp.name?.charAt(0) }}</span>
@@ -499,8 +499,8 @@ v-for="item in [
                 <div v-reveal class="max-w-4xl mx-auto rounded-2xl p-12 lg:p-20 border transition-all duration-500 relative overflow-hidden text-center" :class="isDarkMode ? 'bg-slate-900 border-slate-800' : 'bg-slate-50 border-slate-100 shadow-sm'">
                     
                     <!-- Decorative Element -->
-                    <div class="absolute -top-24 -left-24 w-64 h-64 bg-blue-600/5 rounded-full blur-3xl"></div>
-                    <div class="absolute -bottom-24 -right-24 w-64 h-64 bg-blue-600/5 rounded-full blur-3xl"></div>
+                    <div class="absolute -top-24 -left-24 w-64 h-64 bg-blue-600/5 rounded-full blur-2xl opacity-50"></div>
+                    <div class="absolute -bottom-24 -right-24 w-64 h-64 bg-blue-600/5 rounded-full blur-2xl opacity-50"></div>
 
                     <div class="relative z-10">
                         <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-8 font-bold text-[10px] uppercase tracking-widest transition-colors" :class="isDarkMode ? 'bg-blue-500/10 text-blue-400' : 'bg-blue-600/10 text-blue-600'">
@@ -526,12 +526,12 @@ v-for="item in [
                             
                             <div class="flex items-center justify-between p-2">
                                 <div class="hidden sm:flex items-center gap-2 px-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest">
-                                    <div class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
+                                    <div class="w-2 h-2 rounded-full bg-emerald-500 "></div>
                                     AI Engine Active
                                 </div>
                                 <button 
                                     :disabled="aiLoading || !aiPrompt.trim()"
-                                    class="w-full sm:w-auto bg-blue-600 text-white px-10 py-5 rounded-2xl font-bold text-xs uppercase tracking-widest hover:bg-blue-700 transition-all flex items-center justify-center gap-3 shadow-lg shadow-blue-600/20 disabled:opacity-50 disabled:cursor-not-allowed"
+                                    class="w-full sm:w-auto bg-slate-900 text-white px-10 py-5 rounded-2xl font-bold text-xs uppercase tracking-widest hover:bg-slate-800 transition-all flex items-center justify-center gap-3 shadow-sm hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
                                     @click="submitAiMatcher"
                                 >
                                     <Icon :name="aiLoading ? 'loader' : 'bot'" class-name="w-5 h-5" :class="aiLoading ? 'animate-spin' : ''" />
@@ -555,7 +555,7 @@ v-for="item in [
                         </div>
 
                         <!-- AI Loader State -->
-                        <div v-if="aiLoading" class="max-w-2xl mx-auto mt-12 p-8 rounded-2xl border animate-pulse text-center space-y-6" :class="isDarkMode ? 'bg-slate-950 border-slate-800' : 'bg-white border-slate-100 shadow-sm'">
+                        <div v-if="aiLoading" class="max-w-2xl mx-auto mt-12 p-8 rounded-2xl border  text-center space-y-6" :class="isDarkMode ? 'bg-slate-950 border-slate-800' : 'bg-white border-slate-100 shadow-sm'">
                             <div class="flex flex-col items-center justify-center gap-4">
                                 <div class="w-16 h-16 rounded-full bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-600 animate-spin">
                                     <Icon name="sparkles" class-name="w-8 h-8" />
@@ -611,7 +611,7 @@ v-for="item in [
                                 </div>
                                 
                                 <button 
-                                    class="w-full md:w-auto shrink-0 bg-blue-600 text-white px-8 py-4 rounded-2xl font-bold text-xs uppercase tracking-widest hover:bg-blue-700 hover:scale-[1.02] active:scale-95 transition-all shadow-lg shadow-blue-600/15"
+                                    class="w-full md:w-auto shrink-0 bg-slate-900 text-white px-8 py-4 rounded-2xl font-bold text-xs uppercase tracking-widest hover:bg-slate-800 hover:scale-[1.02] active:scale-95 transition-all shadow-sm hover:shadow-md"
                                     @click="inertiaRouter.visit(`/internships/${match.slug}`)"
                                 >
                                     Lihat Detail
@@ -677,10 +677,10 @@ v-for="item in [
 
         <!-- 11. CTA Akhir -->
         <section class="py-24 lg:py-32 max-w-7xl mx-auto px-6">
-            <div v-reveal class="rounded-3xl p-16 lg:p-24 text-center border transition-all duration-500 relative overflow-hidden" :class="isDarkMode ? 'bg-slate-900 border-slate-800 shadow-slate-950' : 'bg-white border-slate-100 shadow-2xl shadow-slate-200/50'">
+            <div v-reveal class="rounded-2xl p-16 lg:p-24 text-center border transition-all duration-500 relative overflow-hidden" :class="isDarkMode ? 'bg-slate-900 border-slate-800 shadow-slate-950' : 'bg-white border-slate-100 shadow-2xl shadow-slate-200/50'">
                 <!-- Abstract Decor -->
-                <div class="absolute -bottom-20 -left-20 w-80 h-80 bg-blue-600/5 rounded-full blur-[100px]"></div>
-                <div class="absolute -top-20 -right-20 w-80 h-80 bg-blue-600/5 rounded-full blur-[100px]"></div>
+                <div class="absolute -bottom-20 -left-20 w-80 h-80 bg-blue-600/5 rounded-full blur-2xl opacity-30"></div>
+                <div class="absolute -top-20 -right-20 w-80 h-80 bg-blue-600/5 rounded-full blur-2xl opacity-30"></div>
 
                 <div class="relative z-10">
                     <h2 class="text-4xl lg:text-6xl font-bold mb-8 tracking-tight leading-tight" :class="isDarkMode ? 'text-white' : 'text-slate-950'">{{ t('cta.title') }}</h2>
@@ -689,7 +689,7 @@ v-for="item in [
                     </p>
                     
                     <div class="flex flex-col md:flex-row justify-center items-center gap-6 mb-20">
-                        <Link v-if="$page.props.feature_flags?.public_registration !== false" href="/register" class="w-full md:w-auto bg-blue-600 text-white px-16 py-6 rounded-full font-bold text-lg uppercase tracking-[0.2em] hover:bg-blue-700 hover:scale-105 transition-all shadow-sm hover:shadow-md">
+                        <Link v-if="$page.props.feature_flags?.public_registration !== false" href="/register" class="w-full md:w-auto bg-slate-900 text-white px-16 py-6 rounded-full font-bold text-lg uppercase tracking-[0.2em] hover:bg-slate-800 hover:scale-105 transition-all shadow-sm hover:shadow-md">
                             {{ t('cta.btn_register') }}
                         </Link>
                         <Link href="/internships" class="w-full md:w-auto px-16 py-6 rounded-full font-bold text-lg uppercase tracking-[0.2em] border-2 transition-all hover:bg-slate-50 dark:hover:bg-slate-800" :class="isDarkMode ? 'border-slate-800 text-white' : 'border-slate-200 text-slate-950'">
@@ -715,7 +715,7 @@ v-for="item in [
     50% { opacity: 0.5; }
 }
 
-.animate-pulse-slow {
+.-slow {
     animation: pulse-slow 4s ease-in-out infinite;
 }
 </style>

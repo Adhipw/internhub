@@ -154,11 +154,11 @@ onUnmounted(() => {
             <!-- Super Admin Header -->
             <div class="flex flex-col md:flex-row md:items-end justify-between gap-8 animate-fade-in">
                 <div class="space-y-4">
-                    <div class="inline-flex items-center gap-2 px-3 py-1 bg-indigo-50 dark:bg-indigo-900/20 text-indigo-600 rounded-full text-[10px] font-black uppercase tracking-widest border border-indigo-100 dark:border-indigo-900/30">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 bg-indigo-50 dark:bg-indigo-900/20 text-indigo-600 rounded-full text-[10px] font-semibold text-xs tracking-wide border border-indigo-100 dark:border-indigo-900/30">
                         <ShieldCheck class="w-3 h-3" />
                         {{ t('super_admin.dashboard.root_authority') }}
                     </div>
-                    <h1 class="text-5xl font-black text-slate-900 dark:text-white tracking-tight">
+                    <h1 class="text-5xl font-bold text-slate-900 dark:text-white tracking-tight">
                         Super Admin <span class="text-indigo-600">Dashboard</span>
                     </h1>
                     <p class="text-slate-500 dark:text-slate-400 font-medium text-lg">{{ t('super_admin.dashboard.sub_desc') }}</p>
@@ -174,14 +174,14 @@ onUnmounted(() => {
                     </button>
                     <Card glass class="!p-4 !rounded-2xl border-white/50 flex items-center gap-4">
                         <div class="w-3 h-3 rounded-full bg-indigo-500 shadow-[0_0_15px_rgba(99,102,241,0.5)]"></div>
-                        <span class="text-xs font-black text-slate-700 dark:text-slate-300 uppercase tracking-widest">{{ t('super_admin.dashboard.master_key_active') }}</span>
+                        <span class="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-widest">{{ t('super_admin.dashboard.master_key_active') }}</span>
                     </Card>
                 </div>
             </div>
 
             <!-- Global Infrastructure Stats -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                <Card v-for="(stat, i) in globalStats" :key="i" premium hoverable class="!p-8 !rounded-[3rem] group overflow-hidden">
+                <Card v-for="(stat, i) in globalStats" :key="i" premium hoverable class="!p-8 !rounded-2xl group overflow-hidden">
                     <div v-if="loading && !stats.total_users" class="space-y-4">
                         <Skeleton width="3rem" height="3rem" class="rounded-2xl" />
                         <Skeleton width="60%" height="1rem" />
@@ -191,8 +191,8 @@ onUnmounted(() => {
                         <div :class="['w-14 h-14 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-all', stat.bg, stat.color]">
                             <component :is="stat.icon" class="w-6 h-6" />
                         </div>
-                        <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">{{ stat.label }}</p>
-                        <p class="text-4xl font-black text-slate-900 dark:text-white">{{ stat.value }}</p>
+                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">{{ stat.label }}</p>
+                        <p class="text-4xl font-bold text-slate-900 dark:text-white">{{ stat.value }}</p>
                     </template>
                 </Card>
             </div>
@@ -202,10 +202,10 @@ onUnmounted(() => {
                 <div class="lg:col-span-2 space-y-12">
                     
                     <!-- System Activity Chart -->
-                    <Card class="!p-8 !rounded-[3rem] border-slate-100 dark:border-white/5 shadow-premium">
+                    <Card class="!p-8 !rounded-2xl border-slate-100 dark:border-white/5 shadow-premium">
                         <div class="flex items-center justify-between mb-8">
                             <div>
-                                <h2 class="text-xl font-black text-slate-900 dark:text-white flex items-center gap-2">
+                                <h2 class="text-xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
                                     <Activity class="w-5 h-5 text-indigo-600" />
                                     System Activity Overview
                                 </h2>
@@ -224,58 +224,58 @@ onUnmounted(() => {
                     </Card>
 
                     <div class="flex items-center justify-between px-4">
-                        <h2 class="text-2xl font-black text-slate-900 dark:text-white flex items-center gap-3">
+                        <h2 class="text-2xl font-bold text-slate-900 dark:text-white flex items-center gap-3">
                             <Activity class="w-6 h-6 text-indigo-600" />
                             {{ t('super_admin.dashboard.infra_health') || 'Infrastructure Health' }}
                         </h2>
-                        <div class="flex items-center gap-2 text-emerald-500 text-xs font-black uppercase tracking-widest">
-                            <div class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
+                        <div class="flex items-center gap-2 text-emerald-500 text-xs font-semibold text-xs tracking-wide">
+                            <div class="w-2 h-2 rounded-full bg-emerald-500 "></div>
                             {{ systemHealth.status === 'healthy' ? (t('super_admin.dashboard.all_systems_operational') || 'All Systems Operational') : 'System Warning' }}
                         </div>
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        <Card glass class="!p-10 !rounded-[3.5rem] border-white/50 group">
+                        <Card glass class="!p-10 !rounded-2xl border-white/50 group">
                             <div class="flex items-center justify-between mb-10">
                                 <div class="w-14 h-14 bg-indigo-50 dark:bg-indigo-900/20 text-indigo-600 rounded-[1.5rem] flex items-center justify-center group-hover:rotate-12 transition-transform">
                                     <Database class="w-8 h-8" />
                                 </div>
                                 <div class="text-right">
-                                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Disk Storage</p>
-                                    <p class="text-xl font-black text-slate-900 dark:text-white">{{ stats.storage_used }}% Used</p>
+                                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Disk Storage</p>
+                                    <p class="text-xl font-bold text-slate-900 dark:text-white">{{ stats.storage_used }}% Used</p>
                                 </div>
                             </div>
                             <div class="h-2 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden mb-4">
                                 <div class="h-full bg-indigo-500 transition-all duration-1000" :style="{ width: stats.storage_used + '%' }"></div>
                             </div>
-                            <p class="text-[10px] font-black text-slate-500 uppercase tracking-widest">Status: {{ systemHealth.storage }}</p>
+                            <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Status: {{ systemHealth.storage }}</p>
                         </Card>
 
-                        <Card glass class="!p-10 !rounded-[3.5rem] border-white/50 group">
+                        <Card glass class="!p-10 !rounded-2xl border-white/50 group">
                             <div class="flex items-center justify-between mb-10">
                                 <div class="w-14 h-14 bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 rounded-[1.5rem] flex items-center justify-center group-hover:rotate-12 transition-transform">
                                     <Zap class="w-8 h-8" />
                                 </div>
                                 <div class="text-right">
-                                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">API Latency</p>
-                                    <p class="text-xl font-black text-slate-900 dark:text-white">{{ systemHealth.latency }}</p>
+                                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">API Latency</p>
+                                    <p class="text-xl font-bold text-slate-900 dark:text-white">{{ systemHealth.latency }}</p>
                                 </div>
                             </div>
                             <div class="h-2 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden mb-4">
                                 <div class="h-full bg-emerald-500 w-[100%]"></div>
                             </div>
-                            <p class="text-[10px] font-black text-slate-500 uppercase tracking-widest">Uptime: {{ systemHealth.uptime }}</p>
+                            <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Uptime: {{ systemHealth.uptime }}</p>
                         </Card>
                     </div>
 
                     <!-- Global Security Events -->
-                    <Card class="!p-0 !rounded-[3.5rem] overflow-hidden border-slate-100 dark:border-white/5 shadow-premium">
+                    <Card class="!p-0 !rounded-2xl overflow-hidden border-slate-100 dark:border-white/5 shadow-premium">
                         <div class="p-8 border-b border-slate-50 dark:border-white/5 flex items-center justify-between">
-                            <h3 class="text-xl font-black text-slate-900 dark:text-white flex items-center gap-2">
+                            <h3 class="text-xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
                                 <Lock class="w-6 h-6 text-rose-500" />
                                 {{ t('admin.security.title') || 'Security Events' }}
                             </h3>
-                            <Link href="/super-admin/security-events" class="text-[10px] font-black text-indigo-600 uppercase tracking-widest hover:underline">{{ t('super_admin.dashboard.view_all') || 'View All' }}</Link>
+                            <Link href="/super-admin/security-events" class="text-[10px] font-bold text-indigo-600 uppercase tracking-widest hover:underline">{{ t('super_admin.dashboard.view_all') || 'View All' }}</Link>
                         </div>
                         <div class="overflow-x-auto">
                             <table class="w-full text-left">
@@ -285,7 +285,7 @@ onUnmounted(() => {
                                             <div class="flex items-center gap-4">
                                                 <div class="w-2 h-2 rounded-full bg-rose-500"></div>
                                                 <div>
-                                                    <p class="text-sm font-black text-slate-900 dark:text-white">{{ event.event_type }}</p>
+                                                    <p class="text-sm font-bold text-slate-900 dark:text-white">{{ event.event_type }}</p>
                                                     <p class="text-[10px] font-bold text-slate-400">{{ event.ip_address }}</p>
                                                 </div>
                                             </div>
@@ -294,7 +294,7 @@ onUnmounted(() => {
                                             <p class="text-xs font-bold text-slate-500 leading-relaxed">{{ event.description }}</p>
                                         </td>
                                         <td class="px-8 py-6 text-right">
-                                            <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">{{ event.created_at_human }}</span>
+                                            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{{ event.created_at_human }}</span>
                                         </td>
                                     </tr>
                                     <tr v-if="recentSecurityEvents.length === 0">
@@ -312,9 +312,9 @@ onUnmounted(() => {
                 <!-- Super Admin Sidebar -->
                 <div class="space-y-12">
                     <!-- Master Control Center -->
-                    <Card class="!p-10 !rounded-[4rem] bg-white dark:!bg-slate-950 text-slate-900 dark:text-white border-none shadow-2xl relative overflow-hidden group">
+                    <Card class="!p-10 !rounded-2xl bg-white dark:!bg-slate-950 text-slate-900 dark:text-white border-none shadow-2xl relative overflow-hidden group">
                         <Database class="w-24 h-24 absolute -right-6 -bottom-6 opacity-10 group-hover:scale-110 transition-transform" />
-                        <h3 class="text-2xl font-black mb-8 relative z-10 leading-tight">{{ t('sidebar.system_integration') || 'Control Center' }}</h3>
+                        <h3 class="text-2xl font-bold mb-8 relative z-10 leading-tight">{{ t('sidebar.system_integration') || 'Control Center' }}</h3>
                         
                         <div class="grid grid-cols-2 gap-4 relative z-10">
                             <Link
@@ -323,9 +323,9 @@ v-for="link in [
                                 { label: t('sidebar.system_integration'), icon: Zap, to: '/super-admin/integrations' },
                                 { label: t('sidebar.global_users'), icon: Users, to: '/super-admin/users' },
                                 { label: t('sidebar.audit_logs'), icon: History, to: '/super-admin/audit-logs' }
-                            ]" :key="link.label" :href="link.to" class="bg-slate-50 hover:bg-slate-100 dark:bg-white/10 dark:hover:bg-white/20 p-6 rounded-[2.5rem] flex flex-col items-center gap-3 transition-all active-press">
+                            ]" :key="link.label" :href="link.to" class="bg-slate-50 hover:bg-slate-100 dark:bg-white/10 dark:hover:bg-white/20 p-6 rounded-2xl flex flex-col items-center gap-3 transition-all active-press">
                                 <component :is="link.icon" class="w-6 h-6 text-indigo-500 dark:text-indigo-400" />
-                                <span class="text-[9px] font-black uppercase tracking-widest text-center">{{ link.label }}</span>
+                                <span class="text-[9px] font-semibold text-xs tracking-wide text-center">{{ link.label }}</span>
                             </Link>
                         </div>
                     </Card>
@@ -333,11 +333,11 @@ v-for="link in [
                     <!-- Realtime Log Stream -->
                     <section class="space-y-6">
                         <div class="flex items-center justify-between px-4">
-                            <h3 class="text-xl font-black text-slate-900 dark:text-white">{{ t('admin.audit.live_stream') || 'Live Activity' }}</h3>
-                            <div class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
+                            <h3 class="text-xl font-bold text-slate-900 dark:text-white">{{ t('admin.audit.live_stream') || 'Live Activity' }}</h3>
+                            <div class="w-2 h-2 rounded-full bg-emerald-500 "></div>
                         </div>
                         
-                        <div class="bg-slate-50 dark:bg-slate-900 rounded-[3rem] p-8 space-y-6 max-h-[300px] overflow-y-auto custom-scrollbar border border-slate-200 dark:border-white/5 shadow-inner">
+                        <div class="bg-slate-50 dark:bg-slate-900 rounded-2xl p-8 space-y-6 max-h-[300px] overflow-y-auto custom-scrollbar border border-slate-200 dark:border-white/5 shadow-inner">
                             <template v-if="props?.audit_logs">
                                 <div v-for="log in props.audit_logs" :key="log.id" class="flex gap-4">
                                     <div class="text-[10px] font-mono text-indigo-500 shrink-0">{{ new Date(log.created_at).toLocaleTimeString() }}</div>
@@ -353,8 +353,8 @@ v-for="link in [
                     </section>
 
                     <!-- System Info -->
-                    <Card class="!p-10 !rounded-[3.5rem] bg-white dark:bg-slate-900 border-none shadow-xl space-y-6">
-                        <h3 class="text-lg font-black text-slate-900 dark:text-white flex items-center gap-2">
+                    <Card class="!p-10 !rounded-2xl bg-white dark:bg-slate-900 border-none shadow-xl space-y-6">
+                        <h3 class="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
                             <Server class="w-5 h-5 text-indigo-500" />
                             System Environment
                         </h3>
@@ -362,7 +362,7 @@ v-for="link in [
                         <div class="space-y-4">
                             <template v-if="props?.system_info">
                                 <div v-for="(value, key) in props.system_info" :key="key" class="flex items-center justify-between">
-                                    <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">{{ String(key).replace(/_/g, ' ') }}</span>
+                                    <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{{ String(key).replace(/_/g, ' ') }}</span>
                                     <span class="text-xs font-bold text-slate-700 dark:text-slate-300">{{ value }}</span>
                                 </div>
                             </template>

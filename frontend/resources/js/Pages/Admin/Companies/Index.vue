@@ -128,7 +128,7 @@ const handleConfirmedAction = async (companyId: number) => {
 
       <!-- Companies List -->
       <div class="relative min-h-[400px]">
-        <div v-if="loading" class="absolute inset-0 bg-white/50 dark:bg-slate-900/50 backdrop-blur-[1px] z-10 flex items-center justify-center rounded-[2.5rem]">
+        <div v-if="loading" class="absolute inset-0 bg-white/50 dark:bg-slate-900/50 backdrop-blur-[1px] z-10 flex items-center justify-center rounded-2xl">
             <Loader2 class="w-12 h-12 text-primary-600 animate-spin" />
         </div>
 
@@ -216,7 +216,7 @@ const handleConfirmedAction = async (companyId: number) => {
           </Card>
         </div>
 
-        <div v-if="companies.data.length === 0 && !loading" class="col-span-full py-20 text-center bg-slate-50/50 dark:bg-slate-900/20 rounded-[2.5rem] border border-dashed border-slate-200 dark:border-slate-800">
+        <div v-if="companies.data.length === 0 && !loading" class="col-span-full py-20 text-center bg-slate-50/50 dark:bg-slate-900/20 rounded-2xl border border-dashed border-slate-200 dark:border-slate-800">
            <Building2 class="w-16 h-16 text-slate-200 mx-auto mb-4" />
            <p class="font-bold text-slate-900 dark:text-white">Tidak ada data perusahaan</p>
            <p class="text-sm text-slate-500">Gunakan kolom pencarian untuk menemukan perusahaan.</p>

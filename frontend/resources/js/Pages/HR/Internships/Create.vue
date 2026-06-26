@@ -153,7 +153,7 @@ const submit = () => {
                   <button 
                     type="button"
                     :disabled="detecting"
-                    class="text-[10px] font-black text-primary-600 uppercase tracking-widest flex items-center gap-1.5 hover:text-primary-700 transition-colors disabled:opacity-50"
+                    class="text-[10px] font-bold text-primary-600 uppercase tracking-widest flex items-center gap-1.5 hover:text-primary-700 transition-colors disabled:opacity-50"
                     @click="detectLocation"
                   >
                     <MapPinIcon v-if="!detecting" class="w-3.5 h-3.5" />
@@ -173,7 +173,7 @@ const submit = () => {
               <div class="pt-2">
                 <button 
                   type="button" 
-                  class="text-[10px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-2 hover:text-slate-600 transition-colors"
+                  class="text-[10px] font-bold text-slate-400 uppercase tracking-widest flex items-center gap-2 hover:text-slate-600 transition-colors"
                   @click="showCoordinates = !showCoordinates"
                 >
                   <span>{{ showCoordinates ? '− Sembunyikan Koordinat' : '+ Tambahkan Koordinat Map (Opsional)' }}</span>

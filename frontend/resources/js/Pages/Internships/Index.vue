@@ -130,33 +130,33 @@ if (props.filters) {
                 <div class="flex flex-col lg:flex-row gap-12">
                     <!-- Filters Sidebar -->
                     <aside class="w-full lg:w-80 shrink-0">
-                        <div class="bg-white dark:bg-neutral-900 rounded-[2.5rem] p-8 border border-neutral-100 dark:border-neutral-800 sticky top-32">
+                        <div class="bg-white dark:bg-neutral-900 rounded-2xl p-8 border border-neutral-100 dark:border-neutral-800 sticky top-32">
                             <!-- Map Button -->
                             <Button class="w-full mb-8 !bg-emerald-500 hover:!bg-emerald-600 !text-white flex items-center justify-center gap-2 shadow-xl shadow-emerald-500/20 active:scale-95 transition-all" @click="inertiaRouter.visit('/internships/map')">
                                 <MapPin class="w-5 h-5" /> Cari Lewat Peta
                             </Button>
 
                             <div class="flex items-center justify-between mb-8">
-                                <h3 class="text-lg font-black uppercase tracking-widest text-neutral-900 dark:text-white">{{ t('filters.title') }}</h3>
+                                <h3 class="text-lg font-semibold text-xs tracking-wide text-neutral-900 dark:text-white">{{ t('filters.title') }}</h3>
                                 <button class="text-xs font-bold text-primary-600 hover:text-primary-700 transition-colors" @click="clearFilters">{{ t('filters.reset') }}</button>
                             </div>
 
                             <div class="space-y-8">
                                 <div>
-                                    <label class="block text-[10px] font-black uppercase tracking-widest text-neutral-400 mb-4">{{ t('filters.search_label') }}</label>
+                                    <label class="block text-[10px] font-semibold text-xs tracking-wide text-neutral-400 mb-4">{{ t('filters.search_label') }}</label>
                                     <Input v-model="filters.q" :placeholder="t('filters.search_placeholder')" @keyup.enter="applyFilters" />
                                 </div>
 
                                 <div>
-                                    <label class="block text-[10px] font-black uppercase tracking-widest text-neutral-400 mb-4">{{ t('filters.location_label') }}</label>
+                                    <label class="block text-[10px] font-semibold text-xs tracking-wide text-neutral-400 mb-4">{{ t('filters.location_label') }}</label>
                                     <Input v-model="filters.location" :placeholder="t('filters.location_placeholder')" @keyup.enter="applyFilters" />
                                 </div>
 
                                 <div class="p-5 bg-neutral-50 dark:bg-neutral-950/50 rounded-2xl border border-neutral-100 dark:border-neutral-800">
                                     <div class="flex items-center justify-between mb-4">
-                                        <label class="block text-[10px] font-black uppercase tracking-widest text-primary-600">Radius Kampus/Kos</label>
+                                        <label class="block text-[10px] font-semibold text-xs tracking-wide text-primary-600">Radius Kampus/Kos</label>
                                         <span v-if="filters.lat" class="text-xs font-bold text-emerald-500 flex items-center gap-1">
-                                            <div class="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse"></div> Aktif
+                                            <div class="w-1.5 h-1.5 bg-emerald-500 rounded-full "></div> Aktif
                                         </span>
                                     </div>
                                     <p class="text-[11px] font-medium text-neutral-500 dark:text-neutral-400 mb-4 leading-relaxed">Cari lowongan terdekat dari lokasi fisik Anda (Radius: {{ filters.radius }} KM)</p>
@@ -185,7 +185,7 @@ if (props.filters) {
                                 </div>
 
                                 <div>
-                                    <label class="block text-[10px] font-black uppercase tracking-widest text-neutral-400 mb-4">{{ t('filters.type_label') }}</label>
+                                    <label class="block text-[10px] font-semibold text-xs tracking-wide text-neutral-400 mb-4">{{ t('filters.type_label') }}</label>
                                     <div class="space-y-3">
                                         <label v-for="t in types" :key="t.value" class="flex items-center gap-3 cursor-pointer group">
                                             <input 
@@ -201,7 +201,7 @@ if (props.filters) {
                                 </div>
 
                                 <div>
-                                    <label class="block text-[10px] font-black uppercase tracking-widest text-neutral-400 mb-4">{{ t('filters.sort_label') }}</label>
+                                    <label class="block text-[10px] font-semibold text-xs tracking-wide text-neutral-400 mb-4">{{ t('filters.sort_label') }}</label>
                                     <select 
                                         v-model="filters.sort" 
                                         class="w-full px-5 py-4 bg-neutral-50 dark:bg-neutral-950 border-none rounded-2xl text-sm font-bold text-neutral-900 dark:text-white focus:ring-4 focus:ring-primary-500/10 transition-all"
@@ -222,7 +222,7 @@ if (props.filters) {
                     <div class="flex-1 space-y-8">
                         <!-- Loading State -->
                         <div v-if="loading" class="space-y-6">
-                            <div v-for="i in 3" :key="i" class="h-48 bg-white dark:bg-neutral-900 rounded-[2.5rem] animate-pulse border border-neutral-100 dark:border-neutral-800"></div>
+                            <div v-for="i in 3" :key="i" class="h-48 bg-white dark:bg-neutral-900 rounded-2xl  border border-neutral-100 dark:border-neutral-800"></div>
                         </div>
 
                         <!-- Results -->
@@ -247,7 +247,7 @@ if (props.filters) {
                                     <div class="flex-1">
                                         <div class="flex flex-wrap items-center gap-2 mb-3">
                                             <Badge variant="primary" size="sm" class="text-[9px] px-2 py-0.5">{{ internship.type }}</Badge>
-                                            <span v-if="internship.is_paid" class="text-[9px] font-black uppercase tracking-widest text-emerald-600 bg-emerald-50 dark:bg-emerald-900/20 px-2 py-0.5 rounded-full border border-emerald-100 dark:border-emerald-800/50">{{ t('job.paid') }}</span>
+                                            <span v-if="internship.is_paid" class="text-[9px] font-semibold text-xs tracking-wide text-emerald-600 bg-emerald-50 dark:bg-emerald-900/20 px-2 py-0.5 rounded-full border border-emerald-100 dark:border-emerald-800/50">{{ t('job.paid') }}</span>
                                         </div>
                                         <h3 class="text-2xl font-bold text-neutral-900 dark:text-white mb-2 group-hover:text-primary-600 transition-colors leading-tight">{{ internship.title }}</h3>
                                         <div class="flex flex-wrap items-center gap-6 text-sm font-bold text-neutral-400">
@@ -273,8 +273,8 @@ if (props.filters) {
                                     <!-- Action -->
                                     <div class="shrink-0 flex items-center justify-between md:justify-end gap-4 lg:gap-10 pt-4 md:pt-0 border-t md:border-t-0 border-neutral-50 dark:border-neutral-800">
                                         <div class="text-right flex flex-col items-end">
-                                            <p class="text-[9px] font-black text-neutral-400 uppercase tracking-widest mb-1">{{ t('job.stipend') }}</p>
-                                            <p class="text-base md:text-xl font-black text-neutral-900 dark:text-white leading-none">{{ internship.stipend || t('job.stipend_default') }}</p>
+                                            <p class="text-[9px] font-bold text-neutral-400 uppercase tracking-widest mb-1">{{ t('job.stipend') }}</p>
+                                            <p class="text-base md:text-xl font-bold text-neutral-900 dark:text-white leading-none">{{ internship.stipend || t('job.stipend_default') }}</p>
                                         </div>
                                         <div class="w-14 h-14 bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 rounded-full flex items-center justify-center group-hover:bg-primary-600 group-hover:text-white group-hover:translate-x-3 transition-all shadow-xl">
                                             <ArrowRight class="w-7 h-7" />
@@ -299,7 +299,7 @@ if (props.filters) {
                         </div>
 
                         <!-- Empty State -->
-                        <div v-else class="py-32 text-center bg-white dark:bg-neutral-900 rounded-[3rem] border-2 border-dashed border-neutral-100 dark:border-neutral-800">
+                        <div v-else class="py-32 text-center bg-white dark:bg-neutral-900 rounded-2xl border-2 border-dashed border-neutral-100 dark:border-neutral-800">
                             <div class="w-24 h-24 bg-neutral-50 dark:bg-neutral-950 rounded-full flex items-center justify-center mx-auto mb-8">
                                 <Search class="w-10 h-10 text-neutral-300" />
                             </div>

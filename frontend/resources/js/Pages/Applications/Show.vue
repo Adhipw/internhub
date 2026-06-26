@@ -67,9 +67,9 @@ const withdraw = async () => {
             ]" />
 
             <!-- ATS Visual Stepper Card -->
-            <div class="bg-white dark:bg-neutral-900 rounded-[2.5rem] p-10 border border-slate-100 dark:border-neutral-800 shadow-sm space-y-8">
+            <div class="bg-white dark:bg-neutral-900 rounded-2xl p-10 border border-slate-100 dark:border-neutral-800 shadow-sm space-y-8">
                 <div class="flex items-center justify-between">
-                    <h2 class="text-xl font-black text-slate-900 dark:text-white flex items-center gap-3">
+                    <h2 class="text-xl font-bold text-slate-900 dark:text-white flex items-center gap-3">
                         <span class="w-1.5 h-6 bg-primary-600 rounded-full"></span>
                         Status Lamaran Anda
                     </h2>
@@ -100,7 +100,7 @@ const withdraw = async () => {
                                     : idx < currentStepIndex
                                         ? 'bg-primary-600 border-primary-100 dark:border-primary-900 text-white'
                                         : idx === currentStepIndex
-                                            ? 'bg-primary-50 dark:bg-primary-950/20 border-primary-600 text-primary-600 animate-pulse ring-4 ring-primary-500/10 dark:ring-primary-500/20'
+                                            ? 'bg-primary-50 dark:bg-primary-950/20 border-primary-600 text-primary-600  ring-4 ring-primary-500/10 dark:ring-primary-500/20'
                                             : 'bg-slate-50 dark:bg-neutral-950 border-slate-100 dark:border-neutral-800 text-slate-400 dark:text-neutral-600'
                             ]"
                         >
@@ -112,7 +112,7 @@ const withdraw = async () => {
                         <!-- Step Labels -->
                         <div class="space-y-1">
                             <p 
-                                class="text-sm font-black transition-colors"
+                                class="text-sm font-bold transition-colors"
                                 :class="[
                                     idx === currentStepIndex && !isRejected && !isWithdrawn
                                         ? 'text-primary-600'
@@ -152,10 +152,10 @@ const withdraw = async () => {
                 <!-- Left: Application Details -->
                 <div class="lg:col-span-2 space-y-8">
                     <!-- Main Card -->
-                    <div class="bg-white rounded-[2.5rem] p-10 border border-slate-100 shadow-sm space-y-10">
+                    <div class="bg-white rounded-2xl p-10 border border-slate-100 shadow-sm space-y-10">
                         <div class="flex items-start justify-between gap-6">
                             <div class="flex gap-6">
-                                <div class="w-20 h-20 bg-slate-50 rounded-3xl flex items-center justify-center shrink-0 border border-slate-50 overflow-hidden shadow-inner">
+                                <div class="w-20 h-20 bg-slate-50 rounded-2xl flex items-center justify-center shrink-0 border border-slate-50 overflow-hidden shadow-inner">
                                     <img v-if="application.internship.company.logo_url" loading="lazy" decoding="async" :src="application.internship.company.logo_url" class="w-full h-full object-cover" />
                                     <Briefcase v-else class="w-10 h-10 text-slate-200" />
                                 </div>
@@ -175,7 +175,7 @@ const withdraw = async () => {
                                 <Link 
                                     v-if="application.status === 'accepted'"
                                     :href="'/my-applications/' + application.id + '/onboarding'"
-                                    class="flex-1 bg-primary-600 text-white px-8 py-4 rounded-2xl font-black text-sm hover:bg-primary-700 transition-all shadow-lg shadow-primary-900/20 text-center flex items-center justify-center gap-2"
+                                    class="flex-1 bg-primary-600 text-white px-8 py-4 rounded-2xl font-bold text-sm hover:bg-primary-700 transition-all shadow-lg shadow-primary-900/20 text-center flex items-center justify-center gap-2"
                                 >
                                     <ClipboardCheck class="w-5 h-5" />
                                     Lengkapi Onboarding
@@ -185,7 +185,7 @@ const withdraw = async () => {
                                     v-if="application.status === 'completed'"
                                     :href="'/api/v1/applications/' + application.id + '/certificate?download=1'"
                                     target="_blank"
-                                    class="flex-1 bg-emerald-600 text-white px-8 py-4 rounded-2xl font-black text-sm hover:bg-emerald-700 transition-all shadow-lg shadow-emerald-900/20 text-center flex items-center justify-center gap-2"
+                                    class="flex-1 bg-emerald-600 text-white px-8 py-4 rounded-2xl font-bold text-sm hover:bg-emerald-700 transition-all shadow-lg shadow-emerald-900/20 text-center flex items-center justify-center gap-2"
                                 >
                                     <Award class="w-5 h-5" />
                                     Download Sertifikat
@@ -240,7 +240,7 @@ const withdraw = async () => {
 
                     <!-- Evaluation Section (Batch 7) -->
                     <div v-if="application.evaluations && application.evaluations.length > 0" class="space-y-6">
-                        <div v-for="evaluation in application.evaluations" :key="evaluation.id" class="bg-white rounded-[2.5rem] p-10 border border-slate-100 shadow-sm relative overflow-hidden">
+                        <div v-for="evaluation in application.evaluations" :key="evaluation.id" class="bg-white rounded-2xl p-10 border border-slate-100 shadow-sm relative overflow-hidden">
                             <div class="absolute top-0 right-0 p-8">
                                 <div :class="['px-4 py-2 rounded-2xl text-xs font-bold uppercase tracking-widest', evaluation.final_status === 'completed' ? 'bg-green-50 text-green-600' : 'bg-red-50 text-red-600']">
                                     {{ evaluation.final_status === 'completed' ? 'Magang Lolos' : 'Magang Selesai' }}
@@ -252,11 +252,11 @@ const withdraw = async () => {
                             
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-10 mb-10">
                                 <div>
-                                    <h4 class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4">Ringkasan Performa</h4>
+                                    <h4 class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-4">Ringkasan Performa</h4>
                                     <p class="text-sm text-slate-600 leading-relaxed italic">"{{ evaluation.summary }}"</p>
                                 </div>
                                 <div>
-                                    <h4 class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4">Hasil Penilaian</h4>
+                                    <h4 class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-4">Hasil Penilaian</h4>
                                     <div class="space-y-4">
                                         <div v-for="(val, key) in evaluation.metrics" :key="key">
                                             <div class="flex items-center justify-between text-xs mb-1.5">
@@ -272,14 +272,14 @@ const withdraw = async () => {
                             </div>
                             
                             <div v-if="evaluation.recommendation" class="p-6 bg-primary-50 rounded-2xl border border-primary-100">
-                                <h4 class="text-[10px] font-black text-primary-400 uppercase tracking-widest mb-2">Rekomendasi Mentor</h4>
+                                <h4 class="text-[10px] font-bold text-primary-400 uppercase tracking-widest mb-2">Rekomendasi Mentor</h4>
                                 <p class="text-sm text-primary-900 font-medium">{{ evaluation.recommendation }}</p>
                             </div>
                         </div>
                     </div>
 
                     <!-- Company Info Mini Card -->
-                    <div class="bg-slate-900 rounded-[2.5rem] p-10 text-white relative overflow-hidden">
+                    <div class="bg-slate-900 rounded-2xl p-10 text-white relative overflow-hidden">
                         <div class="absolute top-0 right-0 w-64 h-64 bg-primary-600/20 rounded-full blur-[80px] -mr-32 -mt-32"></div>
                         
                         <div class="relative z-10 space-y-6">
@@ -310,7 +310,7 @@ const withdraw = async () => {
                 </div>
 
                 <!-- Right: Timeline -->
-                <div class="bg-white rounded-[2.5rem] p-10 border border-slate-100 shadow-sm space-y-10">
+                <div class="bg-white rounded-2xl p-10 border border-slate-100 shadow-sm space-y-10">
                     <h3 class="text-xl font-bold text-slate-900">Status & Timeline</h3>
 
                     <div class="space-y-10 relative">

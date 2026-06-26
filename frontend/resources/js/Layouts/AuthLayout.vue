@@ -16,8 +16,8 @@ const t = (key: string) => langStore.t(key);
 <template>
     <div class="min-h-screen bg-slate-50 dark:bg-neutral-950 flex flex-col items-center justify-center p-6 font-sans text-slate-900 dark:text-slate-100">
         <div class="absolute inset-0 overflow-hidden pointer-events-none">
-            <div class="absolute -top-[10%] -left-[5%] w-[40%] h-[40%] bg-blue-500/5 rounded-full blur-[100px]"></div>
-            <div class="absolute -bottom-[10%] -right-[5%] w-[40%] h-[40%] bg-indigo-500/5 rounded-full blur-[100px]"></div>
+            <div class="absolute -top-[10%] -left-[5%] w-[40%] h-[40%] bg-blue-500/5 rounded-full blur-2xl opacity-30"></div>
+            <div class="absolute -bottom-[10%] -right-[5%] w-[40%] h-[40%] bg-indigo-500/5 rounded-full blur-2xl opacity-30"></div>
         </div>
 
         <div class="w-full max-w-[480px] relative z-10">
@@ -27,7 +27,7 @@ const t = (key: string) => langStore.t(key);
                 </Link>
             </div>
 
-            <div class="bg-white dark:bg-neutral-900 rounded-3xl p-6 md:p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-none border border-slate-100 dark:border-neutral-800">
+            <div class="bg-white dark:bg-neutral-900 rounded-2xl p-6 md:p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-none border border-slate-100 dark:border-neutral-800">
                 <div class="mb-8 text-center lg:text-left">
                     <h1 class="text-2xl font-extrabold text-slate-900 dark:text-white mb-2 tracking-tight">
                         <slot name="title">{{ props.title }}</slot>

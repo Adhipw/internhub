@@ -339,13 +339,13 @@ const navigation = computed(() => {
             <div class="p-6 border-t border-neutral-100 dark:border-neutral-800 shrink-0">
                 <div 
                     v-if="isSidebarOpen"
-                    class="p-4 bg-neutral-50 dark:bg-neutral-800/50 rounded-3xl mb-6 flex items-center gap-4 animate-reveal"
+                    class="p-4 bg-neutral-50 dark:bg-neutral-800/50 rounded-2xl mb-6 flex items-center gap-4 animate-reveal"
                 >
                     <div class="w-10 h-10 bg-white dark:bg-neutral-900 rounded-xl flex items-center justify-center shadow-sm">
                         <User class="w-5 h-5 text-neutral-400" />
                     </div>
                     <div class="overflow-hidden">
-                        <p class="text-xs font-black text-neutral-900 dark:text-white truncate">{{ user.name }}</p>
+                        <p class="text-xs font-bold text-neutral-900 dark:text-white truncate">{{ user.name }}</p>
                         <p class="text-[10px] font-bold text-neutral-400 uppercase tracking-widest truncate">{{ roleLabel }}</p>
                     </div>
                 </div>
@@ -397,14 +397,14 @@ const navigation = computed(() => {
                     <!-- Language Switcher -->
                     <div class="flex items-center bg-neutral-50 dark:bg-neutral-900 rounded-2xl p-1.5 border border-neutral-100 dark:border-neutral-800">
                         <button 
-                            class="px-3 py-2 rounded-xl text-[10px] font-black transition-all"
+                            class="px-3 py-2 rounded-xl text-[10px] font-bold transition-all"
                             :class="[langStore.locale === 'id' ? 'bg-white dark:bg-neutral-800 text-primary-600 shadow-sm' : 'text-neutral-400 hover:text-neutral-600']"
                             @click="langStore.setLocale('id')"
                         >
                             ID
                         </button>
                         <button 
-                            class="px-3 py-2 rounded-xl text-[10px] font-black transition-all"
+                            class="px-3 py-2 rounded-xl text-[10px] font-bold transition-all"
                             :class="[langStore.locale === 'en' ? 'bg-white dark:bg-neutral-800 text-primary-600 shadow-sm' : 'text-neutral-400 hover:text-neutral-600']"
                             @click="langStore.setLocale('en')"
                         >
@@ -428,7 +428,7 @@ const navigation = computed(() => {
                             @click.stop="isNotificationsOpen = !isNotificationsOpen"
                         >
                             <Bell class="w-6 h-6" />
-                            <span v-if="unreadCount > 0" class="absolute top-2.5 right-2.5 min-w-[18px] h-[18px] bg-rose-500 border-2 border-white dark:border-neutral-950 rounded-full flex items-center justify-center text-[8px] font-black text-white px-1 shadow-sm">
+                            <span v-if="unreadCount > 0" class="absolute top-2.5 right-2.5 min-w-[18px] h-[18px] bg-rose-500 border-2 border-white dark:border-neutral-950 rounded-full flex items-center justify-center text-[8px] font-bold text-white px-1 shadow-sm">
                                 {{ unreadCount }}
                             </span>
                         </button>
@@ -439,10 +439,10 @@ const navigation = computed(() => {
                             @click.stop
                         >
                             <div class="flex items-center justify-between mb-6 border-b border-neutral-50 dark:border-neutral-800 pb-4">
-                                <h4 class="text-xs font-black text-neutral-900 dark:text-white uppercase tracking-widest">{{ t('sidebar.notifications') }}</h4>
+                                <h4 class="text-xs font-bold text-neutral-900 dark:text-white uppercase tracking-widest">{{ t('sidebar.notifications') }}</h4>
                                 <span 
                                     v-if="notifications.length > 0"
-                                    class="text-[10px] font-black text-primary-600 uppercase tracking-widest cursor-pointer hover:underline"
+                                    class="text-[10px] font-bold text-primary-600 uppercase tracking-widest cursor-pointer hover:underline"
                                     @click="markAllAsRead"
                                 >
                                     {{ t('sidebar.mark_all_read') }}
@@ -457,13 +457,13 @@ const navigation = computed(() => {
                                     @click="markAsRead(note.id)"
                                 >
                                     <div v-if="!note.read_at" class="absolute top-4 right-4 w-1.5 h-1.5 bg-primary-600 rounded-full"></div>
-                                    <p class="text-xs font-black text-neutral-900 dark:text-white group-hover:text-primary-600 transition-colors">
+                                    <p class="text-xs font-bold text-neutral-900 dark:text-white group-hover:text-primary-600 transition-colors">
                                     {{ note.data?.title || note.title || t('sidebar.notification_default_title') }}
                                 </p>
                                 <p class="text-[10px] font-medium text-neutral-500 mt-1">
                                         {{ note.data?.message || note.message || t('sidebar.notification_default_message') }}
                                 </p>
-                                    <p class="text-[9px] font-black text-neutral-400 mt-2 uppercase tracking-widest">
+                                    <p class="text-[9px] font-bold text-neutral-400 mt-2 uppercase tracking-widest">
                                         {{ note.created_at_human || note.time }}
                                     </p>
                                 </div>
@@ -478,7 +478,7 @@ const navigation = computed(() => {
 
                     <Link :href="profileHref" class="flex items-center gap-3 pl-2 group">
                         <div class="text-right hidden sm:block">
-                            <p class="text-xs font-black text-neutral-900 dark:text-white truncate">{{ user.name }}</p>
+                            <p class="text-xs font-bold text-neutral-900 dark:text-white truncate">{{ user.name }}</p>
                             <p class="text-[9px] font-bold text-primary-600 uppercase tracking-widest truncate">{{ roleLabel }}</p>
                         </div>
                         <div class="w-12 h-12 rounded-2xl bg-neutral-100 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 flex items-center justify-center group-hover:scale-105 transition-transform overflow-hidden">
@@ -499,7 +499,7 @@ const navigation = computed(() => {
         </main>
 
         <!-- Mobile Bottom Nav -->
-        <nav class="fixed bottom-6 left-1/2 -translate-x-1/2 w-[90%] max-w-sm bg-white/80 dark:bg-neutral-900/80 backdrop-blur-xl rounded-[2.5rem] shadow-[0_20px_50px_rgba(8,112,184,0.15)] dark:shadow-2xl border border-white/50 dark:border-neutral-800/50 z-50 flex items-center justify-around p-2 lg:hidden">
+        <nav class="fixed bottom-6 left-1/2 -translate-x-1/2 w-[90%] max-w-sm bg-white/80 dark:bg-neutral-900/80 backdrop-blur-xl rounded-2xl shadow-[0_20px_50px_rgba(8,112,184,0.15)] dark:shadow-2xl border border-white/50 dark:border-neutral-800/50 z-50 flex items-center justify-around p-2 lg:hidden">
             <Link 
                 v-for="item in mobileNavItems" 
                 :key="item.name" 
@@ -510,7 +510,7 @@ const navigation = computed(() => {
                 <div :class="[currentPath === item.href ? 'bg-primary-50 dark:bg-primary-900/20 p-2 rounded-xl' : '']">
                     <component :is="item.icon" class="w-6 h-6" />
                 </div>
-                <span v-if="currentPath === item.href" class="text-[9px] font-black tracking-tight mt-1 truncate">{{ item.name }}</span>
+                <span v-if="currentPath === item.href" class="text-[9px] font-bold tracking-tight mt-1 truncate">{{ item.name }}</span>
             </Link>
             
             <button 
@@ -520,7 +520,7 @@ const navigation = computed(() => {
                 <div :class="[isMobileSheetOpen ? 'bg-primary-50 dark:bg-primary-900/20 p-2 rounded-xl text-primary-600' : '']">
                     <Menu class="w-6 h-6" />
                 </div>
-                <span v-if="isMobileSheetOpen" class="text-[9px] font-black tracking-tight mt-1 truncate text-primary-600">{{ t('nav.more') || 'Menu' }}</span>
+                <span v-if="isMobileSheetOpen" class="text-[9px] font-bold tracking-tight mt-1 truncate text-primary-600">{{ t('nav.more') || 'Menu' }}</span>
             </button>
         </nav>
 
@@ -531,19 +531,19 @@ const navigation = computed(() => {
                 
                 <div class="w-16 h-1.5 bg-neutral-200 dark:bg-neutral-800 rounded-full mx-auto mb-8"></div>
                 
-                <div class="flex items-center gap-4 p-4 bg-neutral-50 dark:bg-neutral-800/50 rounded-3xl mb-8">
+                <div class="flex items-center gap-4 p-4 bg-neutral-50 dark:bg-neutral-800/50 rounded-2xl mb-8">
                     <div class="w-12 h-12 rounded-2xl overflow-hidden bg-neutral-200 dark:bg-neutral-800 flex items-center justify-center border border-neutral-300 dark:border-neutral-700">
                         <img v-if="user.avatar_url" :src="user.avatar_url" class="w-full h-full object-cover" />
                         <User v-else class="w-6 h-6 text-neutral-400" />
                     </div>
                     <div>
-                        <h4 class="text-sm font-black text-neutral-900 dark:text-white">{{ user.name }}</h4>
+                        <h4 class="text-sm font-bold text-neutral-900 dark:text-white">{{ user.name }}</h4>
                         <p class="text-[10px] font-bold text-primary-600 uppercase tracking-widest">{{ roleLabel }}</p>
                     </div>
                 </div>
 
                 <div v-if="extraNavItems.length > 0" class="space-y-2 mb-8">
-                    <h5 class="text-xs font-black text-neutral-400 uppercase tracking-widest mb-4 px-2">Menu Lainnya</h5>
+                    <h5 class="text-xs font-bold text-neutral-400 uppercase tracking-widest mb-4 px-2">Menu Lainnya</h5>
                     <Link 
                         v-for="item in extraNavItems" 
                         :key="item.name" 
@@ -558,15 +558,15 @@ const navigation = computed(() => {
                 </div>
 
                 <div class="grid grid-cols-2 gap-4 mb-8">
-                    <button class="p-4 rounded-3xl bg-neutral-50 dark:bg-neutral-800/50 flex flex-col items-center gap-3 text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white transition-colors" @click="toggleDarkMode">
+                    <button class="p-4 rounded-2xl bg-neutral-50 dark:bg-neutral-800/50 flex flex-col items-center gap-3 text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white transition-colors" @click="toggleDarkMode">
                         <Sun v-if="isDarkMode" class="w-6 h-6" />
                         <Moon v-else class="w-6 h-6" />
                         <span class="text-[10px] font-bold uppercase tracking-widest">{{ isDarkMode ? 'Mode Terang' : 'Mode Gelap' }}</span>
                     </button>
-                    <div class="p-4 rounded-3xl bg-neutral-50 dark:bg-neutral-800/50 flex flex-col items-center justify-center gap-3">
+                    <div class="p-4 rounded-2xl bg-neutral-50 dark:bg-neutral-800/50 flex flex-col items-center justify-center gap-3">
                         <div class="flex gap-2 bg-white dark:bg-neutral-900 p-1 rounded-xl shadow-sm">
-                            <button class="px-3 py-1.5 rounded-lg text-xs font-black transition-all" :class="langStore.locale === 'id' ? 'bg-primary-50 dark:bg-primary-900/20 text-primary-600' : 'text-neutral-400 hover:text-neutral-600'" @click="langStore.setLocale('id')">ID</button>
-                            <button class="px-3 py-1.5 rounded-lg text-xs font-black transition-all" :class="langStore.locale === 'en' ? 'bg-primary-50 dark:bg-primary-900/20 text-primary-600' : 'text-neutral-400 hover:text-neutral-600'" @click="langStore.setLocale('en')">EN</button>
+                            <button class="px-3 py-1.5 rounded-lg text-xs font-bold transition-all" :class="langStore.locale === 'id' ? 'bg-primary-50 dark:bg-primary-900/20 text-primary-600' : 'text-neutral-400 hover:text-neutral-600'" @click="langStore.setLocale('id')">ID</button>
+                            <button class="px-3 py-1.5 rounded-lg text-xs font-bold transition-all" :class="langStore.locale === 'en' ? 'bg-primary-50 dark:bg-primary-900/20 text-primary-600' : 'text-neutral-400 hover:text-neutral-600'" @click="langStore.setLocale('en')">EN</button>
                         </div>
                         <span class="text-[10px] font-bold text-neutral-500 dark:text-neutral-400 uppercase tracking-widest">Bahasa</span>
                     </div>
@@ -586,13 +586,13 @@ const navigation = computed(() => {
                 <div 
                     v-for="toast in activeToasts" 
                     :key="toast.id"
-                    class="bg-white dark:bg-neutral-900 border border-slate-100 dark:border-neutral-800 shadow-[0_20px_50px_rgba(8,_112,_184,_0.08)] dark:shadow-2xl rounded-3xl p-5 flex items-start gap-4 pointer-events-auto border-l-4 border-l-primary-600 transition-all duration-300"
+                    class="bg-white dark:bg-neutral-900 border border-slate-100 dark:border-neutral-800 shadow-[0_20px_50px_rgba(8,_112,_184,_0.08)] dark:shadow-2xl rounded-2xl p-5 flex items-start gap-4 pointer-events-auto border-l-4 border-l-primary-600 transition-all duration-300"
                 >
                     <div class="w-10 h-10 rounded-2xl bg-primary-50 dark:bg-primary-950/40 flex items-center justify-center shrink-0">
                         <Bell class="w-5 h-5 text-primary-600 animate-bounce" />
                     </div>
                     <div class="space-y-1 overflow-hidden flex-1">
-                        <p class="text-xs font-black text-neutral-900 dark:text-white truncate">
+                        <p class="text-xs font-bold text-neutral-900 dark:text-white truncate">
                             {{ toast.title }}
                         </p>
                         <p class="text-[10px] font-bold text-neutral-500 dark:text-neutral-400 leading-relaxed truncate">

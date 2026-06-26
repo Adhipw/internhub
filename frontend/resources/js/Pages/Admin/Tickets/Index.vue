@@ -33,27 +33,27 @@ const statusColors = {
         <div class="space-y-8 animate-fade-in">
             <div class="flex items-center justify-between">
                 <div>
-                    <h1 class="text-3xl font-black text-slate-900 dark:text-white tracking-tight">Ticketing & Dispute</h1>
+                    <h1 class="text-3xl font-bold text-slate-900 dark:text-white tracking-tight">Ticketing & Dispute</h1>
                     <p class="text-slate-500 font-medium">Selesaikan perselisihan dan tinjau laporan pelanggaran.</p>
                 </div>
             </div>
 
-            <Card class="p-0 border-none shadow-premium rounded-[3rem] overflow-hidden bg-white dark:bg-slate-900">
+            <Card class="p-0 border-none shadow-premium rounded-2xl overflow-hidden bg-white dark:bg-slate-900">
                 <div class="overflow-x-auto">
                     <table class="w-full text-left">
                         <thead>
                             <tr class="bg-slate-50 dark:bg-slate-800/50 border-b border-slate-100 dark:border-white/5">
-                                <th class="px-8 py-6 text-[10px] font-black text-slate-400 uppercase tracking-widest">ID</th>
-                                <th class="px-8 py-6 text-[10px] font-black text-slate-400 uppercase tracking-widest">Pelapor</th>
-                                <th class="px-8 py-6 text-[10px] font-black text-slate-400 uppercase tracking-widest">Kategori</th>
-                                <th class="px-8 py-6 text-[10px] font-black text-slate-400 uppercase tracking-widest">Status</th>
-                                <th class="px-8 py-6 text-[10px] font-black text-slate-400 uppercase tracking-widest">Tanggal</th>
-                                <th class="px-8 py-6 text-[10px] font-black text-slate-400 uppercase tracking-widest">Aksi</th>
+                                <th class="px-8 py-6 text-[10px] font-bold text-slate-400 uppercase tracking-widest">ID</th>
+                                <th class="px-8 py-6 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Pelapor</th>
+                                <th class="px-8 py-6 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Kategori</th>
+                                <th class="px-8 py-6 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Status</th>
+                                <th class="px-8 py-6 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Tanggal</th>
+                                <th class="px-8 py-6 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Aksi</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-slate-50 dark:divide-white/5">
                             <tr v-for="ticket in tickets.data" :key="ticket.id" class="hover:bg-slate-50/50 dark:hover:bg-white/5 transition-colors">
-                                <td class="px-8 py-6 text-sm font-black text-slate-900 dark:text-white">#TKT-{{ ticket.id.toString().padStart(4, '0') }}</td>
+                                <td class="px-8 py-6 text-sm font-bold text-slate-900 dark:text-white">#TKT-{{ ticket.id.toString().padStart(4, '0') }}</td>
                                 <td class="px-8 py-6">
                                     <div class="flex items-center gap-3">
                                         <div class="w-8 h-8 rounded-full bg-primary-100 text-primary-700 flex items-center justify-center text-xs font-bold">{{ ticket.reporter.name.charAt(0) }}</div>
@@ -64,13 +64,13 @@ const statusColors = {
                                     <span class="text-xs font-bold text-slate-600 dark:text-slate-300">{{ ticket.category }}</span>
                                 </td>
                                 <td class="px-8 py-6">
-                                    <span :class="['px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest', statusColors[ticket.status as keyof typeof statusColors]]">
+                                    <span :class="['px-3 py-1 rounded-full text-[10px] font-semibold text-xs tracking-wide', statusColors[ticket.status as keyof typeof statusColors]]">
                                         {{ ticket.status }}
                                     </span>
                                 </td>
                                 <td class="px-8 py-6 text-xs font-bold text-slate-500">{{ ticket.created_at_human }}</td>
                                 <td class="px-8 py-6">
-                                    <Link :href="`/admin/tickets/${ticket.id}`" class="text-xs font-black text-primary-600 hover:text-primary-700 uppercase tracking-widest">Tinjau</Link>
+                                    <Link :href="`/admin/tickets/${ticket.id}`" class="text-xs font-bold text-primary-600 hover:text-primary-700 uppercase tracking-widest">Tinjau</Link>
                                 </td>
                             </tr>
                             <tr v-if="tickets.data.length === 0">

@@ -74,7 +74,7 @@ const cobalt = computed(() => props.isDarkMode ? '#60A5FA' : '#0056B3'); // Coba
             <h1 
                 :class="[
                     sizeClasses.text, 
-                    'font-black tracking-tight flex items-center'
+                    'font-bold tracking-tight flex items-center'
                 ]"
             >
                 <span class="text-slate-950 dark:text-white transition-colors">Intern</span>
@@ -87,7 +87,7 @@ const cobalt = computed(() => props.isDarkMode ? '#60A5FA' : '#0056B3'); // Coba
                 class="ml-3 px-2.5 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm"
             >
                 <span 
-                    class="text-[9px] font-black uppercase tracking-widest text-slate-500 dark:text-slate-400"
+                    class="text-[9px] font-semibold text-xs tracking-wide text-slate-500 dark:text-slate-400"
                 >
                     {{ roleLabel }}
                 </span>

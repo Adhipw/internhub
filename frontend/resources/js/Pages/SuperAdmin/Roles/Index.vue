@@ -128,7 +128,7 @@ const togglePermission = (name: string) => {
     <div v-else class="space-y-12 animate-fade-in pb-20">
       <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-8">
         <div>
-          <h1 class="text-4xl font-black text-slate-900 dark:text-white mb-2 tracking-tight">{{ t('sidebar.role_permission') }}</h1>
+          <h1 class="text-4xl font-bold text-slate-900 dark:text-white mb-2 tracking-tight">{{ t('sidebar.role_permission') }}</h1>
           <p class="text-slate-500 dark:text-slate-400 font-medium">{{ t('admin.roles.desc') || 'Kelola tingkat akses dan izin granular untuk setiap peran pengguna.' }}</p>
         </div>
         
@@ -142,7 +142,7 @@ const togglePermission = (name: string) => {
           <button 
             type="submit"
             :disabled="newRole.processing"
-            class="flex items-center gap-2 px-8 py-4 bg-primary-600 text-white rounded-2xl text-sm font-black hover:bg-primary-700 transition-all shadow-lg shadow-primary-500/20 active:scale-95 disabled:opacity-50"
+            class="flex items-center gap-2 px-8 py-4 bg-primary-600 text-white rounded-2xl text-sm font-bold hover:bg-primary-700 transition-all shadow-lg shadow-primary-500/20 active:scale-95 disabled:opacity-50"
           >
             <Plus v-if="!newRole.processing" class="w-5 h-5" />
             <Loader2 v-else class="w-5 h-5 animate-spin" />
@@ -154,7 +154,7 @@ const togglePermission = (name: string) => {
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
         <!-- Roles List -->
         <div class="lg:col-span-4 space-y-6">
-           <h3 class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] px-4">{{ t('admin.roles.list_title') || 'Daftar Role' }}</h3>
+           <h3 class="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] px-4">{{ t('admin.roles.list_title') || 'Daftar Role' }}</h3>
            <div class="space-y-3">
               <div 
                 v-for="role in roles" 
@@ -178,7 +178,7 @@ const togglePermission = (name: string) => {
                      ]">
                         <Shield class="w-5 h-5" />
                      </div>
-                     <span class="font-black text-sm tracking-tight capitalize">{{ role.name.replace(/_/g, ' ') }}</span>
+                     <span class="font-bold text-sm tracking-tight capitalize">{{ role.name.replace(/_/g, ' ') }}</span>
                   </div>
                   
                   <div v-if="selectedRole === role.id" class="absolute right-0 top-0 h-full w-24 bg-gradient-to-l from-white/10 to-transparent"></div>
@@ -196,12 +196,12 @@ const togglePermission = (name: string) => {
 
         <!-- Permissions Matrix -->
         <div class="lg:col-span-8">
-           <Card v-if="selectedRole" class="!p-10 border-none shadow-2xl !rounded-[3.5rem] min-h-[500px] relative overflow-hidden bg-white dark:bg-slate-900">
-              <div class="absolute top-0 right-0 w-64 h-64 bg-primary-500/5 blur-[100px] rounded-full -mr-32 -mt-32"></div>
+           <Card v-if="selectedRole" class="!p-10 border-none shadow-2xl !rounded-2xl min-h-[500px] relative overflow-hidden bg-white dark:bg-slate-900">
+              <div class="absolute top-0 right-0 w-64 h-64 bg-primary-500/5 blur-2xl opacity-30 rounded-full -mr-32 -mt-32"></div>
               
               <div class="flex flex-col md:flex-row md:items-center justify-between mb-12 gap-6 relative z-10">
                  <div>
-                    <h2 class="text-2xl font-black text-slate-900 dark:text-white leading-tight">
+                    <h2 class="text-2xl font-bold text-slate-900 dark:text-white leading-tight">
                        {{ t('admin.roles.permissions_for') || 'Izin Role:' }} 
                        <span class="text-primary-600 capitalize">{{ roles.find(r => r.id === selectedRole)?.name.replace(/_/g, ' ') }}</span>
                     </h2>
@@ -209,7 +209,7 @@ const togglePermission = (name: string) => {
                  </div>
                  <button 
                    :disabled="permissionForm.processing"
-                   class="flex items-center gap-3 px-10 py-5 bg-slate-900 dark:bg-primary-600 text-white rounded-[1.5rem] text-sm font-black hover:bg-slate-800 transition-all shadow-xl shadow-slate-900/20 active:scale-95 disabled:opacity-50"
+                   class="flex items-center gap-3 px-10 py-5 bg-slate-900 dark:bg-primary-600 text-white rounded-[1.5rem] text-sm font-bold hover:bg-slate-800 transition-all shadow-xl shadow-slate-900/20 active:scale-95 disabled:opacity-50"
                    @click="syncPermissions"
                  >
                     <Save v-if="!permissionForm.processing" class="w-5 h-5" />
@@ -236,19 +236,19 @@ const togglePermission = (name: string) => {
                        <CheckCircle v-if="permissionForm.permissions.includes(permission.name)" class="w-4 h-4 text-white" />
                     </div>
                     <div>
-                       <p class="text-xs font-black text-slate-800 dark:text-slate-200 uppercase tracking-tight">{{ permission.name.replace(/_/g, ' ') }}</p>
+                       <p class="text-xs font-bold text-slate-800 dark:text-slate-200 uppercase tracking-tight">{{ permission.name.replace(/_/g, ' ') }}</p>
                        <p class="text-[9px] font-bold text-slate-400 font-mono mt-0.5">{{ permission.name }}</p>
                     </div>
                  </div>
               </div>
            </Card>
 
-           <div v-else class="h-full flex items-center justify-center bg-slate-50/50 dark:bg-slate-900/50 rounded-[4rem] border-4 border-dashed border-slate-100 dark:border-slate-800">
+           <div v-else class="h-full flex items-center justify-center bg-slate-50/50 dark:bg-slate-900/50 rounded-2xl border-4 border-dashed border-slate-100 dark:border-slate-800">
               <div class="text-center p-20">
                  <div class="w-24 h-24 bg-white dark:bg-slate-800 rounded-[2rem] shadow-sm flex items-center justify-center mx-auto mb-8">
                     <Key class="w-10 h-10 text-slate-200" />
                  </div>
-                 <p class="text-lg font-black text-slate-400 uppercase tracking-widest">{{ t('admin.roles.select_prompt') || 'Pilih role untuk mengelola izin.' }}</p>
+                 <p class="text-lg font-bold text-slate-400 uppercase tracking-widest">{{ t('admin.roles.select_prompt') || 'Pilih role untuk mengelola izin.' }}</p>
               </div>
            </div>
         </div>

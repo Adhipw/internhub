@@ -202,7 +202,7 @@ const getProviderIcon = (provider: string) => ShieldCheck;
            </div>
         </Card>
 
-        <div v-if="integrations.length === 0" class="p-20 text-center bg-slate-50 dark:bg-slate-900 rounded-[3rem] border border-dashed border-slate-200">
+        <div v-if="integrations.length === 0" class="p-20 text-center bg-slate-50 dark:bg-slate-900 rounded-2xl border border-dashed border-slate-200">
            <Puzzle class="w-16 h-16 text-slate-200 mx-auto mb-6" />
            <p class="text-slate-500 font-bold">Belum ada integrasi yang dikonfigurasi.</p>
         </div>
@@ -212,17 +212,17 @@ const getProviderIcon = (provider: string) => ShieldCheck;
     <!-- Create Integration Modal -->
     <Modal :show="showCreateModal" max-width="md" @close="showCreateModal = false">
        <div class="p-8">
-          <h2 class="text-2xl font-black text-slate-900 dark:text-white mb-2">Integrasi Baru</h2>
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-2">Integrasi Baru</h2>
           <p class="text-sm text-slate-500 mb-8">Hubungkan layanan AI atau Cloud baru.</p>
 
           <form class="space-y-6" @submit.prevent="submitCreate">
              <div class="space-y-2">
-                <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Nama Layanan</label>
+                <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Nama Layanan</label>
                 <input v-model="createForm.name" type="text" class="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-2xl p-4 focus:ring-2 focus:ring-primary-500/20" placeholder="Contoh: OpenAI Production" required />
              </div>
 
              <div class="space-y-2">
-                <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Provider</label>
+                <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Provider</label>
                 <select v-model="createForm.provider" class="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-2xl p-4 focus:ring-2 focus:ring-primary-500/20 appearance-none">
                    <option value="openai">OpenAI (ChatGPT)</option>
                    <option value="google">Google Cloud</option>
@@ -233,7 +233,7 @@ const getProviderIcon = (provider: string) => ShieldCheck;
 
              <div class="flex gap-4 pt-4">
                 <button type="button" class="flex-1 px-6 py-4 bg-slate-100 text-slate-600 rounded-2xl font-bold" @click="showCreateModal = false">Batal</button>
-                <button type="submit" :disabled="processing === true" class="flex-1 px-6 py-4 bg-primary-600 text-white rounded-2xl font-black shadow-lg shadow-primary-500/20 flex items-center justify-center gap-2">
+                <button type="submit" :disabled="processing === true" class="flex-1 px-6 py-4 bg-primary-600 text-white rounded-2xl font-bold shadow-lg shadow-primary-500/20 flex items-center justify-center gap-2">
                    <Loader2 v-if="processing === true" class="w-4 h-4 animate-spin" />
                    Buat Sekarang
                 </button>

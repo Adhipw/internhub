@@ -18,7 +18,7 @@ withDefaults(defineProps<Props>(), {
 
 <template>
     <div 
-        class="skeleton-loader bg-slate-200 dark:bg-slate-800 animate-pulse-gentle"
+        class="skeleton-loader bg-slate-200 dark:bg-slate-800 -gentle"
         :style="{ 
             width: width, 
             height: height,
@@ -75,7 +75,7 @@ withDefaults(defineProps<Props>(), {
     50% { opacity: 0.7; }
 }
 
-.animate-pulse-gentle {
+.-gentle {
     animation: pulse-gentle 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 </style>

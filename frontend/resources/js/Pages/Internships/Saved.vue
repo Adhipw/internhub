@@ -58,12 +58,12 @@ const removeSaved = async (slug: string) => {
                 </div>
             </div>
 
-            <div v-if="errorMessage" class="rounded-3xl border border-red-100 bg-red-50 p-5 text-sm font-bold text-red-600 dark:border-red-900/30 dark:bg-red-950/20 dark:text-red-300">
+            <div v-if="errorMessage" class="rounded-2xl border border-red-100 bg-red-50 p-5 text-sm font-bold text-red-600 dark:border-red-900/30 dark:bg-red-950/20 dark:text-red-300">
                 {{ errorMessage }}
             </div>
 
             <div v-if="visibleSavedInternships.length > 0" class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div v-for="item in visibleSavedInternships" :key="item.id" class="bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-sm hover:shadow-md transition-all group flex flex-col justify-between dark:bg-slate-900 dark:border-slate-800">
+                <div v-for="item in visibleSavedInternships" :key="item.id" class="bg-white p-8 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-all group flex flex-col justify-between dark:bg-slate-900 dark:border-slate-800">
                     <div>
                         <div class="flex items-start justify-between mb-6">
                             <div class="w-16 h-16 bg-slate-50 rounded-2xl flex items-center justify-center border border-slate-50 overflow-hidden shadow-inner dark:bg-slate-950 dark:border-slate-800">
@@ -102,7 +102,7 @@ const removeSaved = async (slug: string) => {
                 </div>
             </div>
 
-            <div v-else class="bg-white border border-slate-100 rounded-[3rem] p-20 text-center shadow-sm dark:bg-slate-900 dark:border-slate-800">
+            <div v-else class="bg-white border border-slate-100 rounded-2xl p-20 text-center shadow-sm dark:bg-slate-900 dark:border-slate-800">
                 <div class="w-24 h-24 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-8">
                     <Bookmark class="w-10 h-10 text-slate-200" />
                 </div>

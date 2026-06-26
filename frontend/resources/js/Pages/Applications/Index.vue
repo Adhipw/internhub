@@ -102,7 +102,7 @@ const getAppsByStatus = (statusGroup: string) => {
                     <div v-for="(app, idx) in normalizedApplications.data" :key="app.id" 
                         class="bg-white p-6 rounded-2xl border border-slate-200/60 shadow-sm hover:border-primary-300 transition-all group relative overflow-hidden animate-reveal opacity-0"
                         :style="`animation-delay: ${100 + (Number(idx) * 50)}ms`">
-                        <div class="absolute top-0 right-0 w-32 h-32 bg-slate-50 rounded-full blur-3xl -mr-16 -mt-16 opacity-50 group-hover:bg-primary-50 transition-colors"></div>
+                        <div class="absolute top-0 right-0 w-32 h-32 bg-slate-50 rounded-full blur-2xl opacity-50 -mr-16 -mt-16 opacity-50 group-hover:bg-primary-50 transition-colors"></div>
                         
                         <div class="relative z-10 flex flex-col md:flex-row md:items-center gap-6">
                             <!-- Company Logo -->

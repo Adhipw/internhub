@@ -290,7 +290,7 @@ const getObjectURL = (file: File | null) => {
       <!-- Header Section -->
       <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
         <div>
-          <h1 class="text-3xl font-black text-slate-900 dark:text-white mb-2 tracking-tight">{{ t('admin.user_mgmt.title') }}</h1>
+          <h1 class="text-3xl font-bold text-slate-900 dark:text-white mb-2 tracking-tight">{{ t('admin.user_mgmt.title') }}</h1>
           <p class="text-slate-500 dark:text-slate-400">{{ t('admin.user_mgmt.desc') }}</p>
         </div>
         
@@ -320,7 +320,7 @@ const getObjectURL = (file: File | null) => {
       </div>
 
       <!-- Filters Bar -->
-      <div class="grid grid-cols-1 md:grid-cols-4 gap-4 bg-white dark:bg-slate-900 p-4 rounded-3xl border border-slate-100 dark:border-slate-800 shadow-sm">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-4 bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm">
         <div class="md:col-span-2 relative group">
           <Search class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 group-focus-within:text-primary-600 transition-colors" />
           <input 
@@ -356,7 +356,7 @@ const getObjectURL = (file: File | null) => {
       </div>
 
       <!-- Users Table -->
-      <Card class="overflow-hidden border-none shadow-xl relative min-h-[400px] !rounded-[3rem]">
+      <Card class="overflow-hidden border-none shadow-xl relative min-h-[400px] !rounded-2xl">
         <div v-if="loading" class="absolute inset-0 bg-white/60 dark:bg-slate-900/60 z-20 flex items-center justify-center">
             <Loader2 class="w-10 h-10 text-primary-600 animate-spin" />
         </div>
@@ -364,7 +364,7 @@ const getObjectURL = (file: File | null) => {
         <div class="overflow-x-auto">
           <table class="w-full text-left border-collapse">
             <thead>
-              <tr class="bg-slate-50/50 dark:bg-slate-900/50 border-b border-slate-100 dark:border-slate-800 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">
+              <tr class="bg-slate-50/50 dark:bg-slate-900/50 border-b border-slate-100 dark:border-slate-800 text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em]">
                 <th class="px-8 py-6">{{ t('admin.user_mgmt.col_user') }}</th>
                 <th class="px-4 py-6 text-center">{{ t('admin.user_mgmt.col_role') }}</th>
                 <th class="px-4 py-6 text-center">{{ t('admin.user_mgmt.col_status') }}</th>
@@ -376,7 +376,7 @@ const getObjectURL = (file: File | null) => {
               <tr v-for="user in users.data" :key="user.id" class="hover:bg-slate-50/30 dark:hover:bg-slate-900/20 transition-colors group">
                 <td class="px-6 py-6">
                   <div class="flex items-center gap-4">
-                    <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-primary-500 to-indigo-600 flex items-center justify-center text-white font-black shadow-lg shadow-primary-500/20 shrink-0 overflow-hidden">
+                    <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-primary-500 to-indigo-600 flex items-center justify-center text-white font-bold shadow-lg shadow-primary-500/20 shrink-0 overflow-hidden">
                       <img v-if="user.avatar_url" loading="lazy" decoding="async" :src="user.avatar_url" class="w-full h-full object-cover" />
                       <span v-else>{{ user.name.charAt(0) }}</span>
                     </div>
@@ -395,7 +395,7 @@ const getObjectURL = (file: File | null) => {
                 </td>
                 <td class="px-4 py-6 text-center">
                   <span 
-                    class="inline-flex px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-widest border"
+                    class="inline-flex px-2 py-0.5 rounded-full text-[9px] font-semibold text-xs tracking-wide border"
                     :class="{
                       'bg-red-50 text-red-600 border-red-100': user.role === 'super_admin',
                       'bg-orange-50 text-orange-600 border-orange-100': user.role === 'admin',
@@ -409,13 +409,13 @@ const getObjectURL = (file: File | null) => {
                 </td>
                 <td class="px-4 py-6 text-center">
                   <div class="flex flex-col items-center gap-1">
-                    <span v-if="user.banned_at" class="inline-flex items-center gap-1 px-1.5 py-0.5 bg-red-100 text-red-700 rounded-md text-[9px] font-black uppercase tracking-wider">
+                    <span v-if="user.banned_at" class="inline-flex items-center gap-1 px-1.5 py-0.5 bg-red-100 text-red-700 rounded-md text-[9px] font-semibold text-sm tracking-wider">
                       <Ban class="w-2.5 h-2.5" /> Banned
                     </span>
-                    <span v-else-if="!user.is_active" class="inline-flex items-center gap-1 px-1.5 py-0.5 bg-amber-100 text-amber-700 rounded-md text-[9px] font-black uppercase tracking-wider">
+                    <span v-else-if="!user.is_active" class="inline-flex items-center gap-1 px-1.5 py-0.5 bg-amber-100 text-amber-700 rounded-md text-[9px] font-semibold text-sm tracking-wider">
                       <ShieldAlert class="w-2.5 h-2.5" /> Inactive
                     </span>
-                    <span v-else class="inline-flex items-center gap-1 px-1.5 py-0.5 bg-emerald-100 text-emerald-700 rounded-md text-[9px] font-black uppercase tracking-wider">
+                    <span v-else class="inline-flex items-center gap-1 px-1.5 py-0.5 bg-emerald-100 text-emerald-700 rounded-md text-[9px] font-semibold text-sm tracking-wider">
                       <CheckCircle2 class="w-2.5 h-2.5" /> Active
                     </span>
                   </div>
@@ -499,7 +499,7 @@ const getObjectURL = (file: File | null) => {
           <Unlock v-if="confirmActionType === 'unban'" class="w-10 h-10" />
         </div>
 
-        <h3 class="text-2xl font-black text-slate-900 dark:text-white mb-2 leading-tight">
+        <h3 class="text-2xl font-bold text-slate-900 dark:text-white mb-2 leading-tight">
           {{ confirmActionType === 'ban' ? t('admin.user_mgmt.ban_confirm_title') : confirmActionType === 'delete' ? t('admin.user_mgmt.delete_confirm_title') : t('admin.user_mgmt.unban_confirm_title') }}
         </h3>
         <p class="text-slate-500 dark:text-slate-400 mb-8 text-sm">
@@ -507,7 +507,7 @@ const getObjectURL = (file: File | null) => {
         </p>
 
         <div v-if="confirmActionType === 'ban'" class="mb-8 text-left space-y-2">
-            <label class="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">Alasan Pemblokiran</label>
+            <label class="text-[10px] font-semibold text-xs tracking-wide text-slate-400 ml-1">Alasan Pemblokiran</label>
             <textarea 
                 v-model="banReason"
                 rows="3"
@@ -527,7 +527,7 @@ const getObjectURL = (file: File | null) => {
               'bg-red-600 hover:bg-red-700 shadow-red-500/20': confirmActionType === 'delete',
               'bg-emerald-600 hover:bg-emerald-700 shadow-emerald-500/20': confirmActionType === 'unban'
             }"
-            class="flex-1 px-6 py-4 text-white rounded-2xl font-black shadow-lg transition-all active:scale-95 flex items-center justify-center gap-2"
+            class="flex-1 px-6 py-4 text-white rounded-2xl font-bold shadow-lg transition-all active:scale-95 flex items-center justify-center gap-2"
             @click="handleConfirmedAction"
           >
             <Loader2 v-if="processing" class="w-4 h-4 animate-spin" />
@@ -542,7 +542,7 @@ const getObjectURL = (file: File | null) => {
       <div class="p-8">
         <div class="flex items-center justify-between mb-8">
           <div>
-            <h2 class="text-2xl font-black text-slate-900 dark:text-white">Tambah Akun Baru</h2>
+            <h2 class="text-2xl font-bold text-slate-900 dark:text-white">Tambah Akun Baru</h2>
             <p class="text-sm text-slate-500">Buat akun untuk HR, Mentor, atau Admin baru.</p>
           </div>
           <button class="p-2 hover:bg-slate-100 rounded-xl transition-colors" @click="showCreateModal = false">
@@ -559,15 +559,15 @@ const getObjectURL = (file: File | null) => {
                </div>
                <label class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
                   <input type="file" class="hidden" accept="image/*" @change="e => handleAvatarChange(e, 'create')" />
-                  <span class="text-white text-[10px] font-black uppercase tracking-tighter">Ganti Foto</span>
+                  <span class="text-white text-[10px] font-semibold text-sm tracking-tighter">Ganti Foto</span>
                </label>
             </div>
-            <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Foto Profil (Opsional)</p>
+            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Foto Profil (Opsional)</p>
           </div>
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div class="space-y-2">
-              <label class="text-xs font-black uppercase tracking-widest text-slate-500 dark:text-slate-400">Nama Lengkap</label>
+              <label class="text-xs font-semibold text-xs tracking-wide text-slate-500 dark:text-slate-400">Nama Lengkap</label>
               <div class="relative group">
                 <UserIcon class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 group-focus-within:text-primary-600" />
                 <input v-model="createForm.name" type="text" class="w-full pl-11 pr-6 py-3.5 bg-slate-50 dark:bg-slate-800 dark:text-white border-none rounded-2xl focus:ring-2 focus:ring-primary-500/20" placeholder="Contoh: John Doe" />
@@ -576,7 +576,7 @@ const getObjectURL = (file: File | null) => {
             </div>
 
             <div class="space-y-2">
-              <label class="text-xs font-black uppercase tracking-widest text-slate-500 dark:text-slate-400">Alamat Email</label>
+              <label class="text-xs font-semibold text-xs tracking-wide text-slate-500 dark:text-slate-400">Alamat Email</label>
               <div class="relative group">
                 <Mail class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 group-focus-within:text-primary-600" />
                 <input v-model="createForm.email" type="email" class="w-full pl-11 pr-6 py-3.5 bg-slate-50 dark:bg-slate-800 dark:text-white border-none rounded-2xl focus:ring-2 focus:ring-primary-500/20" placeholder="email@contoh.com" />
@@ -585,7 +585,7 @@ const getObjectURL = (file: File | null) => {
             </div>
 
             <div class="space-y-2">
-              <label class="text-xs font-black uppercase tracking-widest text-slate-500 dark:text-slate-400">Nomor Telepon (Opsional)</label>
+              <label class="text-xs font-semibold text-xs tracking-wide text-slate-500 dark:text-slate-400">Nomor Telepon (Opsional)</label>
               <div class="relative group">
                 <Phone class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 group-focus-within:text-primary-600" />
                 <input v-model="createForm.phone_number" type="text" class="w-full pl-11 pr-6 py-3.5 bg-slate-50 dark:bg-slate-800 dark:text-white border-none rounded-2xl focus:ring-2 focus:ring-primary-500/20" placeholder="081234..." />
@@ -593,7 +593,7 @@ const getObjectURL = (file: File | null) => {
             </div>
 
             <div class="space-y-2">
-              <label class="text-xs font-black uppercase tracking-widest text-slate-500 dark:text-slate-400">Role Pengguna</label>
+              <label class="text-xs font-semibold text-xs tracking-wide text-slate-500 dark:text-slate-400">Role Pengguna</label>
               <div class="relative">
                 <ShieldCheck class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                 <select v-model="createForm.role" class="w-full pl-11 pr-6 py-3.5 bg-slate-50 dark:bg-slate-800 dark:text-white border-none rounded-2xl focus:ring-2 focus:ring-primary-500/20 appearance-none">
@@ -607,7 +607,7 @@ const getObjectURL = (file: File | null) => {
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div class="space-y-2">
-              <label class="text-xs font-black uppercase tracking-widest text-slate-500 dark:text-slate-400">Password</label>
+              <label class="text-xs font-semibold text-xs tracking-wide text-slate-500 dark:text-slate-400">Password</label>
               <div class="relative group">
                 <Lock class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 group-focus-within:text-primary-600" />
                 <input v-model="createForm.password" :type="showPassword ? 'text' : 'password'" class="w-full pl-11 pr-12 py-3.5 bg-slate-50 dark:bg-slate-800 dark:text-white border-none rounded-2xl focus:ring-2 focus:ring-primary-500/20" placeholder="••••••••" />
@@ -620,7 +620,7 @@ const getObjectURL = (file: File | null) => {
             </div>
 
             <div class="space-y-2">
-              <label class="text-xs font-black uppercase tracking-widest text-slate-500 dark:text-slate-400">Konfirmasi Password</label>
+              <label class="text-xs font-semibold text-xs tracking-wide text-slate-500 dark:text-slate-400">Konfirmasi Password</label>
               <div class="relative group">
                 <Lock class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 group-focus-within:text-primary-600" />
                 <input v-model="createForm.password_confirmation" :type="showPassword ? 'text' : 'password'" class="w-full pl-11 pr-6 py-3.5 bg-slate-50 dark:bg-slate-800 dark:text-white border-none rounded-2xl focus:ring-2 focus:ring-primary-500/20" placeholder="••••••••" />
@@ -628,7 +628,7 @@ const getObjectURL = (file: File | null) => {
             </div>
           </div>
 
-          <div class="bg-primary-50 dark:bg-primary-900/20 p-6 rounded-3xl flex items-center justify-between border border-primary-100 dark:border-primary-800">
+          <div class="bg-primary-50 dark:bg-primary-900/20 p-6 rounded-2xl flex items-center justify-between border border-primary-100 dark:border-primary-800">
             <div class="flex items-center gap-3">
               <div class="w-10 h-10 bg-white dark:bg-slate-900 rounded-xl flex items-center justify-center text-primary-600 shadow-sm">
                 <CheckCircle2 class="w-5 h-5" />
@@ -651,7 +651,7 @@ const getObjectURL = (file: File | null) => {
             <button 
               type="submit" 
               :disabled="processing"
-              class="flex-1 px-6 py-4 bg-primary-600 hover:bg-primary-700 text-white rounded-2xl font-black shadow-lg shadow-primary-500/30 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+              class="flex-1 px-6 py-4 bg-primary-600 hover:bg-primary-700 text-white rounded-2xl font-bold shadow-lg shadow-primary-500/30 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
             >
               <Loader2 v-if="processing" class="w-4 h-4 animate-spin" />
               {{ processing ? 'Menyimpan...' : 'Simpan Akun' }}
@@ -666,7 +666,7 @@ const getObjectURL = (file: File | null) => {
       <div class="p-8">
         <div class="flex items-center justify-between mb-8">
           <div>
-            <h2 class="text-2xl font-black text-slate-900 dark:text-white">Edit Akun</h2>
+            <h2 class="text-2xl font-bold text-slate-900 dark:text-white">Edit Akun</h2>
             <p class="text-sm text-slate-500">Memperbarui data akun: <span class="font-bold text-primary-600">{{ editingUser?.name }}</span></p>
           </div>
           <button class="p-2 hover:bg-slate-100 rounded-xl transition-colors" @click="showEditModal = false">
@@ -684,33 +684,33 @@ const getObjectURL = (file: File | null) => {
                </div>
                <label class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
                   <input type="file" class="hidden" accept="image/*" @change="e => handleAvatarChange(e, 'edit')" />
-                  <span class="text-white text-[10px] font-black uppercase tracking-tighter">Ganti Foto</span>
+                  <span class="text-white text-[10px] font-semibold text-sm tracking-tighter">Ganti Foto</span>
                </label>
             </div>
-            <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Update Foto Profil</p>
+            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Update Foto Profil</p>
           </div>
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div class="space-y-2">
-              <label class="text-xs font-black uppercase tracking-widest text-slate-500 dark:text-slate-400">Nama Lengkap</label>
+              <label class="text-xs font-semibold text-xs tracking-wide text-slate-500 dark:text-slate-400">Nama Lengkap</label>
               <input v-model="editForm.name" type="text" class="w-full px-6 py-3.5 bg-slate-50 dark:bg-slate-800 dark:text-white border-none rounded-2xl focus:ring-2 focus:ring-primary-500/20" />
               <div v-if="editForm.errors.name" class="text-xs text-red-500 font-bold mt-1">{{ editForm.errors.name }}</div>
             </div>
 
             <div class="space-y-2">
-              <label class="text-xs font-black uppercase tracking-widest text-slate-500 dark:text-slate-400">Alamat Email</label>
+              <label class="text-xs font-semibold text-xs tracking-wide text-slate-500 dark:text-slate-400">Alamat Email</label>
               <input v-model="editForm.email" type="email" class="w-full px-6 py-3.5 bg-slate-50 dark:bg-slate-800 dark:text-white border-none rounded-2xl focus:ring-2 focus:ring-primary-500/20" />
               <div v-if="editForm.errors.email" class="text-xs text-red-500 font-bold mt-1">{{ editForm.errors.email }}</div>
             </div>
 
             <div class="space-y-2">
-              <label class="text-xs font-black uppercase tracking-widest text-slate-500 dark:text-slate-400">Nomor Telepon</label>
+              <label class="text-xs font-semibold text-xs tracking-wide text-slate-500 dark:text-slate-400">Nomor Telepon</label>
               <input v-model="editForm.phone_number" type="text" class="w-full px-6 py-3.5 bg-slate-50 dark:bg-slate-800 dark:text-white border-none rounded-2xl focus:ring-2 focus:ring-primary-500/20" />
               <div v-if="editForm.errors.phone_number" class="text-xs text-red-500 font-bold mt-1">{{ editForm.errors.phone_number }}</div>
             </div>
 
             <div class="space-y-2">
-              <label class="text-xs font-black uppercase tracking-widest text-slate-500 dark:text-slate-400">Role</label>
+              <label class="text-xs font-semibold text-xs tracking-wide text-slate-500 dark:text-slate-400">Role</label>
               <select v-model="editForm.role" class="w-full px-6 py-3.5 bg-slate-50 dark:bg-slate-800 dark:text-white border-none rounded-2xl focus:ring-2 focus:ring-primary-500/20 appearance-none">
                 <option value="super_admin" v-if="editingUser?.role === 'super_admin'">SUPER ADMIN</option>
                 <option value="admin">ADMIN</option>
@@ -722,7 +722,7 @@ const getObjectURL = (file: File | null) => {
             </div>
           </div>
 
-          <div class="p-6 bg-slate-50 dark:bg-slate-800/50 rounded-3xl border border-dashed border-slate-200 dark:border-slate-700">
+          <div class="p-6 bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-dashed border-slate-200 dark:border-slate-700">
             <p class="text-xs font-bold text-slate-400 mb-4 flex items-center gap-2 uppercase tracking-widest">
               <Lock class="w-3 h-3" /> Ubah Password (Kosongkan jika tidak ingin diubah)
             </p>
@@ -756,7 +756,7 @@ const getObjectURL = (file: File | null) => {
             <button 
               type="submit" 
               :disabled="processing"
-              class="flex-1 px-6 py-4 bg-primary-600 hover:bg-primary-700 text-white rounded-2xl font-black shadow-lg shadow-primary-500/30 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+              class="flex-1 px-6 py-4 bg-primary-600 hover:bg-primary-700 text-white rounded-2xl font-bold shadow-lg shadow-primary-500/30 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
             >
               <Loader2 v-if="processing" class="w-4 h-4 animate-spin" />
               {{ processing ? 'Menyimpan...' : 'Perbarui Akun' }}

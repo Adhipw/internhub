@@ -88,7 +88,7 @@ const clearFile = () => {
 
         <div 
             :class="[
-                'relative border-2 border-dashed rounded-3xl p-8 transition-all duration-300 flex flex-col items-center justify-center gap-4 cursor-pointer group',
+                'relative border-2 border-dashed rounded-2xl p-8 transition-all duration-300 flex flex-col items-center justify-center gap-4 cursor-pointer group',
                 isDragging ? 'border-primary-500 bg-primary-50/80 dark:bg-primary-900/20 scale-[1.02] shadow-[0_0_40px_rgba(8,112,184,0.2)] ring-4 ring-primary-500/20' : 'border-slate-200 dark:border-slate-700 hover:border-primary-300 dark:hover:border-primary-700 hover:bg-slate-50/50 dark:hover:bg-slate-800/30'
             ]"
             @dragover.prevent="isDragging = true"
@@ -116,7 +116,7 @@ const clearFile = () => {
                     />
                 </div>
                 
-                <p class="text-base font-black transition-colors" :class="isDragging ? 'text-primary-600 dark:text-primary-400' : 'text-slate-900 dark:text-white'">
+                <p class="text-base font-bold transition-colors" :class="isDragging ? 'text-primary-600 dark:text-primary-400' : 'text-slate-900 dark:text-white'">
                     {{ isDragging ? 'Lepaskan File Sekarang!' : 'Seret & Lepas Dokumen di Sini' }}
                 </p>
                 <p class="text-xs font-bold text-slate-500 dark:text-slate-400 mt-2 uppercase tracking-widest flex items-center justify-center gap-2">
@@ -135,7 +135,7 @@ const clearFile = () => {
                         <CheckCircle2 class="w-6 h-6 text-green-600 dark:text-green-400" />
                     </div>
                     <div class="flex-1 min-w-0 text-left">
-                        <p class="text-sm font-black text-slate-900 dark:text-white truncate">Dokumen Tersimpan</p>
+                        <p class="text-sm font-bold text-slate-900 dark:text-white truncate">Dokumen Tersimpan</p>
                         <a :href="currentFile" target="_blank" class="text-[10px] text-primary-600 hover:text-primary-700 dark:text-primary-400 font-bold uppercase tracking-widest flex items-center gap-1 mt-1 z-10 w-max hover:underline bg-primary-50 dark:bg-primary-900/20 px-2 py-0.5 rounded">
                             Lihat Dokumen <ExternalLink class="w-3 h-3" />
                         </a>
@@ -153,7 +153,7 @@ const clearFile = () => {
                     <FileType2 class="w-7 h-7 text-white" />
                 </div>
                 <div class="flex-1 min-w-0 text-left relative z-10">
-                    <p class="text-sm font-black text-slate-900 dark:text-white truncate" :title="selectedFile.name">{{ selectedFile.name }}</p>
+                    <p class="text-sm font-bold text-slate-900 dark:text-white truncate" :title="selectedFile.name">{{ selectedFile.name }}</p>
                     <div class="flex items-center gap-3 mt-1.5">
                         <p class="text-[10px] font-mono font-bold text-slate-500 bg-slate-100 dark:bg-slate-700 px-2 py-0.5 rounded uppercase tracking-wider">
                             {{ (selectedFile.size / 1024).toFixed(1) }} KB

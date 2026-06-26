@@ -70,7 +70,7 @@ const updatePassword = () => {
             </div>
 
             <div class="grid grid-cols-1 gap-10">
-                <div class="bg-white rounded-[2.5rem] border border-slate-100 shadow-sm overflow-hidden">
+                <div class="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
                     <div class="p-8 md:p-10">
                         <div class="flex items-center gap-4 mb-8">
                             <div class="w-12 h-12 rounded-2xl bg-primary-50 flex items-center justify-center text-primary-600">
@@ -127,7 +127,7 @@ const updatePassword = () => {
                     </div>
                 </div>
 
-                <div class="bg-white rounded-[2.5rem] border border-slate-100 shadow-sm overflow-hidden">
+                <div class="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
                     <div class="p-8 md:p-10">
                         <div class="flex items-center gap-4 mb-8">
                             <div class="w-12 h-12 rounded-2xl bg-amber-50 flex items-center justify-center text-amber-600">

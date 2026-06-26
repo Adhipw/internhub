@@ -101,7 +101,7 @@ const getSeverityClass = (severity: string) => {
         <Card class="p-6 border-none shadow-sm relative overflow-hidden group bg-gradient-to-br from-white to-slate-50/50 dark:from-slate-800 dark:to-slate-900/50 transition-all duration-300 hover:shadow-lg">
           <div class="absolute -right-8 -bottom-8 w-24 h-24 rounded-full bg-indigo-500/5 blur-2xl group-hover:bg-indigo-500/10 transition-all duration-500"></div>
           
-          <h3 class="text-[10px] font-black text-slate-450 dark:text-slate-400 uppercase tracking-widest mb-4 flex items-center gap-2">
+          <h3 class="text-[10px] font-bold text-slate-450 dark:text-slate-400 uppercase tracking-widest mb-4 flex items-center gap-2">
             <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
             Kesehatan Server (Telemetri Live)
           </h3>
@@ -116,8 +116,8 @@ const getSeverityClass = (severity: string) => {
                   <circle cx="48" cy="48" r="40" stroke="currentColor" stroke-width="6" :stroke-dasharray="251.2" :stroke-dashoffset="251.2 - (251.2 * cpuLoad) / 100" :class="[cpuLoad > 80 ? 'text-rose-500' : 'text-indigo-600']" fill="transparent" class="transition-all duration-1000" />
                 </svg>
                 <div class="absolute inset-0 flex flex-col items-center justify-center">
-                  <span class="text-lg font-black text-slate-800 dark:text-white">{{ cpuLoad }}%</span>
-                  <span class="text-[8px] font-black uppercase text-slate-450">vCPU</span>
+                  <span class="text-lg font-bold text-slate-800 dark:text-white">{{ cpuLoad }}%</span>
+                  <span class="text-[8px] font-semibold text-sm text-slate-450">vCPU</span>
                 </div>
               </div>
             </div>
@@ -131,8 +131,8 @@ const getSeverityClass = (severity: string) => {
                   <circle cx="48" cy="48" r="40" stroke="currentColor" stroke-width="6" :stroke-dasharray="251.2" :stroke-dashoffset="251.2 - (251.2 * ramLoad) / 100" class="text-emerald-500 transition-all duration-1000" fill="transparent" />
                 </svg>
                 <div class="absolute inset-0 flex flex-col items-center justify-center">
-                  <span class="text-lg font-black text-slate-800 dark:text-white">{{ ramLoad }}%</span>
-                  <span class="text-[8px] font-black uppercase text-slate-450">RAM</span>
+                  <span class="text-lg font-bold text-slate-800 dark:text-white">{{ ramLoad }}%</span>
+                  <span class="text-[8px] font-semibold text-sm text-slate-450">RAM</span>
                 </div>
               </div>
             </div>
@@ -140,7 +140,7 @@ const getSeverityClass = (severity: string) => {
           
           <div class="mt-4 flex items-center justify-between text-[10px] font-bold text-slate-400">
             <span>Uptime: 14d 8h 21m</span>
-            <span :class="[cpuLoad > 80 ? 'text-rose-500 animate-pulse' : 'text-emerald-500']" class="font-black uppercase">
+            <span :class="[cpuLoad > 80 ? 'text-rose-500 ' : 'text-emerald-500']" class="font-semibold text-sm">
               ● {{ cpuLoad > 80 ? 'Server Sibuk' : 'Normal' }}
             </span>
           </div>
@@ -150,25 +150,25 @@ const getSeverityClass = (severity: string) => {
         <Card class="p-6 border-none shadow-sm relative overflow-hidden group bg-gradient-to-br from-white to-slate-50/50 dark:from-slate-800 dark:to-slate-900/50 transition-all duration-300 hover:shadow-lg">
           <div class="absolute -right-8 -bottom-8 w-24 h-24 rounded-full bg-violet-500/5 blur-2xl group-hover:bg-violet-500/10 transition-all duration-500"></div>
 
-          <h3 class="text-[10px] font-black text-slate-450 dark:text-slate-400 uppercase tracking-widest mb-4 flex items-center gap-2">
-            <Sparkles class="w-3.5 h-3.5 text-violet-500 animate-pulse" />
+          <h3 class="text-[10px] font-bold text-slate-450 dark:text-slate-400 uppercase tracking-widest mb-4 flex items-center gap-2">
+            <Sparkles class="w-3.5 h-3.5 text-violet-500 " />
             Penggunaan Kuota Gemini AI
           </h3>
 
           <div class="space-y-4 py-2">
             <div class="flex justify-between items-end">
               <div>
-                <p class="text-2xl font-black text-slate-800 dark:text-white">8,421 <span class="text-xs text-slate-400 font-bold">/ 15,000</span></p>
+                <p class="text-2xl font-bold text-slate-800 dark:text-white">8,421 <span class="text-xs text-slate-400 font-bold">/ 15,000</span></p>
                 <p class="text-[10px] text-slate-400 font-medium">Permintaan API Hari Ini</p>
               </div>
-              <span class="px-2 py-0.5 bg-violet-50 text-violet-600 border border-violet-100 rounded-lg text-[9px] font-black dark:bg-violet-950/20 dark:text-violet-400 dark:border-violet-900/30">
+              <span class="px-2 py-0.5 bg-violet-50 text-violet-600 border border-violet-100 rounded-lg text-[9px] font-bold dark:bg-violet-950/20 dark:text-violet-400 dark:border-violet-900/30">
                 56.1% Terpakai
               </span>
             </div>
 
             <!-- Progress Bar -->
             <div class="relative w-full h-3 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
-              <div class="absolute left-0 top-0 h-full bg-gradient-to-r from-violet-500 to-indigo-600 rounded-full animate-pulse" style="width: 56.1%"></div>
+              <div class="absolute left-0 top-0 h-full bg-gradient-to-r from-violet-500 to-indigo-600 rounded-full " style="width: 56.1%"></div>
             </div>
             
             <p class="text-[9px] text-slate-400 leading-relaxed">
@@ -181,7 +181,7 @@ const getSeverityClass = (severity: string) => {
         <Card class="p-6 border-none shadow-sm relative overflow-hidden group bg-gradient-to-br from-white to-slate-50/50 dark:from-slate-800 dark:to-slate-900/50 transition-all duration-300 hover:shadow-lg">
           <div class="absolute -right-8 -bottom-8 w-24 h-24 rounded-full bg-rose-500/5 blur-2xl group-hover:bg-rose-500/10 transition-all duration-500"></div>
 
-          <h3 class="text-[10px] font-black text-slate-450 dark:text-slate-400 uppercase tracking-widest mb-4 flex items-center gap-2">
+          <h3 class="text-[10px] font-bold text-slate-450 dark:text-slate-400 uppercase tracking-widest mb-4 flex items-center gap-2">
             <ShieldAlert class="w-3.5 h-3.5 text-rose-500" />
             Ancaman Keamanan Dicegah (7 Hari Terakhir)
           </h3>
@@ -193,7 +193,7 @@ const getSeverityClass = (severity: string) => {
 
             <!-- Bars -->
             <div v-for="(val, idx) in attackTrends" :key="idx" class="flex flex-col items-center flex-1 group/bar z-10 cursor-pointer">
-              <span class="text-[8px] font-black text-rose-600 dark:text-rose-450 opacity-0 group-hover/bar:opacity-100 transition-opacity mb-1">{{ val.count }}</span>
+              <span class="text-[8px] font-bold text-rose-600 dark:text-rose-450 opacity-0 group-hover/bar:opacity-100 transition-opacity mb-1">{{ val.count }}</span>
               <div 
                 class="w-4 bg-gradient-to-t from-rose-500 to-pink-500 rounded-t-lg transition-all duration-1000 shadow-md shadow-rose-500/10 group-hover/bar:from-rose-600 group-hover/bar:to-pink-600"
                 :style="{ height: (val.count * 6) + 'px' }"

@@ -35,7 +35,7 @@ const sizes = {
 
 const classes = computed(() => {
     return [
-        "inline-flex items-center font-black uppercase tracking-widest rounded-full border",
+        "inline-flex items-center font-semibold text-xs tracking-wide rounded-full border",
         variants[props.variant],
         sizes[props.size],
         props.class

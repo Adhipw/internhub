@@ -133,7 +133,7 @@ const deleteMember = (id: number) => {
     <div class="mt-8">
       <!-- Members Grid -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <div v-for="member in members" :key="member.id" class="bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 rounded-3xl p-6 shadow-sm hover:shadow-md transition-all group relative overflow-hidden">
+        <div v-for="member in members" :key="member.id" class="bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all group relative overflow-hidden">
           <!-- Active Status Indicator -->
           <div :class="member.is_active ? 'bg-green-500' : 'bg-slate-300'" class="absolute top-0 right-0 w-2 h-2 rounded-bl-xl"></div>
           
@@ -157,7 +157,7 @@ const deleteMember = (id: number) => {
           </div>
 
           <div class="mt-6 flex items-center justify-between">
-            <span class="px-2.5 py-1 bg-slate-50 dark:bg-slate-900 text-slate-600 dark:text-slate-400 text-[10px] font-black uppercase tracking-widest rounded-lg border border-slate-100 dark:border-slate-700">
+            <span class="px-2.5 py-1 bg-slate-50 dark:bg-slate-900 text-slate-600 dark:text-slate-400 text-[10px] font-semibold text-xs tracking-wide rounded-lg border border-slate-100 dark:border-slate-700">
               {{ member.role }}
             </span>
             <div v-if="!member.is_active" class="px-2 py-0.5 bg-red-50 text-red-600 text-[10px] font-bold rounded-md">
@@ -168,7 +168,7 @@ const deleteMember = (id: number) => {
       </div>
 
       <!-- Empty State -->
-      <div v-if="members.length === 0" class="py-20 text-center bg-white dark:bg-slate-800 rounded-3xl border-2 border-dashed border-slate-100 dark:border-slate-800">
+      <div v-if="members.length === 0" class="py-20 text-center bg-white dark:bg-slate-800 rounded-2xl border-2 border-dashed border-slate-100 dark:border-slate-800">
         <UsersIcon class="w-12 h-12 text-slate-200 mx-auto mb-4" />
         <p class="text-slate-500 font-medium">Belum ada anggota tim yang ditambahkan.</p>
         <Button variant="secondary" class="mt-4" @click="showAddModal = true">Tambah Sekarang</Button>

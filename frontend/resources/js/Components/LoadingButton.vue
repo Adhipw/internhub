@@ -10,7 +10,7 @@ defineProps<{
     <button
         :type="type || 'submit'"
         :disabled="processing || disabled"
-        class="relative flex w-full items-center justify-center rounded-xl bg-blue-600 px-6 py-4 text-sm font-black uppercase tracking-wider text-white transition-all duration-300 hover:bg-blue-700 hover:shadow-lg hover:shadow-blue-500/20 active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed shadow-md shadow-blue-600/10"
+        class="relative flex w-full items-center justify-center rounded-xl bg-blue-600 px-6 py-4 text-sm font-semibold text-sm tracking-wider text-white transition-all duration-300 hover:bg-slate-800 hover:shadow-lg hover:shadow-blue-500/20 active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed shadow-md shadow-blue-600/10"
     >
         <span :class="{ 'opacity-0': processing }">
             <slot />

@@ -81,8 +81,8 @@ const getLiveLoc = (userId: number) => liveLocations.value[userId] || null;
                         <Users class="w-6 h-6" />
                     </div>
                     <div>
-                        <p class="text-[10px] font-black text-emerald-600 dark:text-emerald-400 uppercase tracking-widest">Hadir Hari Ini</p>
-                        <p class="text-2xl font-black text-slate-900 dark:text-white leading-none mt-1">{{ stats.total_present }}</p>
+                        <p class="text-[10px] font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-widest">Hadir Hari Ini</p>
+                        <p class="text-2xl font-bold text-slate-900 dark:text-white leading-none mt-1">{{ stats.total_present }}</p>
                     </div>
                 </Card>
 
@@ -91,8 +91,8 @@ const getLiveLoc = (userId: number) => liveLocations.value[userId] || null;
                         <Activity class="w-6 h-6" />
                     </div>
                     <div>
-                        <p class="text-[10px] font-black text-blue-600 dark:text-blue-400 uppercase tracking-widest">Sesi Aktif (Live)</p>
-                        <p class="text-2xl font-black text-slate-900 dark:text-white leading-none mt-1">{{ stats.currently_active }}</p>
+                        <p class="text-[10px] font-bold text-blue-600 dark:text-blue-400 uppercase tracking-widest">Sesi Aktif (Live)</p>
+                        <p class="text-2xl font-bold text-slate-900 dark:text-white leading-none mt-1">{{ stats.currently_active }}</p>
                     </div>
                 </Card>
             </div>
@@ -123,7 +123,7 @@ const getLiveLoc = (userId: number) => liveLocations.value[userId] || null;
                 <div v-else class="overflow-x-auto">
                     <table class="w-full text-left">
                         <thead>
-                            <tr class="bg-slate-50/50 dark:bg-slate-800/50 text-[10px] text-slate-400 uppercase font-black tracking-widest">
+                            <tr class="bg-slate-50/50 dark:bg-slate-800/50 text-[10px] text-slate-400 uppercase font-bold tracking-widest">
                                 <th class="px-6 py-4">Peserta Magang</th>
                                 <th class="px-6 py-4">Sesi Waktu</th>
                                 <th class="px-6 py-4 text-center">Status Lokasi</th>
@@ -162,7 +162,7 @@ const getLiveLoc = (userId: number) => liveLocations.value[userId] || null;
                                 <td class="px-6 py-5 text-center">
                                     <div v-if="getLiveLoc(item.user_id)" class="inline-flex items-center gap-2 bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400 px-3 py-1.5 rounded-full border border-emerald-100 dark:border-emerald-800/50">
                                         <div class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping"></div>
-                                        <span class="text-[10px] font-black uppercase tracking-widest">Live Now</span>
+                                        <span class="text-[10px] font-semibold text-xs tracking-wide">Live Now</span>
                                     </div>
                                     <span v-else class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Offline</span>
                                 </td>

@@ -40,7 +40,7 @@ const runAction = async (toastId: number, handler: () => void | Promise<void>) =
                 </div>
                 
                 <div class="flex-1 min-w-0 space-y-3">
-                    <p class="text-sm font-black text-slate-900 dark:text-white leading-relaxed">
+                    <p class="text-sm font-bold text-slate-900 dark:text-white leading-relaxed">
                         {{ toast.message }}
                     </p>
                     <div v-if="toast.actions?.length" class="flex flex-wrap gap-2">
@@ -49,7 +49,7 @@ const runAction = async (toastId: number, handler: () => void | Promise<void>) =
                             :key="action.label"
                             class="inline-flex items-center gap-2 rounded-lg px-3 py-2 text-xs font-bold transition-colors"
                             :class="{
-                                'bg-blue-600 text-white hover:bg-blue-500': action.variant === 'primary' || !action.variant,
+                                'bg-slate-900 text-white hover:bg-blue-500': action.variant === 'primary' || !action.variant,
                                 'bg-slate-100 text-slate-700 hover:bg-slate-200 dark:bg-white/10 dark:text-white dark:hover:bg-white/15': action.variant === 'secondary',
                                 'bg-rose-600 text-white hover:bg-rose-500': action.variant === 'danger',
                             }"

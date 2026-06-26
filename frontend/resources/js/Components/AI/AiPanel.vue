@@ -51,7 +51,7 @@ const handleSubmit = () => {
                 ></textarea>
                 <button 
                     :disabled="loading || !input.trim()"
-                    class="absolute right-3 bottom-3 p-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                    class="absolute right-3 bottom-3 p-2 bg-slate-900 text-white rounded-xl hover:bg-slate-800 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                     @click="handleSubmit"
                 >
                     <Loader2 v-if="loading" class="w-4 h-4 animate-spin" />

@@ -98,13 +98,13 @@ onMounted(() => {
           <h1 class="text-3xl font-bold text-slate-900 dark:text-white mb-2">{{ t('admin.locations.title') }}</h1>
           <p class="text-slate-500 dark:text-slate-400">{{ t('admin.locations.desc') }}</p>
         </div>
-        <div v-else class="h-16 w-64 bg-slate-100 dark:bg-slate-800 animate-pulse rounded-2xl"></div>
+        <div v-else class="h-16 w-64 bg-slate-100 dark:bg-slate-800  rounded-2xl"></div>
       </div>
 
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
         <!-- Location List -->
         <div class="lg:col-span-2 space-y-6 relative min-h-[400px]">
-          <div v-if="loading" class="absolute inset-0 bg-white/50 dark:bg-slate-900/50 backdrop-blur-[1px] z-10 flex items-center justify-center rounded-[2.5rem]">
+          <div v-if="loading" class="absolute inset-0 bg-white/50 dark:bg-slate-900/50 backdrop-blur-[1px] z-10 flex items-center justify-center rounded-2xl">
               <Loader2 class="w-10 h-10 text-primary-600 animate-spin" />
           </div>
 
@@ -173,12 +173,12 @@ onMounted(() => {
           </h3>
           <form class="space-y-6" @submit.prevent="submit">
             <div class="space-y-1">
-               <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest">{{ t('admin.locations.label_name') }}</label>
+               <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{{ t('admin.locations.label_name') }}</label>
                <input v-model="form.name" type="text" :placeholder="t('admin.locations.placeholder_name')" class="w-full bg-slate-50 dark:bg-slate-900 dark:text-white border-none rounded-xl text-sm p-4 focus:ring-2 focus:ring-primary-500/20" required />
                <p v-if="form.errors.name" class="text-[10px] text-red-500 font-bold mt-1">{{ form.errors.name[0] }}</p>
             </div>
             <div class="space-y-1">
-               <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest">{{ t('admin.locations.label_type') }}</label>
+               <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{{ t('admin.locations.label_type') }}</label>
                <select v-model="form.type" class="w-full bg-slate-50 dark:bg-slate-900 dark:text-white border-none rounded-xl text-sm p-4 focus:ring-2 focus:ring-primary-500/20">
                   <option value="city">{{ t('admin.locations.type_city') }}</option>
                   <option value="province">{{ t('admin.locations.type_province') }}</option>

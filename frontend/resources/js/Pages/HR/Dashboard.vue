@@ -146,7 +146,7 @@ const pendingApplications = computed(() =>
                     <div
                         v-for="stat in statsCards"
                         :key="stat.label"
-                        class="group p-6 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-3xl shadow-sm"
+                        class="group p-6 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-2xl shadow-sm"
                     >
                         <component :is="stat.icon" class="w-7 h-7 text-primary-600 mb-5" />
                         <p class="text-xs font-bold text-slate-400 uppercase tracking-widest">{{ stat.label }}</p>
@@ -196,7 +196,7 @@ const pendingApplications = computed(() =>
                                     </div>
                                 </div>
                             </div>
-                            <div v-else class="p-10 border-2 border-dashed border-slate-100 dark:border-slate-800 rounded-3xl text-center">
+                            <div v-else class="p-10 border-2 border-dashed border-slate-100 dark:border-slate-800 rounded-2xl text-center">
                                 <CheckCircle2 class="w-10 h-10 text-slate-200 dark:text-slate-700 mx-auto mb-4" />
                                 <p class="text-slate-500 text-sm font-medium">{{ t('hr.dashboard.all_reviewed') }}</p>
                             </div>
@@ -245,7 +245,7 @@ const pendingApplications = computed(() =>
                     </div>
 
                     <div class="lg:col-span-4 space-y-10">
-                        <div class="p-8 bg-white dark:bg-slate-800 rounded-3xl text-slate-900 dark:text-white shadow-xl relative overflow-hidden group border border-slate-100 dark:border-slate-700">
+                        <div class="p-8 bg-white dark:bg-slate-800 rounded-2xl text-slate-900 dark:text-white shadow-xl relative overflow-hidden group border border-slate-100 dark:border-slate-700">
                             <div class="relative z-10">
                                 <h4 class="text-lg font-bold mb-2">{{ t('hr.dashboard.public_profile') }}</h4>
                                 <p class="text-slate-500 dark:text-slate-400 text-xs leading-relaxed mb-8">{{ t('hr.dashboard.public_profile_desc') }}</p>
@@ -257,7 +257,7 @@ const pendingApplications = computed(() =>
                                     <ArrowRight class="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
                                 </Link>
                             </div>
-                            <div class="absolute top-[-20%] right-[-10%] w-40 h-40 bg-primary-500/5 dark:bg-white/5 rounded-full blur-3xl group-hover:scale-125 transition-transform duration-700"></div>
+                            <div class="absolute top-[-20%] right-[-10%] w-40 h-40 bg-primary-500/5 dark:bg-white/5 rounded-full blur-2xl opacity-50 group-hover:scale-125 transition-transform duration-700"></div>
                         </div>
 
                         <section>

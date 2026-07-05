@@ -231,10 +231,26 @@ const faqs = computed(() => [
         <section class="relative pt-16 pb-24 lg:pt-24 lg:pb-32 overflow-hidden transition-colors duration-500 border-b" :class="isDarkMode ? 'bg-slate-950 border-slate-800' : 'bg-white border-slate-100'">
             
             <div class="max-w-5xl mx-auto px-6 text-center">
-                <!-- Badge -->
-                <div v-reveal class="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-8 transition-colors" :class="isDarkMode ? 'bg-blue-900/30 text-blue-400' : 'bg-blue-50 text-blue-600'">
-                    <span class="flex h-2 w-2 rounded-full bg-blue-600 "></span>
-                    <span class="text-xs font-semibold tracking-wide">{{ t('hero.badge') }}</span>
+                <!-- Premium Badge -->
+                <div v-reveal class="group relative inline-flex items-center justify-center mb-8 cursor-default">
+                    <!-- Subtle glow effect behind -->
+                    <div class="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 blur-md transition-opacity duration-700" :class="isDarkMode ? 'bg-blue-500/20' : 'bg-blue-400/20'"></div>
+                    
+                    <!-- Badge surface -->
+                    <div class="relative flex items-center gap-2 px-3 py-1.5 rounded-full transition-all duration-300 shadow-sm" 
+                         :class="isDarkMode ? 'bg-blue-900/40 hover:bg-blue-900/60' : 'bg-blue-50 hover:bg-blue-100'">
+                        
+                        <!-- Simple Dot -->
+                        <div class="relative flex h-2 w-2 items-center justify-center">
+                            <span class="absolute inline-flex h-full w-full rounded-full opacity-40 animate-ping" :class="isDarkMode ? 'bg-blue-400' : 'bg-blue-600'"></span>
+                            <span class="relative inline-flex rounded-full h-1.5 w-1.5" :class="isDarkMode ? 'bg-blue-400' : 'bg-blue-600'"></span>
+                        </div>
+
+                        <!-- Text -->
+                        <span class="text-xs font-bold tracking-wide pr-1" :class="isDarkMode ? 'text-blue-400' : 'text-blue-600'">
+                            {{ t('hero.badge') }}
+                        </span>
+                    </div>
                 </div>
 
                 <!-- Title & Subtitle -->

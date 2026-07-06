@@ -50,8 +50,9 @@ const handleFileUpload = async (event: any, type: string) => {
         });
         const refreshed = await api.get(`/applications/${application.value.id}/onboarding`);
         documents.value = refreshed.data.data || [];
-    } catch (error) {
-        alert('Gagal mengunggah dokumen. Pastikan format file adalah PDF/JPG/PNG dan ukuran maksimal 5MB.');
+    } catch (error: any) {
+        const errorMsg = error.response?.data?.message || 'Gagal mengunggah dokumen. Pastikan format file adalah PDF/JPG/PNG dan ukuran maksimal 5MB.';
+        alert(errorMsg);
     } finally {
         uploading.value = null;
     }

@@ -41,11 +41,11 @@ class ApiOnboardingController extends ApiBaseController
 
         $request->validate([
             'type' => 'required|string|in:agreement,ktp,campus_letter,other',
-            'file' => 'required|file|mimes:pdf,jpg,png|max:5120', // 5MB limit
+            'file' => 'required|file|mimes:pdf,jpg,jpeg,png|max:5120', // 5MB limit
         ]);
 
         $file = $request->file('file');
-        $path = $file->store("onboarding/{$application->id}", 'private');
+        $path = $file->store("onboarding/{$application->id}");
 
         $document = OnboardingDocument::updateOrCreate(
             ['application_id' => $application->id, 'type' => $request->type],
@@ -101,11 +101,11 @@ class ApiOnboardingController extends ApiBaseController
     {
         $this->authorizeAccess($document->application);
 
-        if (! Storage::disk('private')->exists($document->file_path)) {
+        if (! Storage::exists($document->file_path)) {
             return abort(404);
         }
 
-        return Storage::disk('private')->download($document->file_path, $document->file_name);
+        return Storage::download($document->file_path, $document->file_name);
     }
 
     /**

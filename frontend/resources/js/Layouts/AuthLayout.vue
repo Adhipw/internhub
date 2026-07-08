@@ -34,14 +34,12 @@ const t = (key: string) => langStore.t(key);
         </div>
 
         <!-- Left Side: Branding/Visual (Hidden on mobile) -->
-        <div class="hidden lg:flex lg:w-[45%] xl:w-1/2 relative bg-primary-900 overflow-hidden">
-            <!-- Background Decoration / Pattern -->
-            <div class="absolute inset-0 bg-gradient-to-br from-blue-700 via-indigo-800 to-indigo-950"></div>
-            <div class="absolute inset-0 opacity-20" style="background-image: radial-gradient(circle at 2px 2px, white 1px, transparent 0); background-size: 32px 32px;"></div>
+        <div class="hidden lg:flex lg:w-[45%] xl:w-1/2 relative bg-neutral-900 overflow-hidden">
+            <!-- Background Image -->
+            <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80" alt="InternHub Workspace" class="absolute inset-0 w-full h-full object-cover" />
             
-            <!-- Glass decoration -->
-            <div class="absolute -bottom-24 -left-24 w-96 h-96 bg-blue-500 rounded-full mix-blend-multiply filter blur-3xl opacity-50 animate-blob"></div>
-            <div class="absolute -top-24 -right-24 w-96 h-96 bg-indigo-500 rounded-full mix-blend-multiply filter blur-3xl opacity-50 animate-blob" style="animation-delay: 2000ms;"></div>
+            <!-- Dark Overlay for Text Readability -->
+            <div class="absolute inset-0 bg-gradient-to-t from-neutral-950/90 via-neutral-900/60 to-neutral-900/30"></div>
             
             <!-- Content -->
             <div class="relative z-10 flex flex-col justify-between w-full h-full p-12 xl:p-16">
@@ -51,16 +49,16 @@ const t = (key: string) => langStore.t(key);
                     </Link>
                 </div>
 
-                <div class="max-w-md">
+                <div class="max-w-md mt-auto mb-16">
                     <h1 class="text-4xl xl:text-5xl font-extrabold text-white leading-[1.15] mb-6 tracking-tight">
                         Selangkah Lebih Dekat Dengan Suksesmu.
                     </h1>
-                    <p class="text-blue-200 text-lg font-medium leading-relaxed">
+                    <p class="text-neutral-300 text-lg font-medium leading-relaxed">
                         Akses ribuan peluang magang eksklusif dari perusahaan top, tingkatkan skill, dan mulai bangun portofolio karier Anda bersama InternHub.
                     </p>
                 </div>
                 
-                <div class="flex items-center gap-4 text-sm font-medium text-blue-200/70">
+                <div class="flex items-center gap-4 text-sm font-medium text-neutral-400">
                     <span>&copy; 2026 InternHub</span>
                     <span>&bull;</span>
                     <Link href="/help" class="hover:text-white transition-colors">{{ t('nav.help') }}</Link>

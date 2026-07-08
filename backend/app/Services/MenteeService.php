@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Application;
 use App\Models\MentorFeedback;
 use App\Models\MentorTask;
+use App\Models\MentoringSession;
 use App\Models\User;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
@@ -71,10 +72,10 @@ class MenteeService
                 'application_id' => $application->id,
                 'mentor_user_id' => $mentor->id,
                 'title' => $data['title'],
-                'description' => $data['description'],
-                'due_at' => $data['due_at'] ?? null,
-                'priority' => $data['priority'] ?? 'medium',
-                'status' => 'pending',
+                'description' => $data['description'] ?? null,
+                'due_date' => $data['due_date'] ?? null,
+                'priority' => $data['priority'] ?? 2,
+                'status' => 'todo',
             ]);
 
             AuditService::log(
@@ -103,5 +104,42 @@ class MenteeService
     public function deleteTask(MentorTask $task): bool
     {
         return $task->delete();
+    }
+
+    /**
+     * Create a new mentoring session.
+     */
+    public function createSession(Application $application, User $mentor, array $data): MentoringSession
+    {
+        return DB::transaction(function () use ($application, $mentor, $data) {
+            $session = MentoringSession::create([
+                'application_id' => $application->id,
+                'mentor_user_id' => $mentor->id,
+                'title' => $data['title'],
+                'description' => $data['description'] ?? null,
+                'scheduled_at' => $data['scheduled_at'],
+                'duration_minutes' => $data['duration_minutes'] ?? 60,
+                'meeting_link' => $data['meeting_link'] ?? null,
+                'status' => 'planned',
+            ]);
+
+            AuditService::log(
+                'mentoring_session_created',
+                $session,
+                'Mentoring session scheduled for mentee: '.$application->user->name
+            );
+
+            return $session;
+        });
+    }
+
+    /**
+     * Update session status.
+     */
+    public function updateSessionStatus(MentoringSession $session, string $status): MentoringSession
+    {
+        $session->update(['status' => $status]);
+
+        return $session;
     }
 }

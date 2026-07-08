@@ -79,7 +79,7 @@ const updateTaskStatus = (taskId: number, currentStatus: string) => {
             <div class="mt-auto pt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
                 <div class="flex items-center gap-2 text-xs font-semibold text-xs tracking-wide" :class="task.status === 'completed' ? 'text-green-500' : 'text-slate-400'">
                     <Clock class="w-3.5 h-3.5" />
-                    <span>{{ task.status === 'completed' ? 'Selesai' : 'Batas: ' + formatDate(task.due_at || task.created_at, { day: 'numeric', month: 'short' }) }}</span>
+                    <span>{{ task.status === 'completed' ? 'Selesai' : 'Batas: ' + formatDate(task.due_date || task.created_at, { day: 'numeric', month: 'short' }) }}</span>
                 </div>
                 <Link :href="'/mentor/mentees/' + task.application_id" class="text-primary-600 hover:text-primary-700 bg-primary-50 hover:bg-primary-100 dark:bg-primary-900/20 p-2 rounded-xl transition-colors">
                     <ChevronRight class="w-4 h-4" />

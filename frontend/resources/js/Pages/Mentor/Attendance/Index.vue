@@ -91,20 +91,20 @@ const getStatusClass = (status: string) => {
                 <td class="px-8 py-6">
                   <div class="flex items-center gap-2 text-xs text-slate-600 dark:text-slate-400 font-medium">
                     <Calendar class="w-3.5 h-3.5 text-slate-300" />
-                    {{ formatDate(attendance.date, { day: 'numeric', month: 'short', year: 'numeric' }) }}
+                    {{ formatDate(attendance.check_in_at, { day: 'numeric', month: 'short', year: 'numeric' }) }}
                   </div>
                 </td>
                 <td class="px-8 py-6">
-                  <div v-if="attendance.check_in" class="flex items-center gap-2 text-xs text-slate-900 dark:text-white font-bold">
+                  <div v-if="attendance.check_in_at" class="flex items-center gap-2 text-xs text-slate-900 dark:text-white font-bold">
                     <Clock class="w-3.5 h-3.5 text-green-500" />
-                    {{ formatDate(attendance.check_in, { hour: '2-digit', minute: '2-digit' }) }}
+                    {{ formatDate(attendance.check_in_at, { hour: '2-digit', minute: '2-digit' }) }}
                   </div>
                   <span v-else class="text-xs text-slate-400">--:--</span>
                 </td>
                 <td class="px-8 py-6">
-                  <div v-if="attendance.check_out" class="flex items-center gap-2 text-xs text-slate-900 dark:text-white font-bold">
+                  <div v-if="attendance.check_out_at" class="flex items-center gap-2 text-xs text-slate-900 dark:text-white font-bold">
                     <Clock class="w-3.5 h-3.5 text-orange-500" />
-                    {{ formatDate(attendance.check_out, { hour: '2-digit', minute: '2-digit' }) }}
+                    {{ formatDate(attendance.check_out_at, { hour: '2-digit', minute: '2-digit' }) }}
                   </div>
                   <span v-else class="text-xs text-slate-400">--:--</span>
                 </td>
@@ -114,9 +114,9 @@ const getStatusClass = (status: string) => {
                   </span>
                 </td>
                 <td class="px-8 py-6">
-                  <div v-if="attendance.check_in_latitude" class="flex items-center gap-2 text-xs text-slate-500">
+                  <div v-if="attendance.check_in_location?.lat" class="flex items-center gap-2 text-xs text-slate-500">
                     <MapPin class="w-3.5 h-3.5 text-primary-500" />
-                    <a :href="`https://www.google.com/maps?q=${attendance.check_in_latitude},${attendance.check_in_longitude}`" target="_blank" class="hover:text-primary-600 hover:underline transition-colors">
+                    <a :href="`https://www.google.com/maps?q=${attendance.check_in_location.lat},${attendance.check_in_location.lng}`" target="_blank" class="hover:text-primary-600 hover:underline transition-colors">
                       Lihat di Maps
                     </a>
                   </div>

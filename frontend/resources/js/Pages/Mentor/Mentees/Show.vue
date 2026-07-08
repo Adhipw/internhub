@@ -657,8 +657,8 @@ class="px-4 py-1.5 rounded-full text-xs font-semibold text-xs tracking-wide bord
                     <div v-if="evaluations.length > 0" class="space-y-8">
                       <Card v-for="evaluation in evaluations" :key="evaluation.id" class="p-12 border-none shadow-premium relative overflow-hidden bg-white dark:bg-slate-800">
                          <div class="absolute top-0 right-0 p-10">
-                            <div :class="['px-6 py-2.5 rounded-2xl text-xs font-semibold text-xs tracking-wide border-2', evaluation.final_status === 'recommend' ? 'bg-green-50 text-green-600 border-green-100' : 'bg-red-50 text-red-600 border-red-100']">
-                               {{ evaluation.final_status === 'recommend' ? 'Direkomendasikan' : 'Perlu Evaluasi Lanjut' }}
+                            <div :class="['px-6 py-2.5 rounded-2xl text-xs font-semibold text-xs tracking-wide border-2', evaluation.final_status === 'completed' ? 'bg-green-50 text-green-600 border-green-100' : 'bg-red-50 text-red-600 border-red-100']">
+                               {{ evaluation.final_status === 'completed' ? 'Direkomendasikan' : 'Perlu Evaluasi Lanjut' }}
                             </div>
                          </div>
                          

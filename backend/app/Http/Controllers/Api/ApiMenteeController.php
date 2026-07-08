@@ -6,6 +6,7 @@ use App\Http\Resources\Api\MenteeResource;
 use App\Http\Resources\Api\MentorFeedbackResource;
 use App\Http\Resources\Api\MentorTaskResource;
 use App\Models\Application;
+use App\Models\MentoringSession;
 use App\Models\MentorTask;
 use App\Services\MenteeService;
 use Illuminate\Http\JsonResponse;
@@ -87,9 +88,9 @@ class ApiMenteeController extends ApiBaseController
 
         $validated = $request->validate([
             'title' => 'required|string|max:255',
-            'description' => 'required|string',
-            'due_at' => 'nullable|date',
-            'priority' => 'nullable|string|in:low,medium,high',
+            'description' => 'nullable|string',
+            'due_date' => 'nullable|date',
+            'priority' => 'nullable|integer|in:1,2,3',
         ]);
 
         $task = $this->menteeService->createTask($application, Auth::user(), $validated);
@@ -110,7 +111,7 @@ class ApiMenteeController extends ApiBaseController
         }
 
         $validated = $request->validate([
-            'status' => 'required|string|in:pending,in_progress,completed,reviewed',
+            'status' => 'required|string|in:todo,in_progress,completed,overdue',
         ]);
 
         $task = $this->menteeService->updateTaskStatus($task, $validated['status']);
@@ -149,7 +150,7 @@ class ApiMenteeController extends ApiBaseController
                     'id' => $task->id,
                     'title' => $task->title,
                     'description' => $task->description,
-                    'due_at' => $task->due_at,
+                    'due_date' => $task->due_date,
                     'priority' => $task->priority,
                     'status' => $task->status,
                     'mentee' => $task->application->user->name ?? 'Unknown',
@@ -162,6 +163,52 @@ class ApiMenteeController extends ApiBaseController
         return $this->sendResponse(
             $tasks,
             __('Tasks retrieved successfully')
+        );
+    }
+
+    /**
+     * Create session for mentee
+     */
+    public function storeSession(Request $request, Application $application): JsonResponse
+    {
+        if ($application->mentor_user_id !== Auth::id()) {
+            return $this->sendError(__('Unauthorized'), [], 403);
+        }
+
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'scheduled_at' => 'required|date',
+            'duration_minutes' => 'required|integer|min:15|max:240',
+            'meeting_link' => 'nullable|url',
+        ]);
+
+        $session = $this->menteeService->createSession($application, Auth::user(), $validated);
+
+        return $this->sendResponse(
+            $session,
+            __('Session scheduled successfully')
+        );
+    }
+
+    /**
+     * Update session status
+     */
+    public function updateSessionStatus(Request $request, MentoringSession $session): JsonResponse
+    {
+        if ($session->mentor_user_id !== Auth::id()) {
+            return $this->sendError(__('Unauthorized'), [], 403);
+        }
+
+        $validated = $request->validate([
+            'status' => 'required|string|in:planned,completed,cancelled',
+        ]);
+
+        $session = $this->menteeService->updateSessionStatus($session, $validated['status']);
+
+        return $this->sendResponse(
+            $session,
+            __('Session status updated successfully')
         );
     }
 }

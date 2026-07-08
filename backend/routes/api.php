@@ -138,7 +138,12 @@ Route::middleware(['auth:sanctum', CheckBanned::class])->prefix('v1')->group(fun
         Route::post('/mentees/{application}/feedback', [ApiMenteeController::class, 'storeFeedback']);
         Route::post('/mentees/{application}/tasks', [ApiMenteeController::class, 'storeTask']);
         Route::patch('/tasks/{task}/status', [ApiMenteeController::class, 'updateTaskStatus']);
+        Route::delete('/tasks/{task}', [ApiMenteeController::class, 'deleteTask']);
         Route::get('/tasks', [ApiMenteeController::class, 'allTasks']);
+
+        // Mentoring Sessions
+        Route::post('/mentees/{application}/sessions', [ApiMenteeController::class, 'storeSession']);
+        Route::patch('/sessions/{session}/status', [ApiMenteeController::class, 'updateSessionStatus']);
 
         // Attendance Monitoring for Mentees
         Route::get('/attendance', [AttendanceController::class, 'index']);

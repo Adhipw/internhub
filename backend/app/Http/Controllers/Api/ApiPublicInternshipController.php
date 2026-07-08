@@ -86,14 +86,19 @@ class ApiPublicInternshipController extends Controller
      * Fungsi: Menghitung total statistik (Lowongan, Perusahaan, Mahasiswa) untuk 
      * ditampilkan di angka-angka di Landing Page.
      * LSP/Skripsi Note: Menghitung count() dari database secara live (Real-time).
+     * Menggunakan cache 15 detik agar aman saat di-poll oleh banyak user.
      */
     public function stats()
     {
-        return response()->json([
-            'total_internships' => Internship::published()->count(), // Lowongan aktif
-            'total_companies' => Company::where('is_verified', true)->count(), // Perusahaan valid
-            'total_placements' => Application::count(), // Total mahasiswa yang melamar
-            'total_students' => User::where('role', 'user')->count(), // Pengguna (Mentee)
-        ]);
+        $stats = \Illuminate\Support\Facades\Cache::remember('public_stats', 15, function () {
+            return [
+                'total_internships' => Internship::published()->count(), // Lowongan aktif
+                'total_companies' => Company::where('is_verified', true)->count(), // Perusahaan valid
+                'total_placements' => Application::count(), // Total mahasiswa yang melamar
+                'total_students' => User::where('role', 'user')->count(), // Pengguna (Mentee)
+            ];
+        });
+
+        return response()->json($stats);
     }
 }

@@ -2,13 +2,14 @@
 import logger from '@/Lib/logger';
 import { Link, router as inertiaRouter } from '@inertiajs/vue3';
 import PublicLayout from '@/Layouts/PublicLayout.vue';
-import { ref, onMounted, computed } from 'vue';
+import { ref, onMounted, computed, onUnmounted } from 'vue';
 import { useLangStore } from '@/Stores/lang';
 import { useTheme } from '@/Composables/useTheme';
 import { Head } from '@/Components';
 import Icon from '@/Components/Icon.vue';
 import api from '@/Services/api';
 import echo from '@/echo';
+import { useTransition, TransitionPresets } from '@vueuse/core';
 
 interface WelcomeProps {
     featuredInternships?: any[];
@@ -155,6 +156,8 @@ const fetchTestimonials = async () => {
     testimonials.value = [];
 };
 
+let pollInterval: ReturnType<typeof setInterval>;
+
 onMounted(() => {
     if (!props.stats) {
         fetchStats();
@@ -170,16 +173,41 @@ onMounted(() => {
 
     fetchTestimonials();
 
-    // Listen for realtime stats updates
+    // Listen for realtime stats updates via Echo (WebSockets)
     if (echo) {
         echo.channel('public-stats')
-            .listen('PublicStatsUpdated', (e: any) => {
+            .listen('.App\\Events\\PublicStatsUpdated', (e: any) => {
                 if (e.stats) {
                     stats.value = e.stats;
+                } else {
+                    fetchStats(); // Fallback if payload empty
                 }
             });
     }
+
+    // Robust Fallback: Polling every 15s to guarantee realtime experience for users without websockets
+    pollInterval = setInterval(() => {
+        fetchStats();
+    }, 15000);
 });
+
+onUnmounted(() => {
+    if (pollInterval) clearInterval(pollInterval);
+    if (echo) echo.leave('public-stats');
+});
+
+// Animations for Counters (VueUse)
+const sourceInternships = computed(() => stats.value?.total_internships || 0);
+const animatedInternships = useTransition(sourceInternships, { duration: 1500, transition: TransitionPresets.easeOutExpo });
+
+const sourceCompanies = computed(() => stats.value?.total_companies || 0);
+const animatedCompanies = useTransition(sourceCompanies, { duration: 1500, transition: TransitionPresets.easeOutExpo });
+
+const sourceStudents = computed(() => stats.value?.total_students || 0);
+const animatedStudents = useTransition(sourceStudents, { duration: 1500, transition: TransitionPresets.easeOutExpo });
+
+const sourcePlacements = computed(() => stats.value?.total_placements || 0);
+const animatedPlacements = useTransition(sourcePlacements, { duration: 1500, transition: TransitionPresets.easeOutExpo });
 
 // Format numbers based on locale
 const formatNumber = (num: number) => {
@@ -309,16 +337,16 @@ const faqs = computed(() => [
                 <div v-else-if="stats" class="grid grid-cols-2 lg:grid-cols-4 gap-8">
                     <div v-motion-slide-visible-once-bottom :style="`transition-delay: ${index * 100}ms`"
 v-for="(item, index) in [
-                        { label: t('stats.internships'), val: stats.total_internships, icon: 'briefcase', color: 'text-blue-500' },
-                        { label: t('stats.companies'), val: stats.total_companies, icon: 'building', color: 'text-emerald-500' },
-                        { label: t('stats.students'), val: stats.total_students, icon: 'users', color: 'text-amber-500' },
-                        { label: t('stats.applications'), val: stats.total_placements, icon: 'send', color: 'text-purple-500' }
+                        { label: t('stats.internships'), val: animatedInternships, icon: 'briefcase', color: 'text-blue-500' },
+                        { label: t('stats.companies'), val: animatedCompanies, icon: 'building', color: 'text-emerald-500' },
+                        { label: t('stats.students'), val: animatedStudents, icon: 'users', color: 'text-amber-500' },
+                        { label: t('stats.applications'), val: animatedPlacements, icon: 'send', color: 'text-purple-500' }
                     ]" :key="item.label" class="flex flex-col md:flex-row items-center gap-4 text-center md:text-left p-6 rounded-2xl transition-all hover:border-blue-200 hover:shadow-sm" :class="isDarkMode ? 'bg-slate-900/50 border border-slate-800' : 'bg-white border border-slate-200'">
                         <div class="w-12 h-12 rounded-2xl flex items-center justify-center text-xl shadow-inner" :class="[isDarkMode ? 'bg-slate-800' : 'bg-slate-50', item.color]">
                             <Icon :name="item.icon" class-name="w-6 h-6" />
                         </div>
                         <div>
-                            <div class="text-2xl font-bold leading-none mb-1" style="font-variant-numeric: tabular-nums">{{ formatNumber(item.val) }}</div>
+                            <div class="text-2xl font-bold leading-none mb-1" style="font-variant-numeric: tabular-nums">{{ formatNumber(Math.round(item.val)) }}</div>
                             <div class="text-xs font-medium" :class="isDarkMode ? 'text-slate-500' : 'text-slate-400'">{{ item.label }}</div>
                         </div>
                     </div>

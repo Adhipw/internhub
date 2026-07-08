@@ -198,11 +198,11 @@ onMounted(() => {
                                         </div>
                                     </div>
 
-                                    <div class="mt-12 p-10 rounded-2xl bg-primary-600 text-white shadow-xl shadow-primary-600/20">
-                                        <h3 class="text-2xl font-bold mb-4">{{ t('info.office_title') }}</h3>
+                                    <div class="mt-12 p-10 rounded-2xl bg-primary-600 text-white shadow-xl shadow-primary-600/20 not-prose">
+                                        <h3 class="text-2xl font-bold mb-4 !text-white !mt-0">{{ t('info.office_title') }}</h3>
                                         <div class="flex items-start gap-4">
-                                            <MapPin class="w-6 h-6 mt-1" />
-                                            <p class="font-medium leading-relaxed" v-html="officeAddress.replace(/\\n/g, '<br />')"></p>
+                                            <MapPin class="w-6 h-6 mt-1 !text-white shrink-0" />
+                                            <p class="font-medium leading-relaxed !text-white !mb-0" v-html="officeAddress.replace(/\\n/g, '<br />')"></p>
                                         </div>
                                     </div>
                                 </template>

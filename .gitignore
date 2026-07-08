@@ -15,7 +15,6 @@ scratch/node_modules/
 node_modules/
 
 # Build output and runtime files
-backend/public/build/
 backend/public/hot
 backend/public/storage
 frontend/dist/

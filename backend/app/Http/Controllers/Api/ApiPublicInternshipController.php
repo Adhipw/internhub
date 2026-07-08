@@ -22,7 +22,10 @@ class ApiPublicInternshipController extends Controller
     }
 
     /**
-     * List all companies.
+     * API 1: companies()
+     * Fungsi: Mengambil daftar perusahaan untuk ditampilkan di Landing Page umum.
+     * LSP/Skripsi Note: Hanya mengambil perusahaan dan menghitung jumlah lowongan magang
+     * yang statusnya 'published' (Publik).
      */
     public function companies(Request $request)
     {
@@ -34,10 +37,14 @@ class ApiPublicInternshipController extends Controller
     }
 
     /**
-     * List all published internships with search and filters.
+     * API 2: index()
+     * Fungsi: Mencari lowongan magang berdasarkan kata kunci (Pencarian).
+     * LSP/Skripsi Note: Logika pencariannya sengaja dipisah ke dalam 'InternshipSearchService'
+     * agar Controller tetap rapi (Prinsip SOLID / Single Responsibility).
      */
     public function index(Request $request)
     {
+        // Mendelegasikan logika pencarian ke class Service khusus
         $internships = $this->searchService->search($request->all());
 
         return InternshipResource::collection($internships);
@@ -75,15 +82,18 @@ class ApiPublicInternshipController extends Controller
     }
 
     /**
-     * Get stats for homepage.
+     * API 5: stats()
+     * Fungsi: Menghitung total statistik (Lowongan, Perusahaan, Mahasiswa) untuk 
+     * ditampilkan di angka-angka di Landing Page.
+     * LSP/Skripsi Note: Menghitung count() dari database secara live (Real-time).
      */
     public function stats()
     {
         return response()->json([
-            'total_internships' => Internship::published()->count(),
-            'total_companies' => Company::where('is_verified', true)->count(),
-            'total_placements' => Application::count(),
-            'total_students' => User::where('role', 'user')->count(),
+            'total_internships' => Internship::published()->count(), // Lowongan aktif
+            'total_companies' => Company::where('is_verified', true)->count(), // Perusahaan valid
+            'total_placements' => Application::count(), // Total mahasiswa yang melamar
+            'total_students' => User::where('role', 'user')->count(), // Pengguna (Mentee)
         ]);
     }
 }

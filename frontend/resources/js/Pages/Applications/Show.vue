@@ -278,6 +278,74 @@ const withdraw = async () => {
                         </div>
                     </div>
 
+                    <!-- Tugas & Sesi Bimbingan (Fitur Baru) -->
+                    <div v-if="['accepted', 'completed'].includes(application.status)" class="space-y-8">
+                        <!-- Sesi Bimbingan -->
+                        <div v-if="application.mentoring_sessions && application.mentoring_sessions.length > 0" class="bg-white rounded-2xl p-8 border border-slate-100 shadow-sm">
+                            <h3 class="text-lg font-bold text-slate-900 mb-6 flex items-center gap-2">
+                                <Calendar class="w-5 h-5 text-blue-600" />
+                                Jadwal Sesi Bimbingan Mentor
+                            </h3>
+                            <!-- Catatan LSP/Skripsi -->
+                            <div class="mb-4 text-xs bg-blue-50 text-blue-700 p-3 rounded-lg border border-blue-100 font-medium italic">
+                                * Fitur (Skripsi/LSP): Menampilkan daftar sesi meeting/bimbingan dari mentor. Terintegrasi langsung dengan modul Mentor.
+                            </div>
+                            <div class="space-y-4">
+                                <div v-for="session in application.mentoring_sessions" :key="session.id" class="p-5 rounded-xl border border-slate-100 hover:border-blue-200 bg-slate-50/50 transition-colors">
+                                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                                        <div class="space-y-1">
+                                            <h4 class="font-bold text-slate-900">{{ session.title }}</h4>
+                                            <p class="text-sm text-slate-600">{{ session.description || 'Tidak ada deskripsi' }}</p>
+                                        </div>
+                                        <div class="flex items-center gap-3 shrink-0">
+                                            <div class="text-right">
+                                                <p class="text-xs font-bold text-slate-900">{{ new Date(session.scheduled_at.replace(' ', 'T') + 'Z').toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }) }}</p>
+                                                <p class="text-xs text-slate-500">{{ session.duration_minutes }} Menit</p>
+                                            </div>
+                                            <StatusBadge :status="session.status" />
+                                        </div>
+                                    </div>
+                                    <div v-if="session.meeting_link" class="mt-4 pt-4 border-t border-slate-100">
+                                        <a :href="session.meeting_link" target="_blank" class="text-sm font-bold text-blue-600 hover:text-blue-700 flex items-center gap-1">
+                                            Join Meeting <ExternalLink class="w-4 h-4" />
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Daftar Tugas -->
+                        <div v-if="application.tasks && application.tasks.length > 0" class="bg-white rounded-2xl p-8 border border-slate-100 shadow-sm">
+                            <h3 class="text-lg font-bold text-slate-900 mb-6 flex items-center gap-2">
+                                <ClipboardCheck class="w-5 h-5 text-emerald-600" />
+                                Tugas dari Mentor
+                            </h3>
+                            <!-- Catatan LSP/Skripsi -->
+                            <div class="mb-4 text-xs bg-emerald-50 text-emerald-700 p-3 rounded-lg border border-emerald-100 font-medium italic">
+                                * Fitur (Skripsi/LSP): Menampilkan tugas dari mentor. Menghilangkan "blank spot" sehingga flow magang menjadi utuh.
+                            </div>
+                            <div class="grid grid-cols-1 gap-4">
+                                <div v-for="task in application.tasks" :key="task.id" class="p-5 rounded-xl border border-slate-100 hover:border-emerald-200 bg-slate-50/50 transition-colors">
+                                    <div class="flex justify-between items-start mb-2">
+                                        <h4 class="font-bold text-slate-900">{{ task.title }}</h4>
+                                        <StatusBadge :status="task.status" />
+                                    </div>
+                                    <p class="text-sm text-slate-600 mb-4">{{ task.description || 'Tidak ada deskripsi' }}</p>
+                                    <div class="flex items-center gap-4 text-xs font-medium text-slate-500">
+                                        <div class="flex items-center gap-1.5" v-if="task.due_date">
+                                            <Calendar class="w-4 h-4" />
+                                            Tenggat: {{ new Date(task.due_date.replace(' ', 'T') + 'Z').toLocaleDateString('id-ID', { day: 'numeric', month: 'short' }) }}
+                                        </div>
+                                        <div class="flex items-center gap-1.5">
+                                            <AlertCircle class="w-4 h-4" :class="task.priority === 1 ? 'text-red-500' : task.priority === 2 ? 'text-orange-500' : 'text-blue-500'" />
+                                            Prioritas: {{ task.priority === 1 ? 'Tinggi' : task.priority === 2 ? 'Sedang' : 'Rendah' }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <!-- Company Info Mini Card -->
                     <div class="bg-slate-900 rounded-2xl p-10 text-white relative overflow-hidden">
                         <div class="absolute top-0 right-0 w-64 h-64 bg-primary-600/20 rounded-full blur-[80px] -mr-32 -mt-32"></div>

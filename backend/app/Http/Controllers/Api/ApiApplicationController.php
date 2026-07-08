@@ -28,8 +28,20 @@ class ApiApplicationController extends ApiBaseController
             return $this->sendError('Unauthorized', [], 403);
         }
 
+        /**
+         * FUNGSI: show()
+         * Menampilkan detail lengkap aplikasi mahasiswa.
+         * LSP/Skripsi Note: Di sini kita tambahkan 'tasks' dan 'mentoringSessions' 
+         * ke dalam fungsi load() agar mahasiswa bisa melihat tugas dan jadwal dari mentor.
+         */
         return $this->sendResponse(
-            $application->load(['internship.company', 'evaluations.mentor', 'mentor']),
+            $application->load([
+                'internship.company', 
+                'evaluations.mentor', 
+                'mentor',
+                'tasks', // Menarik data tugas mahasiswa
+                'mentoringSessions' // Menarik data sesi bimbingan
+            ]),
             'Application details retrieved'
         );
     }

@@ -41,7 +41,7 @@ const goBack = () => {
                         {{ status === 503 ? 'Sedang Update Sistem' : 'Ups! Sepertinya Anda Tersesat.' }}
                     </h2>
                     <p class="text-slate-500 text-lg md:text-xl max-w-lg mx-auto">
-                        {{ status === 503 ? 'Mohon maaf, saat ini sedang dilakukan update/redeploy sistem untuk fitur baru. Silakan coba kembali dalam beberapa saat.' : 'Halaman yang Anda cari tidak ditemukan atau telah dipindahkan. Jangan khawatir, mari kembali ke jalur yang benar.' }}
+                        {{ status === 503 ? 'Mohon maaf, saat ini sedang dilakukan pemeliharaan sistem untuk fitur baru. Silakan coba kembali dalam beberapa saat.' : 'Halaman yang Anda cari tidak ditemukan atau telah dipindahkan. Jangan khawatir, mari kembali ke jalur yang benar.' }}
                     </p>
                 </div>
 

@@ -23,7 +23,10 @@ class ApiMenteeController extends ApiBaseController
     }
 
     /**
-     * Get list of assigned mentees
+     * API 1: index()
+     * Fungsi: Mengambil daftar mentee (mahasiswa magang) untuk ditampilkan di aplikasi mentor.
+     * LSP/Skripsi Note: Memanfaatkan Auth::user() untuk memastikan mentor hanya melihat menteenya sendiri,
+     * bukan mentee milik mentor lain.
      */
     public function index(): JsonResponse
     {
@@ -36,7 +39,10 @@ class ApiMenteeController extends ApiBaseController
     }
 
     /**
-     * Get mentee detail
+     * API 2: show()
+     * Fungsi: Mengambil profil lengkap satu mahasiswa magang.
+     * LSP/Skripsi Note: Menerapkan Otorisasi (Authorization). Jika ID mentor di aplikasi tidak sama
+     * dengan ID mentor yang sedang login, sistem akan menolak akses (403 Unauthorized).
      */
     public function show(Application $application): JsonResponse
     {
@@ -53,7 +59,10 @@ class ApiMenteeController extends ApiBaseController
     }
 
     /**
-     * Submit feedback for a mentee
+     * API 3: storeFeedback()
+     * Fungsi: Menerima data masukan form (Request) dari halaman web untuk menyimpan catatan mentor.
+     * LSP/Skripsi Note: Memanfaatkan fitur Validasi Laravel ($request->validate) agar data
+     * yang masuk sesuai kriteria (misal nilai tidak boleh melebihi 5).
      */
     public function storeFeedback(Request $request, Application $application): JsonResponse
     {
@@ -78,7 +87,9 @@ class ApiMenteeController extends ApiBaseController
     }
 
     /**
-     * Create task for mentee
+     * API 4: storeTask()
+     * Fungsi: Membuat tugas baru untuk mahasiswa magang.
+     * Alur: Terima request -> Validasi input (wajib diisi, dll) -> Kirim data ke MenteeService untuk disimpan.
      */
     public function storeTask(Request $request, Application $application): JsonResponse
     {
@@ -102,7 +113,8 @@ class ApiMenteeController extends ApiBaseController
     }
 
     /**
-     * Update task status
+     * API 5: updateTaskStatus()
+     * Fungsi: Mengubah status tugas, misalnya dari 'todo' menjadi 'completed'.
      */
     public function updateTaskStatus(Request $request, MentorTask $task): JsonResponse
     {
@@ -123,7 +135,10 @@ class ApiMenteeController extends ApiBaseController
     }
 
     /**
-     * Delete a task
+     * API 6: deleteTask()
+     * Fungsi: Menghapus tugas dari sistem.
+     * LSP/Skripsi Note: Menggunakan SoftDeletes (pada Model), sehingga data sebenarnya masih ada 
+     * di database untuk keperluan audit/history, hanya statusnya ditandai terhapus.
      */
     public function deleteTask(MentorTask $task): JsonResponse
     {
@@ -167,7 +182,8 @@ class ApiMenteeController extends ApiBaseController
     }
 
     /**
-     * Create session for mentee
+     * API 8: storeSession()
+     * Fungsi: Menjadwalkan sesi pertemuan/meeting baru dengan mahasiswa magang.
      */
     public function storeSession(Request $request, Application $application): JsonResponse
     {
@@ -192,7 +208,8 @@ class ApiMenteeController extends ApiBaseController
     }
 
     /**
-     * Update session status
+     * API 9: updateSessionStatus()
+     * Fungsi: Mengupdate status sesi meeting (apakah sudah selesai atau dibatalkan).
      */
     public function updateSessionStatus(Request $request, MentoringSession $session): JsonResponse
     {

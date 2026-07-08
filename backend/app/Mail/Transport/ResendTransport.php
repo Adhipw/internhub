@@ -42,7 +42,7 @@ class ResendTransport extends AbstractTransport
 
         if ($response->failed()) {
             Log::error('Resend API Error: '.$response->body());
-            // We don't throw exception to prevent 500 error on frontend
+            throw new \Exception('Resend API Error: ' . $response->body());
         }
     }
 

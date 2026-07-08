@@ -201,9 +201,9 @@ v-for="(mentee, index) in activeMentees" :key="mentee.id"
                           {{ __('Berikan feedback yang konstruktif dan bimbingan berkala untuk membantu mentee Anda mencapai potensi maksimal mereka di program magang ini.') }}
                         </p>
                     </div>
-                    <button class="px-6 py-3 bg-white text-slate-900 rounded-xl font-bold text-sm active:scale-[0.98] transition-transform shadow-sm hover:bg-slate-50 cursor-pointer">
+                    <a href="https://www.google.com/search?q=panduan+menjadi+mentor+magang+yang+baik" target="_blank" class="inline-block px-6 py-3 bg-white text-slate-900 rounded-xl font-bold text-sm active:scale-[0.98] transition-transform shadow-sm hover:bg-slate-50 cursor-pointer">
                         {{ __('Pelajari Teknik Coaching') }}
-                    </button>
+                    </a>
                 </div>
                 <div class="hidden lg:flex justify-end pr-8">
                     <div class="relative">

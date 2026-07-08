@@ -187,20 +187,6 @@ const formatNumber = (num: number) => {
     return new Intl.NumberFormat(langStore.locale === 'id' ? 'id-ID' : 'en-US').format(num);
 };
 
-const vReveal = {
-    mounted: (el: HTMLElement) => {
-        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        if (prefersReducedMotion) return;
-        el.classList.add('opacity-0', 'translate-y-4', 'transition-[opacity,transform]', 'duration-700', 'ease-out');
-        const observer = new IntersectionObserver((entries) => {
-            if (entries[0].isIntersecting) {
-                el.classList.remove('opacity-0', 'translate-y-8');
-                observer.unobserve(el);
-            }
-        }, { threshold: 0.1 });
-        setTimeout(() => observer.observe(el), 100);
-    }
-};
 
 // Categories static data but labels translated
 const categories = computed(() => [
@@ -232,7 +218,7 @@ const faqs = computed(() => [
             
             <div class="max-w-5xl mx-auto px-6 text-center">
                 <!-- Premium Badge -->
-                <div v-reveal class="group relative inline-flex items-center justify-center mb-8 cursor-default">
+                <div v-motion-slide-visible-once-bottom class="group relative inline-flex items-center justify-center mb-8 cursor-default">
                     <!-- Subtle glow effect behind -->
                     <div class="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 blur-md transition-opacity duration-700" :class="isDarkMode ? 'bg-blue-500/20' : 'bg-blue-400/20'"></div>
                     
@@ -254,16 +240,16 @@ const faqs = computed(() => [
                 </div>
 
                 <!-- Title & Subtitle -->
-                <h1 v-reveal class="text-4xl lg:text-7xl font-bold mb-8 leading-tight mx-auto max-w-4xl delay-100" :class="isDarkMode ? 'text-white' : 'text-slate-950'">
+                <h1 v-motion-slide-visible-once-bottom class="text-4xl lg:text-7xl font-bold mb-8 leading-tight mx-auto max-w-4xl delay-100" :class="isDarkMode ? 'text-white' : 'text-slate-950'">
                     {{ t('hero.title') }}
                 </h1>
                 
-                <p v-reveal class="text-lg lg:text-xl mb-12 max-w-2xl mx-auto leading-relaxed delay-200" :class="isDarkMode ? 'text-slate-400' : 'text-slate-600'">
+                <p v-motion-slide-visible-once-bottom class="text-lg lg:text-xl mb-12 max-w-2xl mx-auto leading-relaxed delay-200" :class="isDarkMode ? 'text-slate-400' : 'text-slate-600'">
                     {{ t('hero.subtitle') }}
                 </p>
 
                 <!-- Professional Search Box (Centered) -->
-                <div v-reveal class="p-2 rounded-2xl mb-12 max-w-4xl mx-auto delay-300 border shadow-sm transition-colors" :class="isDarkMode ? 'bg-slate-900/80 border-slate-800' : 'bg-white border-slate-200'">
+                <div v-motion-slide-visible-once-bottom class="p-2 rounded-2xl mb-12 max-w-4xl mx-auto delay-300 border shadow-sm transition-colors" :class="isDarkMode ? 'bg-slate-900/80 border-slate-800' : 'bg-white border-slate-200'">
                     <form class="flex flex-col md:flex-row items-center" @submit.prevent="submitSearch">
                         <div class="flex-1 w-full flex items-center gap-3 px-6 py-4 border-b md:border-b-0 md:border-r transition-colors" :class="isDarkMode ? 'border-slate-700/50 focus-within:bg-slate-800/50 md:rounded-l-full' : 'border-slate-100 focus-within:bg-slate-50 md:rounded-l-full'">
                             <Icon name="search" class-name="w-5 h-5 text-blue-600" />
@@ -321,7 +307,7 @@ const faqs = computed(() => [
                     <div v-for="i in 4" :key="i" class="h-16 rounded-2xl " :class="isDarkMode ? 'bg-slate-900' : 'bg-white'"></div>
                 </div>
                 <div v-else-if="stats" class="grid grid-cols-2 lg:grid-cols-4 gap-8">
-                    <div v-reveal :style="`transition-delay: ${index * 100}ms`"
+                    <div v-motion-slide-visible-once-bottom :style="`transition-delay: ${index * 100}ms`"
 v-for="(item, index) in [
                         { label: t('stats.internships'), val: stats.total_internships, icon: 'briefcase', color: 'text-blue-500' },
                         { label: t('stats.companies'), val: stats.total_companies, icon: 'building', color: 'text-emerald-500' },
@@ -347,7 +333,7 @@ v-for="(item, index) in [
         <section class="py-24 lg:py-32 transition-colors duration-300" :class="isDarkMode ? 'bg-slate-950' : 'bg-white'">
             <div class="max-w-7xl mx-auto px-6">
                 <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-16">
-                    <div v-reveal class="max-w-2xl text-center md:text-left">
+                    <div v-motion-slide-visible-once-bottom class="max-w-2xl text-center md:text-left">
                         <h2 class="text-3xl lg:text-5xl font-bold mb-4 tracking-tight" :class="isDarkMode ? 'text-white' : 'text-slate-950'">{{ t('jobs.title') }}</h2>
                         <p class="text-lg font-medium" :class="isDarkMode ? 'text-slate-400' : 'text-slate-600'">{{ t('jobs.subtitle') }}</p>
                     </div>
@@ -363,7 +349,7 @@ v-for="(item, index) in [
                 </div>
                 
                 <div v-else-if="featuredInternships.length > 0" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    <div v-reveal :style="`transition-delay: ${index * 100}ms`" v-for="(job, index) in featuredInternships" :key="job.id" class="group relative p-6 md:p-8 rounded-2xl border transition-[border-color,box-shadow] duration-200 hover:shadow-md flex flex-col" :class="isDarkMode ? 'bg-slate-900 border-slate-800 hover:border-slate-700' : 'bg-white border-slate-200 hover:border-slate-300'">
+                    <div v-motion-slide-visible-once-bottom :style="`transition-delay: ${index * 100}ms`" v-for="(job, index) in featuredInternships" :key="job.id" class="group relative p-6 md:p-8 rounded-2xl border transition-[border-color,box-shadow] duration-200 hover:shadow-md flex flex-col" :class="isDarkMode ? 'bg-slate-900 border-slate-800 hover:border-slate-700' : 'bg-white border-slate-200 hover:border-slate-300'">
                         <div class="flex items-start justify-between mb-8">
                              <div class="w-14 h-14 rounded-2xl flex items-center justify-center border font-bold text-xl overflow-hidden shadow-sm" :class="isDarkMode ? 'bg-slate-800 border-slate-700 text-blue-500' : 'bg-blue-50 border-blue-50 text-blue-600'">
                                 <img v-if="job.company?.logo_url" loading="lazy" decoding="async" :src="job.company.logo_url" class="w-full h-full object-cover p-2" />
@@ -420,7 +406,7 @@ v-for="(item, index) in [
                 </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                    <button v-reveal :style="`transition-delay: ${index * 75}ms`" v-for="(cat, index) in categories" :key="cat.id" class="p-8 rounded-2xl border transition-[border-color,box-shadow] duration-200 group text-left cursor-pointer" :class="isDarkMode ? 'bg-slate-950 border-slate-800 hover:border-blue-900' : 'bg-white border-slate-200 hover:border-blue-200 hover:shadow-md'" @click="searchQuery = cat.label; submitSearch()">
+                    <button v-motion-slide-visible-once-bottom :style="`transition-delay: ${index * 75}ms`" v-for="(cat, index) in categories" :key="cat.id" class="p-8 rounded-2xl border transition-[border-color,box-shadow] duration-200 group text-left cursor-pointer" :class="isDarkMode ? 'bg-slate-950 border-slate-800 hover:border-blue-900' : 'bg-white border-slate-200 hover:border-blue-200 hover:shadow-md'" @click="searchQuery = cat.label; submitSearch()">
                         <div class="w-12 h-12 rounded-2xl flex items-center justify-center mb-6" :class="isDarkMode ? 'bg-slate-900 text-blue-500' : 'bg-blue-50 text-blue-600'">
                             <Icon :name="cat.icon" class-name="w-6 h-6" />
                         </div>
@@ -435,7 +421,7 @@ v-for="(item, index) in [
         <!-- 5. Perusahaan Terverifikasi -->
         <section class="py-24 transition-colors duration-300" :class="isDarkMode ? 'bg-slate-950' : 'bg-white'">
             <div class="max-w-7xl mx-auto px-6">
-                <div v-reveal class="text-center mb-16">
+                <div v-motion-slide-visible-once-bottom class="text-center mb-16">
                     <h2 class="text-3xl font-bold mb-4 tracking-tight" :class="isDarkMode ? 'text-white' : 'text-slate-950'">{{ t('companies.title') }}</h2>
                     <p class="text-lg font-medium max-w-2xl mx-auto" :class="isDarkMode ? 'text-slate-400' : 'text-slate-600'">{{ t('companies.subtitle') }}</p>
                 </div>
@@ -444,7 +430,7 @@ v-for="(item, index) in [
                     <div v-for="i in 8" :key="i" class="w-32 h-12 rounded-lg bg-slate-500 "></div>
                 </div>
                 <div v-else-if="companiesRes.length > 0" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6">
-                    <div v-reveal :style="`transition-delay: ${index * 50}ms`" v-for="(comp, index) in companiesRes" :key="comp.id" class="p-6 rounded-2xl border transition-all duration-300 flex flex-col items-center gap-4 group" :class="isDarkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-100 shadow-sm'">
+                    <div v-motion-slide-visible-once-bottom :style="`transition-delay: ${index * 50}ms`" v-for="(comp, index) in companiesRes" :key="comp.id" class="p-6 rounded-2xl border transition-all duration-300 flex flex-col items-center gap-4 group" :class="isDarkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-100 shadow-sm'">
                         <div class="w-16 h-16 rounded-2xl flex items-center justify-center border font-bold text-xl overflow-hidden grayscale group-hover:grayscale-0 transition-[filter] duration-200" :class="isDarkMode ? 'bg-slate-800 border-slate-700 text-blue-500' : 'bg-slate-50 border-slate-200 text-slate-400'">
                             <img v-if="comp.logo_url" loading="lazy" decoding="async" :src="comp.logo_url" class="w-full h-full object-cover" />
                             <span v-else>{{ comp.name?.charAt(0) }}</span>
@@ -466,14 +452,14 @@ v-for="(item, index) in [
 
         <!-- 6. Cara Melamar Magang -->
         <section class="py-24 border-y transition-colors duration-300" :class="isDarkMode ? 'bg-slate-950 border-slate-800' : 'bg-slate-50 border-slate-100'">
-            <div v-reveal class="max-w-7xl mx-auto px-6 text-center">
+            <div v-motion-slide-visible-once-bottom class="max-w-7xl mx-auto px-6 text-center">
                 <h2 class="text-3xl lg:text-4xl font-bold mb-16 tracking-tight" :class="isDarkMode ? 'text-white' : 'text-slate-950'">{{ t('steps.title') }}</h2>
                 
                 <div class="grid grid-cols-1 md:grid-cols-5 gap-4 relative">
                     <!-- Decor Line -->
                     <div class="hidden md:block absolute top-12 left-0 w-full h-[2px] -z-0" :class="isDarkMode ? 'bg-slate-800' : 'bg-slate-200'"></div>
                     
-                    <div v-reveal :style="`transition-delay: ${i * 100}ms`" v-for="(step, i) in ['register', 'profile', 'find', 'apply', 'monitor']" :key="step" class="relative z-10 flex flex-col items-center">
+                    <div v-motion-slide-visible-once-bottom :style="`transition-delay: ${i * 100}ms`" v-for="(step, i) in ['register', 'profile', 'find', 'apply', 'monitor']" :key="step" class="relative z-10 flex flex-col items-center">
                         <div class="w-24 h-24 rounded-full flex items-center justify-center border-4 mb-6 transition-colors" :class="isDarkMode ? 'bg-slate-900 border-slate-800 text-blue-500' : 'bg-white border-slate-100 text-blue-600'">
                             <span class="text-3xl font-bold">{{ i + 1 }}</span>
                         </div>
@@ -492,7 +478,7 @@ v-for="(item, index) in [
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    <div v-reveal :style="`transition-delay: ${index * 100}ms`"
+                    <div v-motion-slide-visible-once-bottom :style="`transition-delay: ${index * 100}ms`"
 v-for="(item, index) in [
                         { icon: 'shield', title: t('advantages.v1_title'), desc: t('advantages.v1_desc') },
                         { icon: 'briefcase', title: t('advantages.v2_title'), desc: t('advantages.v2_desc') },
@@ -512,25 +498,24 @@ v-for="(item, index) in [
         <!-- 8. Rekomendasi AI -->
         <section class="py-24 transition-colors duration-300" :class="isDarkMode ? 'bg-slate-950' : 'bg-slate-50'">
             <div class="container mx-auto px-6">
-                <div v-reveal class="max-w-4xl mx-auto rounded-2xl p-12 lg:p-20 border transition-all duration-500 relative overflow-hidden text-center" :class="isDarkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200 shadow-sm'">
+                <div v-motion-slide-visible-once-bottom class="max-w-4xl mx-auto rounded-2xl p-12 lg:p-20 border transition-all duration-500 relative overflow-hidden text-center" :class="isDarkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200 shadow-sm'">
                     
                     <!-- Decorative Element -->
                     
                     
 
-                    <div class="relative z-10">
-                        <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-8 text-xs font-semibold" :class="isDarkMode ? 'bg-blue-500/10 text-blue-400' : 'bg-blue-600/10 text-blue-600'">
-                            <Icon name="sparkles" class-name="w-4 h-4" />
-                            {{ t('ai.badge') }}
+                    <div class="relative z-10 text-left">
+                        <div class="mb-4">
+                            <span class="text-xs font-bold tracking-widest uppercase text-blue-600 dark:text-blue-400">SMART MATCH</span>
                         </div>
                         
-                        <h2 class="text-3xl lg:text-5xl font-bold mb-6 tracking-tight" :class="isDarkMode ? 'text-white' : 'text-slate-900'">{{ t('ai.title') }}</h2>
+                        <h2 class="text-3xl lg:text-4xl font-bold mb-4 tracking-tight" :class="isDarkMode ? 'text-white' : 'text-slate-900'">Temukan Magang Ideal Anda</h2>
                         
-                        <p class="text-lg font-medium leading-relaxed mb-12 max-w-2xl mx-auto" :class="isDarkMode ? 'text-slate-400' : 'text-slate-500'">
-                            {{ t('ai.subtitle') }}
+                        <p class="text-base font-medium leading-relaxed mb-8 max-w-2xl" :class="isDarkMode ? 'text-slate-400' : 'text-slate-600'">
+                            Ceritakan minat, keahlian, atau posisi impian Anda dengan bahasa sehari-hari. Sistem kami akan mencocokkan Anda dengan lowongan yang paling relevan.
                         </p>
                         
-                        <div class="max-w-2xl mx-auto p-2 rounded-2xl border transition-all duration-300 focus-within:ring-2 focus-within:ring-blue-500/20" :class="isDarkMode ? 'bg-slate-950 border-slate-800' : 'bg-slate-50 border-slate-200'">
+                        <div class="max-w-3xl border transition-all duration-300 focus-within:border-blue-500 focus-within:ring-1 focus-within:ring-blue-500 rounded-lg overflow-hidden flex flex-col" :class="isDarkMode ? 'bg-slate-900 border-slate-700' : 'bg-white border-slate-300'">
                             <textarea 
                                 v-model="aiPrompt"
                                 :placeholder="t('ai.placeholder')" 
@@ -540,24 +525,23 @@ v-for="(item, index) in [
                                 @keydown="handleAiKeydown"
                             ></textarea>
                             
-                            <div class="flex items-center justify-between p-2 border-t" :class="isDarkMode ? 'border-slate-800/50' : 'border-slate-100'">
-                                <div class="hidden sm:flex items-center gap-2 px-4 text-xs font-medium text-slate-400">
-                                    <span class="inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-                                    AI Engine Active
+                            <div class="flex items-center justify-between p-3 border-t bg-slate-50 dark:bg-slate-800/50" :class="isDarkMode ? 'border-slate-700' : 'border-slate-200'">
+                                <div class="hidden sm:block text-xs font-medium text-slate-500">
+                                    Tekan Shift + Enter untuk garis baru
                                 </div>
                                 <button 
                                     :disabled="aiLoading || !aiPrompt.trim()"
-                                    class="w-full sm:w-auto bg-blue-600 text-white px-8 py-3 rounded-xl font-bold text-sm hover:bg-blue-700 active:scale-[0.98] transition-colors cursor-pointer flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                                    class="w-full sm:w-auto bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-6 py-2.5 rounded font-semibold text-sm hover:opacity-90 active:scale-[0.98] transition-all cursor-pointer flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                                     @click="submitAiMatcher"
                                 >
-                                    <Icon :name="aiLoading ? 'loader' : 'bot'" class-name="w-5 h-5" :class="aiLoading ? 'animate-spin' : ''" />
-                                    {{ aiLoading ? 'Menganalisis...' : t('ai.btn') }}
+                                    <Icon :name="aiLoading ? 'loader' : 'search'" class-name="w-4 h-4" :class="aiLoading ? 'animate-spin' : ''" />
+                                    {{ aiLoading ? 'Mencari...' : 'Cari Lowongan' }}
                                 </button>
                             </div>
                         </div>
 
                         <!-- AI Example Prompt Chips -->
-                        <div v-if="!aiHasSearched" class="max-w-2xl mx-auto mt-6 flex flex-wrap justify-center gap-2">
+                        <div v-if="!aiHasSearched" class="max-w-3xl mt-4 flex flex-wrap items-center gap-2">
                             <span class="text-xs font-medium text-slate-400 w-full text-center mb-1">Contoh:</span>
                             <button
                                 v-for="ex in aiExamples"
@@ -570,17 +554,10 @@ v-for="(item, index) in [
                             </button>
                         </div>
 
-                        <!-- AI Loader State -->
-                        <div v-if="aiLoading" class="max-w-2xl mx-auto mt-12 p-8 rounded-2xl border  text-center space-y-6" :class="isDarkMode ? 'bg-slate-950 border-slate-800' : 'bg-white border-slate-100 shadow-sm'">
-                            <div class="flex flex-col items-center justify-center gap-4">
-                                <div class="w-16 h-16 rounded-full bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-600 animate-spin">
-                                    <Icon name="sparkles" class-name="w-8 h-8" />
-                                </div>
-                                <div>
-                                    <h4 class="text-lg font-bold" :class="isDarkMode ? 'text-white' : 'text-slate-900'">Gemini AI sedang bekerja</h4>
-                                    <p class="text-sm font-medium text-slate-400 dark:text-neutral-500 mt-1">Mencocokkan profil minat kamu dengan database magang kami...</p>
-                                </div>
-                            </div>
+                        <!-- Loader State -->
+                        <div v-if="aiLoading" class="max-w-3xl mt-8 p-6 rounded-lg border flex items-center gap-4" :class="isDarkMode ? 'bg-slate-900 border-slate-700' : 'bg-white border-slate-200'">
+                            <Icon name="loader" class-name="w-5 h-5 animate-spin text-slate-500" />
+                            <span class="text-sm font-medium text-slate-600 dark:text-slate-400">Sedang memproses kriteria pencarian Anda...</span>
                         </div>
 
                         <!-- AI Error Message -->
@@ -636,11 +613,11 @@ v-for="(item, index) in [
                             </div>
                         </div>
 
-                        <!-- AI No Matches Found -->
-                        <div v-else-if="!aiLoading && aiHasSearched && aiMatches.length === 0" class="max-w-2xl mx-auto mt-12 p-10 rounded-2xl border text-center space-y-4" :class="isDarkMode ? 'bg-slate-950 border-slate-800' : 'bg-white border-slate-100 shadow-sm'">
-                            <Icon name="bot" class-name="w-12 h-12 text-slate-400 mx-auto" />
-                            <h4 class="text-lg font-bold" :class="isDarkMode ? 'text-white' : 'text-slate-900'">Tidak ada kecocokan yang ditemukan</h4>
-                            <p class="text-sm font-medium text-slate-400 dark:text-neutral-500 max-w-md mx-auto">Kami belum menemukan lowongan magang yang cocok dengan kriteria tersebut. Coba ketikkan keahlian atau minat yang berbeda!</p>
+                        <!-- No Matches Found -->
+                        <div v-else-if="!aiLoading && aiHasSearched && aiMatches.length === 0" class="max-w-3xl mt-8 p-10 rounded-lg border text-center space-y-4" :class="isDarkMode ? 'bg-slate-900 border-slate-700' : 'bg-white border-slate-200'">
+                            <Icon name="search" class-name="w-8 h-8 text-slate-400 mx-auto" />
+                            <h4 class="text-lg font-bold" :class="isDarkMode ? 'text-white' : 'text-slate-900'">Pencarian Tidak Ditemukan</h4>
+                            <p class="text-sm font-medium text-slate-500 max-w-md mx-auto">Kami tidak dapat menemukan lowongan magang yang cocok dengan kriteria tersebut. Coba gunakan kata kunci yang lebih umum.</p>
                         </div>
                     </div>
                 </div>
@@ -649,13 +626,13 @@ v-for="(item, index) in [
 
         <!-- 9. Testimoni -->
         <section v-if="testimonials.length > 0" class="py-24 lg:py-32 transition-colors duration-300" :class="isDarkMode ? 'bg-slate-950' : 'bg-white'">
-            <div v-reveal class="max-w-7xl mx-auto px-6">
+            <div v-motion-slide-visible-once-bottom class="max-w-7xl mx-auto px-6">
                 <div class="text-center mb-16">
                     <h2 class="text-3xl lg:text-4xl font-bold mb-4 tracking-tight" :class="isDarkMode ? 'text-white' : 'text-slate-950'">{{ t('testimonials.title') }}</h2>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    <div v-reveal :style="`transition-delay: ${index * 150}ms`" v-for="(t, index) in testimonials" :key="t.name" class="p-8 rounded-2xl border transition-all hover:shadow-sm" :class="isDarkMode ? 'bg-slate-900 border-slate-800 hover:border-slate-700' : 'bg-white border-slate-200 hover:border-slate-300'">
+                    <div v-motion-slide-visible-once-bottom :style="`transition-delay: ${index * 150}ms`" v-for="(t, index) in testimonials" :key="t.name" class="p-8 rounded-2xl border transition-all hover:shadow-sm" :class="isDarkMode ? 'bg-slate-900 border-slate-800 hover:border-slate-700' : 'bg-white border-slate-200 hover:border-slate-300'">
                         <div class="flex items-center gap-6 mb-8">
                             <div class="w-16 h-16 rounded-2xl flex items-center justify-center font-bold text-xl text-white shadow-xl bg-blue-600">
                                 {{ t.initials }}
@@ -673,7 +650,7 @@ v-for="(item, index) in [
 
         <!-- 10. FAQ -->
         <section class="py-24 lg:py-32 transition-colors duration-300" :class="isDarkMode ? 'bg-slate-950 border-t border-slate-800' : 'bg-white border-t border-slate-100'">
-            <div v-reveal class="max-w-4xl mx-auto px-6">
+            <div v-motion-slide-visible-once-bottom class="max-w-4xl mx-auto px-6">
                 <div class="text-center mb-16">
                     <h2 class="text-3xl lg:text-4xl font-bold mb-4 tracking-tight" :class="isDarkMode ? 'text-white' : 'text-slate-950'">{{ t('faq.title') }}</h2>
                 </div>
@@ -694,7 +671,7 @@ v-for="(item, index) in [
 
         <!-- 11. CTA Akhir -->
         <section class="py-24 lg:py-32 max-w-7xl mx-auto px-6">
-            <div v-reveal class="rounded-2xl p-16 lg:p-24 text-center border transition-all duration-500 relative overflow-hidden" :class="isDarkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200 shadow-sm'">
+            <div v-motion-slide-visible-once-bottom class="rounded-2xl p-16 lg:p-24 text-center border transition-all duration-500 relative overflow-hidden" :class="isDarkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200 shadow-sm'">
                 <!-- Abstract Decor -->
                 
                 

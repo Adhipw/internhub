@@ -13,6 +13,7 @@ import { useAuthStore } from './Stores/auth';
 import { setupServiceWorker } from './Services/serviceWorker';
 import { startDomI18nBridge } from './Services/domI18n';
 import { route as routeFn, ZiggyVue } from 'ziggy-js';
+import { MotionPlugin } from '@vueuse/motion';
 
 logger.log('InternHub Web App Starting (Inertia + REST API)...');
 
@@ -154,6 +155,7 @@ createInertiaApp({
         root.use(plugin);
         root.use(pinia);
         root.use(ZiggyVue as any, ziggy as any);
+        root.use(MotionPlugin);
 
         root.mount(el);
 

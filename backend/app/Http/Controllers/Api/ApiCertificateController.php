@@ -19,7 +19,9 @@ class ApiCertificateController extends ApiBaseController
         /** @var User $user */
         $user = Auth::user();
 
-        // Security check: Only the student or company staff can view
+        // Security check (LSP/Skripsi Note): Validasi Akses
+        // Hanya Mahasiswa terkait, HRD Perusahaan tersebut, dan Admin yang boleh melihat sertifikat ini.
+        // Ini adalah poin keamanan (Authorization) yang sangat penting untuk sidang.
         $isStudent = $application->user_id === $user->id;
         $isCompanyStaff = $user->companies()->where('companies.id', $application->internship->company_id)->exists();
         $isAdmin = $user->hasRole('admin') || $user->hasRole('super_admin');
@@ -46,16 +48,20 @@ class ApiCertificateController extends ApiBaseController
             'end_date' => $evaluation ? $evaluation->created_at->format('M d, Y') : now()->format('M d, Y'),
         ];
 
-        // 1. If PDF download is requested
+        // 1. Logika Download PDF (LSP/Skripsi Note)
+        // Jika request memiliki parameter ?download=1, maka sistem akan me-render file blade HTML 
+        // lalu mengkonversinya menjadi PDF menggunakan library Barryvdh\DomPDF
         if ($request->has('download')) {
             if (! class_exists('\Barryvdh\DomPDF\Facade\Pdf')) {
                 return $this->sendError(__('PDF library not installed. Please contact administrator.'), [], 500);
             }
 
+            // Memuat view HTML dan diubah jadi format kertas A4 Landscape
             $pdf = Pdf::loadView('certificates.internship', $data)
                 ->setPaper('a4', 'landscape')
                 ->setWarnings(false);
 
+            // Force download file PDF
             return $pdf->download("Certificate_{$data['certificate_id']}.pdf");
         }
 

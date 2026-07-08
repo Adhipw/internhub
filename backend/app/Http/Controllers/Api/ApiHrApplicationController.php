@@ -110,6 +110,7 @@ class ApiHrApplicationController extends ApiBaseController
 
             $description = $validated['notes'] ?? "Status lamaran Anda diperbarui menjadi {$statusLabels[$validated['status']]}";
 
+            // Jika diterima, otomatis beri petunjuk langkah selanjutnya
             if ($validated['status'] === 'accepted') {
                 $description = __('Selamat! Anda telah diterima magang. Mohon lengkapi dokumen Onboarding dan hubungi Mentor Anda.');
             }
@@ -224,7 +225,11 @@ class ApiHrApplicationController extends ApiBaseController
     }
 
     /**
-     * Generate an AI resume/CV summary for the candidate.
+     * API 5: getAiSummary()
+     * Fitur Unggulan (LSP/Skripsi Note): AI Resume Screening
+     * Fungsi: Menggunakan Gemini AI untuk menganalisis kecocokan CV mahasiswa dengan lowongan.
+     * Alur: Controller mengambil data bio & keahlian mahasiswa -> merakit prompt otomatis -> 
+     * mengirim ke AI Service -> Mengembalikan 3 poin (Kelebihan, Kesenjangan, Rekomendasi).
      */
     public function getAiSummary(Application $application, AiService $aiService): JsonResponse
     {
@@ -244,12 +249,14 @@ class ApiHrApplicationController extends ApiBaseController
             return $this->sendResponse(['summary' => "• **Kelebihan Utama:** Profil kandidat belum dilengkapi.\n• **Kesenjangan Keahlian:** N/A\n• **Rekomendasi Tindakan:** Hubungi kandidat untuk melengkapi profil."], 'Profile incomplete');
         }
 
-        // Clean arrays
+        // Persiapan Data untuk Prompt AI
+        // Membersihkan tag HTML dan mengubah string menjadi array untuk diproses AI
         $requiredRequirements = is_array($internship->requirements) ? $internship->requirements : (is_string($internship->requirements) ? strip_tags($internship->requirements) : '');
         $requiredRequirements = $requiredRequirements ? (is_array($requiredRequirements) ? $requiredRequirements : explode(',', $requiredRequirements)) : [];
         $candidateSkills = is_array($detail->skills) ? $detail->skills : (is_string($detail->skills) ? explode(',', $detail->skills) : []);
 
-        // Build Gemini prompt
+        // Build Gemini prompt (LSP/Skripsi Note: Prompt Engineering)
+        // Di sinilah instruksi untuk AI dirancang sedemikian rupa agar merespon dengan format baku.
         $prompt = "Anda adalah Asisten Rekrutmen AI profesional untuk InternHub.
 Tugas Anda adalah membaca data profil kandidat berikut dan menganalisis kecocokannya dengan posisi magang:
 

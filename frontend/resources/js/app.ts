@@ -55,6 +55,11 @@ const hydrateStores = (pinia: Pinia, page: Page) => {
         langStore.locale = props.locale;
         localStorage.setItem('locale', props.locale);
     }
+    
+    // Ensure translations are loaded on every initial render across all layouts
+    if (Object.keys(langStore.translations).length === 0) {
+        langStore.fetchTranslations();
+    }
 
     if (props.auth && Object.prototype.hasOwnProperty.call(props.auth, 'user')) {
         authStore.syncFromInertiaUser(props.auth.user);

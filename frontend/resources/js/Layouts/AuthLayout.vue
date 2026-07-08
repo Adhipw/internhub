@@ -14,7 +14,25 @@ const t = (key: string) => langStore.t(key);
 </script>
 
 <template>
-    <div class="min-h-screen bg-slate-50 dark:bg-neutral-950 flex flex-col items-center justify-center p-6 font-sans text-slate-900 dark:text-slate-100">
+    <div class="min-h-screen bg-slate-50 dark:bg-neutral-950 flex flex-col items-center justify-center p-6 font-sans text-slate-900 dark:text-slate-100 relative">
+        <!-- Language Switcher -->
+        <div class="absolute top-6 right-6 flex items-center bg-white dark:bg-neutral-900 rounded-xl p-1 border border-slate-200 dark:border-neutral-800 shadow-sm z-50">
+            <button 
+                class="px-3 py-2 rounded-xl text-xs font-bold transition-colors"
+                :class="[langStore.locale === 'id' ? 'bg-slate-100 dark:bg-neutral-800 text-blue-600 shadow-sm' : 'text-slate-400 hover:text-slate-600 dark:hover:text-slate-300']"
+                @click="langStore.setLocale('id')"
+            >
+                ID
+            </button>
+            <button 
+                class="px-3 py-2 rounded-xl text-xs font-bold transition-colors"
+                :class="[langStore.locale === 'en' ? 'bg-slate-100 dark:bg-neutral-800 text-blue-600 shadow-sm' : 'text-slate-400 hover:text-slate-600 dark:hover:text-slate-300']"
+                @click="langStore.setLocale('en')"
+            >
+                EN
+            </button>
+        </div>
+
         <!-- Minimal clean background, no blobs -->
 
         <div class="w-full max-w-[480px] relative z-10">

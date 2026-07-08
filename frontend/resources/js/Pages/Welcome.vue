@@ -197,17 +197,24 @@ onUnmounted(() => {
 });
 
 // Animations for Counters (VueUse)
-const sourceInternships = computed(() => stats.value?.total_internships || 0);
+const sourceInternships = computed(() => Number(stats.value?.total_internships) || 0);
 const animatedInternships = useTransition(sourceInternships, { duration: 1500, transition: TransitionPresets.easeOutExpo });
 
-const sourceCompanies = computed(() => stats.value?.total_companies || 0);
+const sourceCompanies = computed(() => Number(stats.value?.total_companies) || 0);
 const animatedCompanies = useTransition(sourceCompanies, { duration: 1500, transition: TransitionPresets.easeOutExpo });
 
-const sourceStudents = computed(() => stats.value?.total_students || 0);
+const sourceStudents = computed(() => Number(stats.value?.total_students) || 0);
 const animatedStudents = useTransition(sourceStudents, { duration: 1500, transition: TransitionPresets.easeOutExpo });
 
-const sourcePlacements = computed(() => stats.value?.total_placements || 0);
+const sourcePlacements = computed(() => Number(stats.value?.total_placements) || 0);
 const animatedPlacements = useTransition(sourcePlacements, { duration: 1500, transition: TransitionPresets.easeOutExpo });
+
+const statsCards = computed(() => [
+    { label: t('stats.internships'), val: animatedInternships.value, icon: 'briefcase', color: 'text-blue-500' },
+    { label: t('stats.companies'), val: animatedCompanies.value, icon: 'building', color: 'text-emerald-500' },
+    { label: t('stats.students'), val: animatedStudents.value, icon: 'users', color: 'text-amber-500' },
+    { label: t('stats.applications'), val: animatedPlacements.value, icon: 'send', color: 'text-purple-500' }
+]);
 
 // Format numbers based on locale
 const formatNumber = (num: number) => {
@@ -336,12 +343,7 @@ const faqs = computed(() => [
                 </div>
                 <div v-else-if="stats" class="grid grid-cols-2 lg:grid-cols-4 gap-8">
                     <div v-motion-slide-visible-once-bottom :style="`transition-delay: ${index * 100}ms`"
-v-for="(item, index) in [
-                        { label: t('stats.internships'), val: animatedInternships, icon: 'briefcase', color: 'text-blue-500' },
-                        { label: t('stats.companies'), val: animatedCompanies, icon: 'building', color: 'text-emerald-500' },
-                        { label: t('stats.students'), val: animatedStudents, icon: 'users', color: 'text-amber-500' },
-                        { label: t('stats.applications'), val: animatedPlacements, icon: 'send', color: 'text-purple-500' }
-                    ]" :key="item.label" class="flex flex-col md:flex-row items-center gap-4 text-center md:text-left p-6 rounded-2xl transition-all hover:border-blue-200 hover:shadow-sm" :class="isDarkMode ? 'bg-slate-900/50 border border-slate-800' : 'bg-white border border-slate-200'">
+v-for="(item, index) in statsCards" :key="item.label" class="flex flex-col md:flex-row items-center gap-4 text-center md:text-left p-6 rounded-2xl transition-all hover:border-blue-200 hover:shadow-sm" :class="isDarkMode ? 'bg-slate-900/50 border border-slate-800' : 'bg-white border border-slate-200'">
                         <div class="w-12 h-12 rounded-2xl flex items-center justify-center text-xl shadow-inner" :class="[isDarkMode ? 'bg-slate-800' : 'bg-slate-50', item.color]">
                             <Icon :name="item.icon" class-name="w-6 h-6" />
                         </div>

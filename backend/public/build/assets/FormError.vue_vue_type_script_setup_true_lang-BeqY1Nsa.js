@@ -1,1 +1,0 @@
-import{a as s,I as t,U as a,c as o,f as r,t as c,o as n}from"./vendor-vue-D1Fc3QR5.js";const m={class:"text-xs font-medium text-red-500"},_=s({__name:"FormError",props:{message:{}},setup(e){return(i,l)=>t((n(),o("div",null,[r("p",m,c(e.message),1)],512)),[[a,e.message]])}});export{_};

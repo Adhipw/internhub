@@ -152,7 +152,7 @@ const submit = async () => {
                 </div>
                 <button 
                     :disabled="processing"
-                    class="bg-primary-600 text-white px-8 py-4 rounded-2xl font-bold text-sm hover:bg-primary-700 disabled:opacity-50 transition-all shadow-xl shadow-primary-200 flex items-center gap-2"
+                    class="bg-primary-600 text-white px-8 py-4 rounded-2xl font-bold text-sm hover:bg-primary-700 disabled:opacity-50 transition-all shadow-lg shadow-primary-500/20 dark:shadow-none flex items-center gap-2"
                     @click="submit"
                 >
                     <Loader2 v-if="processing" class="w-4 h-4 animate-spin" />
@@ -169,7 +169,7 @@ const submit = async () => {
                         v-for="tab in tabs" 
                         :key="tab.id"
                         class="w-full flex items-center gap-3 px-6 py-4 rounded-2xl font-bold text-sm transition-all"
-                        :class="activeTab === tab.id ? 'bg-primary-600 text-white shadow-lg shadow-primary-500/20' : 'text-slate-500 dark:text-slate-400 hover:bg-white dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white'"
+                        :class="activeTab === tab.id ? 'bg-primary-600 text-white shadow-md shadow-primary-500/20 dark:shadow-none' : 'text-slate-500 dark:text-slate-400 hover:bg-white dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white'"
                         @click="activeTab = tab.id"
                     >
                         <component :is="tab.icon" class="w-5 h-5" />

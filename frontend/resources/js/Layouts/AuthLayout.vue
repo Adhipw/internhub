@@ -49,7 +49,7 @@ const t = (key: string) => langStore.t(key);
                     </Link>
                 </div>
 
-                <div class="max-w-md mt-auto mb-16">
+                <div class="max-w-md my-auto">
                     <h1 class="text-4xl xl:text-5xl font-extrabold text-white leading-[1.15] mb-6 tracking-tight">
                         Selangkah Lebih Dekat Dengan Suksesmu.
                     </h1>

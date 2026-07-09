@@ -44,18 +44,18 @@ const t = (key: string) => langStore.t(key);
             <!-- Content -->
             <div class="relative z-10 flex flex-col justify-between w-full h-full p-12 xl:p-16">
                 <div>
-                    <Link href="/" class="inline-block hover:opacity-80 transition-opacity">
+                    <Link href="/" class="inline-block hover:opacity-80 transition-opacity mb-24">
                         <AppLogo variant="full" size="lg" :isDarkMode="true" />
                     </Link>
-                </div>
 
-                <div class="max-w-md my-auto">
-                    <h1 class="text-4xl xl:text-5xl font-extrabold text-white leading-[1.15] mb-6 tracking-tight">
-                        Selangkah Lebih Dekat Dengan Suksesmu.
-                    </h1>
-                    <p class="text-neutral-300 text-lg font-medium leading-relaxed">
-                        Akses ribuan peluang magang eksklusif dari perusahaan top, tingkatkan skill, dan mulai bangun portofolio karier Anda bersama InternHub.
-                    </p>
+                    <div class="max-w-md">
+                        <h1 class="text-4xl xl:text-5xl font-extrabold text-white leading-[1.15] mb-6 tracking-tight">
+                            Selangkah Lebih Dekat Dengan Suksesmu.
+                        </h1>
+                        <p class="text-neutral-300 text-lg font-medium leading-relaxed">
+                            Akses ribuan peluang magang eksklusif dari perusahaan top, tingkatkan skill, dan mulai bangun portofolio karier Anda bersama InternHub.
+                        </p>
+                    </div>
                 </div>
                 
                 <div class="flex items-center gap-4 text-sm font-medium text-neutral-400">

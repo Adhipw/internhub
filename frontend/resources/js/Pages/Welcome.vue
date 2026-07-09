@@ -539,10 +539,12 @@ v-for="(item, index) in [
                             <span class="text-xs font-bold tracking-widest uppercase text-blue-600 dark:text-blue-400">SMART MATCH</span>
                         </div>
                         
-                        <h2 class="text-3xl lg:text-4xl font-bold mb-4 tracking-tight" :class="isDarkMode ? 'text-white' : 'text-slate-900'">Temukan Magang Ideal Anda</h2>
+                        <h2 class="text-3xl lg:text-4xl font-bold mb-4 tracking-tight" :class="isDarkMode ? 'text-white' : 'text-slate-900'">
+                            {{ langStore.locale === 'id' ? 'Temukan Magang Ideal Anda' : 'Find Your Ideal Internship' }}
+                        </h2>
                         
                         <p class="text-base font-medium leading-relaxed mb-8 max-w-2xl" :class="isDarkMode ? 'text-slate-400' : 'text-slate-600'">
-                            Ceritakan minat, keahlian, atau posisi impian Anda dengan bahasa sehari-hari. Sistem kami akan mencocokkan Anda dengan lowongan yang paling relevan.
+                            {{ langStore.locale === 'id' ? 'Ceritakan minat, keahlian, atau posisi impian Anda dengan bahasa sehari-hari. Sistem kami akan mencocokkan Anda dengan lowongan yang paling relevan.' : 'Describe your interests, skills, or dream position using everyday language. Our system will match you with the most relevant opportunities.' }}
                         </p>
                         
                         <div class="max-w-3xl border transition-all duration-300 focus-within:border-blue-500 focus-within:ring-1 focus-within:ring-blue-500 rounded-lg overflow-hidden flex flex-col" :class="isDarkMode ? 'bg-slate-900 border-slate-700' : 'bg-white border-slate-300'">
@@ -557,7 +559,7 @@ v-for="(item, index) in [
                             
                             <div class="flex items-center justify-between p-3 border-t bg-slate-50 dark:bg-slate-800/50" :class="isDarkMode ? 'border-slate-700' : 'border-slate-200'">
                                 <div class="hidden sm:block text-xs font-medium text-slate-500">
-                                    Tekan Shift + Enter untuk garis baru
+                                    {{ langStore.locale === 'id' ? 'Tekan Shift + Enter untuk garis baru' : 'Press Shift + Enter for a new line' }}
                                 </div>
                                 <button 
                                     :disabled="aiLoading || !aiPrompt.trim()"
@@ -565,7 +567,7 @@ v-for="(item, index) in [
                                     @click="submitAiMatcher"
                                 >
                                     <Icon :name="aiLoading ? 'loader' : 'search'" class-name="w-4 h-4" :class="aiLoading ? 'animate-spin' : ''" />
-                                    {{ aiLoading ? 'Mencari...' : 'Cari Lowongan' }}
+                                    {{ aiLoading ? (langStore.locale === 'id' ? 'Mencari...' : 'Searching...') : (langStore.locale === 'id' ? 'Cari Lowongan' : 'Find Jobs') }}
                                 </button>
                             </div>
                         </div>

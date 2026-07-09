@@ -132,11 +132,13 @@ cx="48" cy="48" r="42" fill="transparent" stroke="currentColor" stroke-width="8"
                         <div class="space-y-4">
                             <div class="inline-flex items-center gap-2 px-3 py-1 bg-white/20 rounded-full text-xs font-semibold">
                                 <CheckCircle2 class="w-3.5 h-3.5" />
-                                Action Required
+                                {{ langStore.locale === 'id' ? 'Tindakan Diperlukan' : 'Action Required' }}
                             </div>
-                            <h2 class="text-3xl font-bold tracking-tight">Selamat! Lamaran Anda Diterima.</h2>
+                            <h2 class="text-3xl font-bold tracking-tight">
+                                {{ langStore.locale === 'id' ? 'Selamat! Lamaran Anda Diterima.' : 'Congratulations! Your Application is Accepted.' }}
+                            </h2>
                             <p class="text-emerald-50 font-medium text-lg max-w-2xl">
-                                Langkah terakhir: Silakan lengkapi dokumen onboarding (KTP, Perjanjian Magang) untuk meresmikan status magang Anda.
+                                {{ langStore.locale === 'id' ? 'Langkah terakhir: Silakan lengkapi dokumen onboarding (KTP, Perjanjian Magang) untuk meresmikan status magang Anda.' : 'Final step: Please complete the onboarding documents (ID Card, Internship Agreement) to formalize your internship status.' }}
                             </p>
                         </div>
                         <Link 
@@ -144,7 +146,7 @@ cx="48" cy="48" r="42" fill="transparent" stroke="currentColor" stroke-width="8"
                             :href="'/my-applications/' + recent_applications.find(app => app.status === 'accepted')?.id + '/onboarding'"
                             class="bg-white text-emerald-600 px-6 py-3 rounded-xl font-bold text-sm active:scale-[0.98] transition-colors cursor-pointer text-center whitespace-nowrap shadow-sm hover:bg-slate-50"
                         >
-                            Lengkapi Dokumen
+                            {{ langStore.locale === 'id' ? 'Lengkapi Dokumen' : 'Complete Documents' }}
                         </Link>
                     </div>
                 </Card>
